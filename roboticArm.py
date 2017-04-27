@@ -1,5 +1,5 @@
 # This is the robotic arm class
-import armTask
+import task
 
 
 class RoboticArm:
@@ -7,10 +7,10 @@ class RoboticArm:
         self.status = 0               # 0-free | 1-moving | 2-working
 
     @staticmethod
-    def stir(self):
+    def stir():
         print('the arm is stirring')
 
     @staticmethod
-    def getColor(self):
+    def getColor():
         print('the arm is getting the wine color')
 

@@ -4,10 +4,10 @@ class AllContainers:
 
     def __init__(self):
         self.numOfContainers = 0
-        self.listOfContainers = list()
+        self.listOfContainers = dict()
 
     def addNewContainer(self, container):
-        self.listOfContainers.append(container)
+        self.listOfContainers[container.number] = container
         self.numOfContainers += 1
 
     def removeContainer(self, container_name):
@@ -21,11 +21,19 @@ class AllContainers:
             print('-> ERROR: invalid input')
         return exists
 
-    def printList(self):
+    def getContainer(self, num):
+        return self.listOfContainers[num]
+
+    def printContainersList(self):
+        print('List of valid containers:')
+        for key in self.listOfContainers:
+            print(key)
+
+    def printFullList(self):
         print('--------------------------------')
         print('PRINTING LIST OF CONTAINERS: (' + str(self.numOfContainers) + ')')
         print('--------------------------------')
-        for i, cntnr in enumerate(self.listOfContainers):
-            print('\n' + str(i+1) + '.')
-            cntnr.printContainer()
+        for key in self.listOfContainers:
+            print('\n' + str(key) + ':')
+            self.listOfContainers[key].printContainer()
 

@@ -1,5 +1,6 @@
 from container import *
 from allContainers import *
+from task import *
 
 
 def print_menu():
@@ -8,8 +9,9 @@ def print_menu():
     print('q - quit')
     print('m - menu')
     print('p - print container list')
-    print('1 - add container')
-    print('2 - remove container')
+    print('1 - start container')
+    print('2 - add task to container')
+    print('3 - remove container')
     print('=====================')
 
 
@@ -21,6 +23,16 @@ def addCont():
     container = Container(name, num, init_priority)
     containers.addNewContainer(container)
     print('-> container added')
+
+
+def addTaskToContainer():
+    # gets num of container and adds a new task
+    containers.printContainersList()
+    num = input('container number in winery: ')
+    Task.printAllTasks()
+    tsk = input('input task: ')
+    cont = containers.getContainer(num)
+    cont.addTask(tsk)
 
 
 def removeCont():
@@ -35,13 +47,15 @@ def case(inp):
     if inp == 'm':
         print_menu()
     elif inp == 'p':
-        containers.printList()
+        containers.printFullList()
     elif inp == '1':
         addCont()
     elif inp == '2':
+        addTaskToContainer()
+    elif inp == '3':
         removeCont()
 
-
+# --------------------------------------------------------------------------------------------------------
 containers = AllContainers()
 
 if __name__ == '__main__':
@@ -61,4 +75,4 @@ if __name__ == '__main__':
         cntnr = Container(name)
         containers.addNewContainer(cntnr)
     '''
-    containers.printList()
+    containers.printFullList()
