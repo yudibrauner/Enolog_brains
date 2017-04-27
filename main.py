@@ -12,18 +12,23 @@ def print_menu():
     print('2 - remove container')
     print('=====================')
 
+
 def addCont():
     # gets name and adds container
+    num = input('container number in winery: ')
     name = input('name: ')
-    container = Container(name)
+    init_priority = input('initial priority: ')
+    container = Container(name, num, init_priority)
     containers.addNewContainer(container)
-    print('adding container...')
+    print('-> container added')
+
 
 def removeCont():
-    # gets name and adds container
+    # gets name and removes container
     name = input('name: ')
-    containers.removeContainer(name)
-    print('removing container...')
+    success = containers.removeContainer(name)
+    if success:
+        print('-> container has been removed')
 
 
 def case(inp):

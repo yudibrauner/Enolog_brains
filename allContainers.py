@@ -11,10 +11,15 @@ class AllContainers:
         self.numOfContainers += 1
 
     def removeContainer(self, container_name):
+        exists = False
         for cntnr in self.listOfContainers:
             if cntnr.name == container_name:
                 self.listOfContainers.remove(cntnr)
+                exists = True
         self.numOfContainers -= 1
+        if not exists:
+            print('-> ERROR: invalid input')
+        return exists
 
     def printList(self):
         print('--------------------------------')
