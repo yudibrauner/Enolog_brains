@@ -26,8 +26,11 @@ class AllContainers:
 
     def printContainersList(self):
         print('List of valid containers:')
+        keys = list()
         for key in self.listOfContainers:
-            print(key)
+            keys.append(key)
+        keys.reverse()
+        print(str(keys))
 
     def printFullList(self):
         print('--------------------------------')

@@ -11,7 +11,7 @@ class Container:
         # self.location = getLocation(num)  # get the location of the container by it's number from winery
         self.name = name
         self.priority = priority
-        self.startDateTime = datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
+        self.startDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
         self.visits = list()         # a list of all the visits of the robotic arm
         self.tasks = list()          # a list of all the current armTasks for this container
         self.temperature = self.getTemperature()
@@ -43,4 +43,4 @@ class Container:
         print('Priority: ' + str(self.priority))
         print('Tasks: ' + self.tasksToString())
         print('Temperature: ' + str(self.temperature) + '°C')
-        print('Status: ' + self.status())
+        print('Status: ' + str(self.status))

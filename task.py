@@ -1,4 +1,4 @@
-# This class is a mission for the robotic arm
+# This class is a task for the robotic arm or the container
 from roboticArm import *
 from container import *
 
