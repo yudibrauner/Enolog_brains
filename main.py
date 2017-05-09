@@ -22,8 +22,9 @@ def print_menu():
 
 def addCont():
     # gets name and adds container
-    num = input('container number in winery: ')
-    name = input('name: ')
+    num = input('container ID number in winery: ')
+    # Todo: check if ID number is valid (from winery.allContainers)
+    name = input('name (wine type): ')
     init_priority = input('initial priority: ')
     container = Container(name, num, init_priority)
     containers.addNewContainer(container)

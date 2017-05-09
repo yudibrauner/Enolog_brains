@@ -47,7 +47,7 @@ class Winery:
         numOfContainers = input('Enter number of winery containers: ')
         for i in range(int(numOfContainers)):
             print('Container #' + str(i+1) + ':')
-            num = input('Enter serial number: ')
+            num = input('Enter ID number: ')
             x = input('Enter container X location: ')
             y = input('Enter container Y location: ')
             z = input('Enter container Z location (container height): ')
@@ -55,21 +55,38 @@ class Winery:
             self.addContainerToWinery(container)
         with open(self.fileName, 'a') as file:
             file.write('======================================================' + '\n')
-            file.write('              Winery: ' + str(self.name) + '\n')
+            file.write('                 Winery: ' + str(self.name) + '\n')
             file.write('======================================================' + '\n')
             file.write('Dimensions:  (Width Length Height) \n')
             file.write(self.winery_x + ' ' + self.winery_y + ' ' + self.winery_z + '\n')
-            file.write('Containers:' + '\n')
+            file.write('Containers: ' + str(numOfContainers) + '  (ID Width Length Height) \n')
             for container_num, container in self.allWineryContainers.items():
                 file.write(container_num + ' ' + container.x + ' ' + container.y + ' ' + container.z + '\n')
 
     def readFromFile(self):
-        useExistingFile = input('Would you like to use existing winery? (y/n)') # TODO add name of winery from file to question
+        useExistingFile = input('Would you like to use existing winery [' + self.getNameFromFile() + ']? (y/n)')
         while not useExistingFile == 'y' and not useExistingFile == 'n':
             print('-> ERROR: bad input try again')
-            useExistingFile = input('Would you like to use existing winery? (y/n)') # ^here to^
+            useExistingFile = input('Would you like to use existing winery? (y/n)')
         if useExistingFile == 'n':
             os.remove(self.fileName)
             self.initFile()
         elif useExistingFile == 'y':
             print('READING DATA FROM EXISTING FILE')  # TODO read data from file and set the class params
+
+    def getNameFromFile(self):
+        with open(self.fileName, 'r') as file:
+            lines = file.readlines()
+            lineParts = str(lines[1]).split(': ')
+            # print(str(lineParts[1][:-1]))
+            return str(lineParts[1][:-1])
+
+    def getContainersFromFile(self):
+        with open(self.fileName, 'r') as file:
+            lines = file.readlines()
+            numOfContainers = str(lines[4]).split(': ')
+            numOfContainers = numOfContainers[1].split(' ')
+            numOfContainers = numOfContainers[0]
+            print('Nnumber of containers in winery: ' + str(numOfContainers))
+            for i in range(numOfContainers):
+                self.WineryContainer
