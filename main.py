@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from Simulator import Simulator
 from container import *
 from allContainers import *
 from task import *
@@ -15,10 +16,13 @@ import time
 #intialize items:
 
 robArm = RoboticArm()
-
+winery = ""
 
 
 #functions:
+
+def openSim():
+    sim = Simulator(robArm, containers, winery)
 
 def openFile():
     adress = askopenfilename()
@@ -29,14 +33,9 @@ def saveFile():
 def mesBox():
     tkinter.messagebox.showinfo("About Us:", "Yehuda Brauner\nElyashiv Miller")
 
+
 def printCont():
     containers.printFullList()
-
-def refreshConts():
-    for cont in containers.listOfContainers:
-        print("work")
-        subMenu3.add_command(label="print containers", command=printCont)
-
 
 def print_menu():
     print('=====================')
@@ -53,6 +52,15 @@ def print_menu():
     print('=====================')
 
 
+def addCont2():
+    name = ''
+    def getText():
+        name = e1.get()
+    e1.pack()
+    b = Button(root, text="Enter", width=10, command=getText)
+    b.pack()
+    print(name)
+
 def addCont():
     # gets name and adds container
     num = input('container ID number in winery: ')
@@ -61,6 +69,7 @@ def addCont():
     init_priority = input('initial priority: ')
     container = Container(name, num, init_priority)
     containers.addNewContainer(container)
+    subMenu3.add_command(label=name, command=printCont)
     print('-> container added')
 
 
@@ -171,7 +180,7 @@ menu.add_cascade(label="file", menu=subMenu1)
 subMenu1.add_command(label="Open text", command=openFile)
 subMenu1.add_command(label="Save as", command=saveFile)
 subMenu1.add_separator()
-subMenu1.add_command(label="XXXXXXXX")
+subMenu1.add_command(label="open simulator", command=openSim)
 subMenu1.add_command(label="exit", command=exit)
 
 subMenu2 = Menu(menu)
@@ -185,8 +194,7 @@ subMenu2.add_command(label="set home position", command=setHomePosition)
 subMenu2.add_command(label="start winery", command=startWinery)
 
 subMenu3=Menu(menu)
-menu.add_cascade(label="containers", menu=subMenu3, command=refreshConts)
-# here we need to add a button for every container
+menu.add_cascade(label="containers", menu=subMenu3)
 
 
 subMenu4=Menu(menu)
@@ -194,15 +202,7 @@ menu.add_cascade(label="help", menu=subMenu4)
 subMenu4.add_command(label="About", command=mesBox)
 
 
+e1 = Entry(root)
 
-# button1 = Button(topFrame, text='Open simulation', fg='blue')
-# button2 = Button(topFrame, text='Close simulation', fg='blue')
-# button3 = Button(topFrame, text='Button 3', fg='blue')
-# button4 = Button(bottomFrame, text='Button 4', fg='red')
-
-# button1.pack()
-# button2.pack()
-# button3.pack(side=LEFT)
-# button4.pack()
 
 root.mainloop()
