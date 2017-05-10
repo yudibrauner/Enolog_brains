@@ -4,6 +4,39 @@ from allContainers import *
 from task import *
 from winery import *
 
+from tkinter import *
+from tkinter.filedialog import *
+import csv
+import tkinter.messagebox
+import os.path
+import sqlite3
+import time
+
+#intialize items:
+
+robArm = RoboticArm()
+
+
+
+#functions:
+
+def openFile():
+    adress = askopenfilename()
+
+def saveFile():
+    adress = asksaveasfilename()
+
+def mesBox():
+    tkinter.messagebox.showinfo("About Us:", "Yehuda Brauner\nElyashiv Miller")
+
+def printCont():
+    containers.printFullList()
+
+def refreshConts():
+    for cont in containers.listOfContainers:
+        print("work")
+        subMenu3.add_command(label="print containers", command=printCont)
+
 
 def print_menu():
     print('=====================')
@@ -100,14 +133,76 @@ def case(inp):
 # --------------------------------------------------------------------------------------------------------
 containers = AllContainers()
 
-if __name__ == '__main__':
-    robArm = RoboticArm()
-    print_menu()
-    while True:
-        inp = input('Input: ')
-        if inp == 'q':
-            break
-        else:
-            case(inp)
+# if __name__ == '__main__':
+#     robArm = RoboticArm()
+#     print_menu()
+#     while True:
+#         inp = input('Input: ')
+#         if inp == 'q':
+#             break
+#         else:
+#             case(inp)
+#
+#     containers.printFullList()
 
-    containers.printFullList()
+
+
+
+
+
+buttons = []
+
+
+root = Tk()
+
+topFrame = Frame(root, width=1000, height=500)
+# bottomFrame = Frame()
+topFrame.pack()
+# bottomFrame.pack(side=BOTTOM)
+global l1
+l1=Label(root, text='winery app')
+l1.pack()
+
+menu=Menu(root)
+root.config(menu=menu)
+
+subMenu1 = Menu(menu)
+menu.add_cascade(label="file", menu=subMenu1)
+subMenu1.add_command(label="Open text", command=openFile)
+subMenu1.add_command(label="Save as", command=saveFile)
+subMenu1.add_separator()
+subMenu1.add_command(label="XXXXXXXX")
+subMenu1.add_command(label="exit", command=exit)
+
+subMenu2 = Menu(menu)
+menu.add_cascade(label="actions", menu=subMenu2)
+subMenu2.add_command(label="print containers", command=printCont)
+subMenu2.add_command(label="add container", command=addCont)
+subMenu2.add_command(label="add task", command=addTaskToContainer)
+subMenu2.add_command(label="remove container", command=removeCont)
+subMenu2.add_command(label="move robotic hand", command=moveRoboticArm)
+subMenu2.add_command(label="set home position", command=setHomePosition)
+subMenu2.add_command(label="start winery", command=startWinery)
+
+subMenu3=Menu(menu)
+menu.add_cascade(label="containers", menu=subMenu3, command=refreshConts)
+# here we need to add a button for every container
+
+
+subMenu4=Menu(menu)
+menu.add_cascade(label="help", menu=subMenu4)
+subMenu4.add_command(label="About", command=mesBox)
+
+
+
+# button1 = Button(topFrame, text='Open simulation', fg='blue')
+# button2 = Button(topFrame, text='Close simulation', fg='blue')
+# button3 = Button(topFrame, text='Button 3', fg='blue')
+# button4 = Button(bottomFrame, text='Button 4', fg='red')
+
+# button1.pack()
+# button2.pack()
+# button3.pack(side=LEFT)
+# button4.pack()
+
+root.mainloop()
