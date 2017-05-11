@@ -1,6 +1,5 @@
 # This is the robotic arm class
 # CLIENT
-import task
 
 
 class RoboticArm:

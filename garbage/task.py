@@ -1,7 +1,7 @@
 # This class is a task for the robotic arm or the container
-from roboticArm import *
 from container import *
 
+from garbage.roboticArm import *
 
 TASK_NAMES = ('stir', 'color', 'temperature')
 

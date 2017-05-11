@@ -1,15 +1,8 @@
-from container import *
-from allContainers import *
-from task import *
-from winery import *
-
-from tkinter import *
 from tkinter.filedialog import *
-import csv
-import tkinter.messagebox
-import os.path
-import sqlite3
-import time
+
+from allContainers import *
+from container import *
+from task import *
 
 
 class Simulator:

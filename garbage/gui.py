@@ -37,9 +37,9 @@ topFrame = Frame(root, width=1000, height=500)
 # bottomFrame = Frame()
 topFrame.pack()
 # bottomFrame.pack(side=BOTTOM)
-global l1
-l1=Label(root, text='winery app')
-l1.pack()
+global containerLabel
+containerLabel=Label(root, text='winery app')
+containerLabel.pack()
 
 menu=Menu(root)
 root.config(menu=menu)

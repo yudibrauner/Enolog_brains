@@ -1,6 +1,7 @@
-# The winery class manages the locations of all the containers and creates a map of the winery
+from container import *
 import os.path
 
+allConatiners = {}
 
 class Winery:
     def __init__(self):
