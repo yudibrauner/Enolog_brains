@@ -9,45 +9,66 @@ import time
 from container import *
 
 #INIT:
+NO_CONTAINERS = "No Containers"
 allContainers = {}
-options = {"no container to choose": None}
-decisionMaker = None # TODO: create this class, and change this variable
+options = {NO_CONTAINERS: None}
+CURRENT_CONTAINER = NO_CONTAINERS              # this variable contains the current container showed in frame
+decisionMaker = None                                   # TODO: create this class, and change this variable
 there_is_no_containers = True
 
+
 def addCont():
-    # gets name and adds container
     name = ''
     id = ''
     rootCont = Tk()
     rootCont.wm_title("Adding container")
     contFrame = Frame(rootCont, width=300, height=500)
     contFrame.pack()
-    # # Todo: print empty containers ID, print error if the user gave
+    # # Todo: print empty containers ID, print error if the user gave an ID tha does not exist
     idLabel = Label(contFrame, text='container ID number in winery: ')
     idEntry = Entry(contFrame)
-    idLabel.place(x=40,y=40)
-    idEntry.place(x=40,y=70)
+    idLabel.place(x=40, y=40)
+    idEntry.place(x=40, y=70)
 
     nameLabel = Label(contFrame, text='name (wine type): ')
     nameEntry = Entry(contFrame)
-    nameLabel.place(x=40,y=100)
-    nameEntry.place(x=40,y=130)
+    nameLabel.place(x=40, y=100)
+    nameEntry.place(x=40, y=130)
 
     def addDetails():
+        if NO_CONTAINERS in options:
+            del options[NO_CONTAINERS]
         id = idEntry.get()
         name = nameEntry.get()
         container = Container(name, id)
         allContainers[id] = container
         print('-> container added')
         options[id] = name
-        # TODO: to add delete "no containers..." cell if exist
-        # del options["no container to choose"]
         selectedOption.set(id)  # Default
         OptionMenu(root, selectedOption, *options).place(x=110, y=20)
         rootCont.destroy()
 
     insertButton = Button(contFrame, text='insert details', command=addDetails)
     insertButton.place(x=40, y=200)
+
+
+def removeCont():
+    global CURRENT_CONTAINER
+    del options[CURRENT_CONTAINER]
+    if not options.items():
+        options[NO_CONTAINERS] = None
+    CURRENT_CONTAINER = list(options.keys())[0]
+    selectedOption.set(CURRENT_CONTAINER)
+    OptionMenu(root, selectedOption, *options).place(x=110, y=20)
+
+    print('-> container has been removed')
+
+
+def selectContainerEvent(*args):
+    global CURRENT_CONTAINER
+    CURRENT_CONTAINER = selectedOption.get()
+    print(str(CURRENT_CONTAINER))
+
 
 #GUI
 
@@ -56,16 +77,16 @@ root.wm_title("Smart winery app")
 
 # FRAMES:
 
-mainFrame = Frame(root, width=1100, height=500)
+mainFrame = Frame(root, width=370, height=450, bg='#810d2b')
 mainFrame.pack()
 
 # rightFrame = Frame(mainFrame, width=500, height=500)
 # rightFrame.pack(side=RIGHT)
 
-leftFrame = Frame(mainFrame, width=1000, height=500)
-leftFrame.pack()
+#leftFrame = Frame(mainFrame, width=350, height=420, bg='#810d2b')
+#leftFrame.pack()
 
-dataFrame = LabelFrame(leftFrame, text="data")
+dataFrame = LabelFrame(mainFrame, text="data")
 
 # IMAGES
 
@@ -76,8 +97,8 @@ addPhoto = PhotoImage(file="add.png")
 
 #LABELS:
 
-containerLabel = Label(leftFrame, text='Container ID:')
-logLabel = Label(leftFrame, text='Log:')
+containerLabel = Label(mainFrame, text='Container ID:')
+logLabel = Label(mainFrame, text='Log:')
 temperatureLabel = Label(dataFrame, text='Temprature:')
 colorLabel = Label(dataFrame, text='Color:')
 densityLabel = Label(dataFrame, text='Density:')
@@ -86,28 +107,30 @@ nameLabel = Label(dataFrame, text='name:')
 
 # BUTTONS:
 
-addContButton = Button(leftFrame, image=addPhoto, command=addCont)
-SettingsButton = Button(leftFrame, image=settingsPhoto)
-tasksButton = Button(leftFrame, image=tasksPhoto)
-graphsButton = Button(leftFrame, image=graphsPhoto)
+addContButton = Button(mainFrame, image=addPhoto, command=addCont)
+SettingsButton = Button(mainFrame, image=settingsPhoto)
+tasksButton = Button(mainFrame, image=tasksPhoto)
+graphsButton = Button(mainFrame, image=graphsPhoto)
+removeButton = Button(mainFrame, text='Remove This Container', command=removeCont)
 
 # TEXTS
 
-logText = Text (leftFrame)
-temperatureText = Text (dataFrame)
-colorText = Text (dataFrame)
-densityText = Text (dataFrame)
-idText = Text (dataFrame)
-nameText = Text (dataFrame)
+logText = Text(mainFrame)
+temperatureText = Text(dataFrame)
+colorText = Text(dataFrame)
+densityText = Text(dataFrame)
+idText = Text(dataFrame)
+nameText = Text(dataFrame)
 
 
 # DROP-DOWNS
 
 selectedOption = StringVar()
-selectedOption.set("no container to choose") # Default
+selectedOption.trace('w', selectContainerEvent)
+selectedOption.set(NO_CONTAINERS)  # Default
 
 
-# PLACES:
+# PLACING:
 
 containerLabel.place(x=30, y=25)
 OptionMenu(root, selectedOption, *options).place(x=110, y=20)
@@ -128,8 +151,10 @@ colorText.place(height=25, width=70, x=90, y=40)
 densityLabel.place(x=10, y=70)
 densityText.place(height=25, width=70, x=90, y=70)
 idLabel.place(x=190, y=0)
-idText.place(height=25, width=70,x=190, y=20)
+idText.place(height=25, width=70, x=190, y=20)
 nameLabel.place(x=190, y=50)
-nameText.place(height=25, width=70,x=190, y=70)
+nameText.place(height=25, width=70, x=190, y=70)
+
+removeButton.place(bordermode=OUTSIDE, x=110, y=400)
 
 root.mainloop()
