@@ -14,13 +14,41 @@ class Container:
         self.startDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
         self.visits = list()         # a list of all the visits of the robotic arm
         self.tasks = list()          # a list of all the current armTasks for this container
-        self.temperature = self.getTemperature()
-        self.color = self.getColor()
-        self.density = self.getDensity()
+        self.temperature = random.randrange(10, 50)
+        self.taninns = random.randrange(10, 50)
+        self.color = random.randrange(10, 50)
+        self.density = random.randrange(10, 50)
         self.status = 'ready'        # statuses: ready|critical
+
+# SETTERS:
 
     def setNumber(self, num):
         self.id = num
+
+    def setName(self, _name):
+        self.name = _name
+
+# GETTERS:
+
+    def getTemperature(self):
+        return self.temperature
+
+    def getColor(self):
+        return self.color
+
+    def getTaninns(self):
+        return self.taninns
+
+    def getDensity(self):
+        return self.density
+
+# OTHER FUNCTIONS:
+
+    def cool(self):
+        self.temperature -= 5
+
+    def regulate(self): #TODO : ask Shivi how the regulator affects the color, density...
+        print("there's nothing yet")
 
     def addTask(self, taskName):
         if taskName in TASK_NAMES:
@@ -28,15 +56,6 @@ class Container:
             self.tasks.append(task)
         else:
             print('-> ERROR: not a task')
-
-    def getTemperature(self):
-        return random.randrange(10, 50)
-
-    def getColor(self):
-        return random.randrange(10, 50)
-
-    def getDensity(self):
-        return random.randrange(10, 50)
 
     def tasksToString(self):
         lst = ''
