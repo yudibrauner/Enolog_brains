@@ -40,13 +40,14 @@ def addCont():
             del options[NO_CONTAINERS]
         id = idEntry.get()
         name = nameEntry.get()
-        container = Container(name, id)
-        allContainers[id] = container
-        print('-> container added')
-        options[id] = name
-        selectedOption.set(id)  # Default
-        OptionMenu(root, selectedOption, *options).place(x=110, y=20)
-        rootCont.destroy()
+        if id and name:
+            container = Container(name, id)
+            allContainers[id] = container
+            print('-> container added')
+            options[id] = name
+            selectedOption.set(id)  # Default
+            OptionMenu(root, selectedOption, *options).place(x=110, y=20)
+            rootCont.destroy()
 
     insertButton = Button(contFrame, text='insert details', command=addDetails)
     insertButton.place(x=40, y=200)
@@ -95,23 +96,23 @@ tasksPhoto = PhotoImage(file="tasks.png")
 graphsPhoto = PhotoImage(file="graph.png")
 addPhoto = PhotoImage(file="add.png")
 
-#LABELS:
+# LABELS:
 
-containerLabel = Label(mainFrame, text='Container ID:')
-logLabel = Label(mainFrame, text='Log:')
-temperatureLabel = Label(dataFrame, text='Temprature:')
-colorLabel = Label(dataFrame, text='Color:')
-densityLabel = Label(dataFrame, text='Density:')
-idLabel = Label(dataFrame, text='id:')
-nameLabel = Label(dataFrame, text='name:')
+containerLabel = Label(mainFrame, text='Container ID:', background='#810d2b')
+logLabel = Label(mainFrame, text='Log:', background='#810d2b')
+temperatureLabel = Label(dataFrame, text='Temperature:', background='#810d2b')
+colorLabel = Label(dataFrame, text='Color:', background='#810d2b')
+densityLabel = Label(dataFrame, text='Density:', background='#810d2b')
+idLabel = Label(dataFrame, text='id:', background='#810d2b')
+nameLabel = Label(dataFrame, text='name:', background='#810d2b')
 
 # BUTTONS:
 
-addContButton = Button(mainFrame, image=addPhoto, command=addCont)
-SettingsButton = Button(mainFrame, image=settingsPhoto)
-tasksButton = Button(mainFrame, image=tasksPhoto)
-graphsButton = Button(mainFrame, image=graphsPhoto)
-removeButton = Button(mainFrame, text='Remove This Container', command=removeCont)
+addContButton = Button(mainFrame, image=addPhoto, relief=FLAT, background='#810d2b', command=addCont)
+SettingsButton = Button(mainFrame, image=settingsPhoto, relief=FLAT, background='#810d2b')  # , highlightbackground='#f3f3f3'
+tasksButton = Button(mainFrame, image=tasksPhoto, relief=FLAT, background='#810d2b')
+graphsButton = Button(mainFrame, image=graphsPhoto, relief=FLAT, background='#810d2b')
+removeButton = Button(mainFrame, text='Remove This Container', command=removeCont, relief=FLAT, background='#810d2b')
 
 # TEXTS
 

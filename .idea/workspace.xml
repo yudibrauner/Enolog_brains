@@ -2,12 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e20eacaf-528a-4e53-b315-7533990d7aac" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/add.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/graph.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/settings.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tasks.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Enolog_brains.iml" afterPath="$PROJECT_DIR$/.idea/Enolog_brains.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
     </list>
@@ -27,8 +21,8 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="59" column="20" lean-forward="true" selection-start-line="59" selection-start-column="20" selection-end-line="59" selection-end-column="20" />
+            <state relative-caret-position="176">
+              <caret line="111" column="125" lean-forward="false" selection-start-line="111" selection-start-column="125" selection-end-line="111" selection-end-column="125" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -36,12 +30,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/garbage/main.py">
+      <file leaf-file-name="container.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/container.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="80" column="0" lean-forward="true" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="210">
+              <caret line="15" column="11" lean-forward="false" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
+              <folding>
+                <element signature="e#44#59#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -114,20 +110,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Smart_Winery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Smart_Winery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Smart_Winery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="garbage" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -493,7 +475,14 @@
       <option name="project" value="LOCAL" />
       <updated>1494523855969</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="some GUI changes&#10;Globalize CURRENT_CONTAINER to know which container to refer to in the frame&#10;Remove container button">
+      <created>1494718742829</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1494718742829</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -547,7 +536,8 @@
     <MESSAGE value="moving the GUI to the main class" />
     <MESSAGE value="changing the system with the arm to a new system" />
     <MESSAGE value="make the new GUI system, without the arm." />
-    <option name="LAST_COMMIT_MESSAGE" value="make the new GUI system, without the arm." />
+    <MESSAGE value="some GUI changes&#10;Globalize CURRENT_CONTAINER to know which container to refer to in the frame&#10;Remove container button" />
+    <option name="LAST_COMMIT_MESSAGE" value="some GUI changes&#10;Globalize CURRENT_CONTAINER to know which container to refer to in the frame&#10;Remove container button" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -625,6 +615,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="7" column="35" lean-forward="false" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
+          <folding>
+            <element signature="e#44#59#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -818,13 +811,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/garbage/container.py" />
-    <entry file="file://$PROJECT_DIR$/container.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="0" lean-forward="false" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/tkinter/__init__.py" />
     <entry file="file://$PROJECT_DIR$/settings.png" />
     <entry file="file://$PROJECT_DIR$/../untitled/Pharser.py" />
@@ -855,10 +841,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/container.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="15" column="11" lean-forward="false" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
+          <folding>
+            <element signature="e#44#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="59" column="20" lean-forward="true" selection-start-line="59" selection-start-column="20" selection-end-line="59" selection-end-column="20" />
+        <state relative-caret-position="176">
+          <caret line="111" column="125" lean-forward="false" selection-start-line="111" selection-start-column="125" selection-end-line="111" selection-end-column="125" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
