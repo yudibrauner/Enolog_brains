@@ -8,10 +8,7 @@ from garbage.task import *
 
 
 class EmptyContainer:
-    # def __init__(self, _id, _place, mainFrame):
-    # def __init__(self, _id, _place, _image):
-    def __init__(self, _id, _place):
-
+    def __init__(self, _id, _place, empty_image, full_image):
         self.id = _id            # number of container in winery
         # TODO: make the winery into a file and read container info from file
         self.startDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
@@ -23,9 +20,12 @@ class EmptyContainer:
         self.color = self.NO_DETAIL
         self.density = self.NO_DETAIL
         self.status = 'empty'        # statuses: ready|critical
-        # self.image = _image
         self.place = _place
-        # self.mainFrame = mainFrame
+        self.emptyImage = empty_image
+        self.fullImage = full_image
+        self.image = self.emptyImage
+        self.buttonFunction = self.addCont
+
 
     def addCont(self):
         rootCont = Tk()
@@ -37,7 +37,26 @@ class EmptyContainer:
         nameEntry = Entry(contFrame)
         nameLabel.place(x=40, y=100)
         nameEntry.place(x=40, y=130)
+        def addDetails():
+            name = nameEntry.get()
+            if name:
+                self.name = name
+                self.image = self.fullImage
+                self.temperature = random.randrange(10, 50)
+                self.taninns = random.randrange(10, 50)
+                self.color = random.randrange(10, 50)
+                self.density = random.randrange(10, 50)
+                self.buttonFunction = self.showDetails
+                print('-> container added')
+                rootCont.destroy()
+        insertButton = Button(contFrame, text='insert details', command=addDetails)
+        insertButton.place(x=40, y=200)
 
+    def showDetails(self):
+        rootCont = Tk()
+        rootCont.wm_title("details of container " + str(self.id))
+        contFrame = Frame(rootCont, width=300, height=500)
+        contFrame.pack()
 
     # SETTERS:
 

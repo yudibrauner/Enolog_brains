@@ -37,17 +37,6 @@ class Container:
         nameLabel.place(x=40, y=100)
         nameEntry.place(x=40, y=130)
 
-        def addDetails():
-            name = nameEntry.get()
-            if name:
-                container = Container(name, id)
-                allContainers[id] = container
-                print('-> container added')
-                rootCont.destroy()
-
-        insertButton = Button(contFrame, text='insert details', command=addDetails)
-        insertButton.place(x=40, y=200)
-
     # SETTERS:
 
     def setNumber(self, num):
