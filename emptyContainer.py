@@ -4,7 +4,7 @@ import random
 from tkinter import *
 from tkinter.filedialog import *
 # from new_main_II import *
-from garbage.task import *
+from garbage.taskGarbage import *
 
 
 class EmptyContainer:

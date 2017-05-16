@@ -6,7 +6,7 @@ from tkinter.filedialog import *
 
 
 
-from garbage.task import *
+from garbage.taskGarbage import *
 
 
 class Container:
