@@ -70,3 +70,4 @@ class Container:
         print('Tasks: ' + self.tasksToString())
         print('Temperature: ' + str(self.temperature) + '°C')
         print('Status: ' + str(self.status))
+

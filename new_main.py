@@ -119,7 +119,7 @@ containerPhoto = PhotoImage(file="container.png")
 places = []
 curID = 0
 for i in range(0,10):
-    for j in range(0,2):
+    for j in range(0, 2):
         id = curID
         place = (60 * i + 70, 220*j + 50)
         placesConts = {}
