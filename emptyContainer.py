@@ -3,32 +3,33 @@ import datetime
 import random
 from tkinter import *
 from tkinter.filedialog import *
-
-
-
+# from new_main_II import *
 from garbage.taskGarbage import *
 
 
-class Container:
-    def __init__(self, _name, _id, _place):
+class EmptyContainer:
+    def __init__(self, _id, _place, empty_image, full_image):
         self.id = _id            # number of container in winery
         # TODO: make the winery into a file and read container info from file
-        # self.location = getLocation(num)  # get the location of the container by it's number from winery
-        self.name = _name
         self.startDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
         self.visits = list()         # a list of all the visits of the robotic arm
         self.tasks = list()          # a list of all the current armTasks for this container
-        self.temperature = random.randrange(10, 50)
-        self.taninns = random.randrange(10, 50)
-        self.color = random.randrange(10, 50)
-        self.density = random.randrange(10, 50)
-        self.status = 'ready'        # statuses: ready|critical
-        self.image = PhotoImage(file="containerAct.png")# empty container at the initialization
+        self.NO_DETAIL = "N/A"
+        self.temperature = self.NO_DETAIL
+        self.taninns = self.NO_DETAIL
+        self.color = self.NO_DETAIL
+        self.density = self.NO_DETAIL
+        self.status = 'empty'        # statuses: ready|critical
         self.place = _place
+        self.emptyImage = empty_image
+        self.fullImage = full_image
+        self.image = self.emptyImage
+        self.buttonFunction = self.addCont
+
 
     def addCont(self):
         rootCont = Tk()
-        rootCont.wm_title("Adding container " + str(id))
+        rootCont.wm_title("Adding container " + str(self.id))
         contFrame = Frame(rootCont, width=300, height=500)
         contFrame.pack()
         # # Todo: print empty containers ID, print error if the user gave an ID tha does not exist
@@ -36,6 +37,26 @@ class Container:
         nameEntry = Entry(contFrame)
         nameLabel.place(x=40, y=100)
         nameEntry.place(x=40, y=130)
+        def addDetails():
+            name = nameEntry.get()
+            if name:
+                self.name = name
+                self.image = self.fullImage
+                self.temperature = random.randrange(10, 50)
+                self.taninns = random.randrange(10, 50)
+                self.color = random.randrange(10, 50)
+                self.density = random.randrange(10, 50)
+                self.buttonFunction = self.showDetails
+                print('-> container added')
+                rootCont.destroy()
+        insertButton = Button(contFrame, text='insert details', command=addDetails)
+        insertButton.place(x=40, y=200)
+
+    def showDetails(self):
+        rootCont = Tk()
+        rootCont.wm_title("details of container " + str(self.id))
+        contFrame = Frame(rootCont, width=300, height=500)
+        contFrame.pack()
 
     # SETTERS:
 
@@ -46,6 +67,12 @@ class Container:
         self.name = _name
 
 # GETTERS:
+
+    def getImage(self):
+        return self.image
+
+    def getPlace(self):
+        return self.place
 
     def getTemperature(self):
         return self.temperature
@@ -58,6 +85,12 @@ class Container:
 
     def getDensity(self):
         return self.density
+
+    def getId(self):
+        return self.id
+
+    def getName(self):
+        return self.name
 
 # OTHER FUNCTIONS:
 
@@ -87,4 +120,3 @@ class Container:
         print('Tasks: ' + self.tasksToString())
         print('Temperature: ' + str(self.temperature) + '°C')
         print('Status: ' + str(self.status))
-
