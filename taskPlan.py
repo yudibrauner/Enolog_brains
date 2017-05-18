@@ -1,8 +1,6 @@
 # This class is a task for the robotic arm or the container
 from container import *
 
-from garbage.roboticArm import *
-
 class TaskPlan:
     def __init__(self, taskName, listsOfParams, length):
         self.task = taskName
