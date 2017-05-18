@@ -5,12 +5,10 @@ import tkinter.messagebox
 import os.path
 import sqlite3
 import time
-
-from container import *
 from taskPlan import *
 from emptyContainer import *
 
-# INIT TASKS :TODO: move it to another class, for there won't be mess
+# INIT TASKS :
 
 #short:
 short = {}
@@ -48,55 +46,48 @@ tasks['long'] = TaskPlan("long", long, 14)
 tasks['normal'] = TaskPlan("normal", normal, 10)
 tasks['short'] = TaskPlan("short", short, 7)
 
-#GUI
+# GUI
 
 root = Tk()
 root.wm_title("Smart winery app")
-
-emptyImage = PhotoImage(file="container.png")
-fullImage = PhotoImage(file="containerAct.png")
-
 
 # FRAMES:
 
 mainFrame = Frame(root, width=1000, height=600, bg='#810d2b')
 mainFrame.pack()
 
+def settings(self):
+    rootCont = Tk()
+    rootCont.wm_title("Settings")
+    contFrame = Frame(rootCont, width=300, height=500)
+    contFrame.pack()
+    nameLabel = Label(contFrame, text='Set number of containers: ')
+    nameEntry = Entry(contFrame, text=str(len(allContainers)))
+    nameLabel.place(x=40, y=100)
+    nameEntry.place(x=40, y=130)
+
+    def addDetails():
+        name = nameEntry.get()
+        if name:
+            self.name = name
+            self.buttonFunction = self.showDetails
+            self.fillContainer()
+            print('-> container added')
+            rootCont.destroy()
+
+    insertButton = Button(contFrame, text='insert details', command=addDetails)
+    insertButton.place(x=40, y=200)
+
+settingsButton = Button(mainFrame, text='settings', command=settings)
+settingsButton.place(x=40, y=200)
 # creating all the containers
 curID = 0
-for i in range(0,10):
-    for j in range(0,2):
+for i in range(0, 5):
+    for j in range(0, 2):
         id = curID
-        place = (85 * i + 70, 220*j + 50)
-        allContainers.append(EmptyContainer(id, place, emptyImage, fullImage))
+        place = (170 * i + 150, 250*j + 100)
+        allContainers.append(EmptyContainer(id, place, mainFrame))
         curID += 1
 
-# it's refreshing the screen TODO: how should we do that automatically, without a button?
-def refreshScreen():
-    for i in range (0, len(allContainers)):
-        cont = allContainers[i]
-        labelsContainers[i] = {}
-        contButton = Button(mainFrame, image=cont.getImage(), relief=FLAT, background='#810d2b',
-                            command=cont.buttonFunction)
-        contButton.place(x=cont.getPlace()[0], y=cont.getPlace()[1])
-        labelsContainers[i]['id'] = Label(mainFrame, text="id: " + str(cont.getId()))
-        labelsContainers[i]['density'] = Label(mainFrame, text="de: " + str(cont.getDensity()),
-                                                   background='#810d2b')
-        labelsContainers[i]['taninns'] = Label(mainFrame, text="ta: " + str(cont.getTaninns()),
-                                                   background='#810d2b')
-        labelsContainers[i]['color'] = Label(mainFrame, text="co: " + str(cont.getColor()),
-                                                 background='#810d2b')
-        labelsContainers[i]['temperature'] = Label(mainFrame, text="te: " + str(cont.getTemperature()),
-                                                       background='#810d2b')
-        labelsContainers[i]['id'].place(x=cont.getPlace()[0] + 10, y=cont.getPlace()[1] - 30)
-        labelsContainers[i]['density'].place(x=cont.getPlace()[0] + 10, y=cont.getPlace()[1] + 70)
-        labelsContainers[i]['taninns'].place(x=cont.getPlace()[0] + 10, y=cont.getPlace()[1] + 90)
-        labelsContainers[i]['color'].place(x=cont.getPlace()[0] + 10, y=cont.getPlace()[1] + 110)
-        labelsContainers[i]['temperature'].place(x=cont.getPlace()[0] + 10, y=cont.getPlace()[1] + 130)
-
-
-refreshButton = Button(mainFrame, text="refresh", relief=FLAT, command=refreshScreen)
-refreshButton.place(x=400, y=500)
-refreshScreen()
 
 root.mainloop()
