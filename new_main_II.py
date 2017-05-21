@@ -29,7 +29,9 @@ root.wm_title("Smart winery app")
 mainFrame = Frame(root, width=1000, height=600, bg='#810d2b')
 mainFrame.pack()
 
-def settings(self):
+
+def settings():
+    #  TODO: fix up this popup
     rootCont = Tk()
     rootCont.wm_title("Settings")
     contFrame = Frame(rootCont, width=300, height=500)
@@ -42,9 +44,6 @@ def settings(self):
     def addDetails():
         name = nameEntry.get()
         if name:
-            self.name = name
-            self.buttonFunction = self.showDetails
-            self.fillContainer()
             print('-> container added')
             rootCont.destroy()
 
@@ -52,7 +51,7 @@ def settings(self):
     insertButton.place(x=40, y=200)
 
 settingsButton = Button(mainFrame, text='settings', command=settings)
-settingsButton.place(x=40, y=200)
+settingsButton.place(x=10, y=10)
 # creating all the containers
 curID = 0
 for i in range(0, 5):
