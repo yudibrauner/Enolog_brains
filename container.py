@@ -43,8 +43,11 @@ class Container:
         self.nameLabel = None
         self.initParams()
         self.frame.grid(row=0, column=0, columnspan=2)
-        self.f = Figure(figsize=(5, 5), dpi=100)
-        self.a = self.f.add_subplot(111)
+        self.graph_plot = Figure(figsize=(5, 5), dpi=100)
+        self.sub_plot_221 = self.graph_plot.add_subplot(221)
+        self.sub_plot_222 = self.graph_plot.add_subplot(222)
+        self.sub_plot_223 = self.graph_plot.add_subplot(223)
+        self.sub_plot_224 = self.graph_plot.add_subplot(224)
 
     def setImage(self):
         self.photo = PhotoImage(file=self.image)
@@ -154,26 +157,29 @@ class Container:
         contFrame = Frame(rootCont, width=1000, height=500)
         contFrame.pack()
 
-        canvas = FigureCanvasTkAgg(self.f, contFrame)
-        #canvas.show()
+        canvas = FigureCanvasTkAgg(self.graph_plot, contFrame)
         canvas.get_tk_widget().pack(side=tk.RIGHT, expand=True)
-        ani = animation.FuncAnimation(self.f, self.animate, interval=500)
+        animation.FuncAnimation(self.graph_plot, self.animate(self.sub_plot_221, 'data\Tannins_slow.txt'), interval=500)
+        animation.FuncAnimation(self.graph_plot, self.animate(self.sub_plot_222, 'data\Color_slow.txt'), interval=500)
+        animation.FuncAnimation(self.graph_plot, self.animate(self.sub_plot_223, 'data\Density_slow.txt'), interval=500)
+        animation.FuncAnimation(self.graph_plot, self.animate(self.sub_plot_224, 'data\Temperature_slow.txt'), interval=500)
+
         endProcessButton = Button(contFrame, text='End Process', command=lambda: self.endProcess(rootCont))
         endProcessButton.place(x=40, y=20)
         rootCont.mainloop()
 
-    def animate(self, i):
-        pullData = open('data.txt', 'r').read()
+    def animate(self, sub_plot, data):
+        pullData = open(data, 'r').read()
         dataList = pullData.split('\n')
         xList = []
         yList = []
         for eachLine in dataList:
             if len(eachLine) > 1:
-                x, y = eachLine.split(',')
-                xList.append(int(x))
-                yList.append(int(y))
-        self.a.clear()
-        self.a.plot(xList, yList)
+                x, y = eachLine.split(' ')
+                xList.append(float(x))
+                yList.append(float(y))
+        sub_plot.clear()
+        sub_plot.plot(xList, yList)
 
 
     # SETTERS:
