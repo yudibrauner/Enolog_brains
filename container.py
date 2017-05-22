@@ -55,6 +55,8 @@ class Container:
         self.idLabel = Label(self.frame, text=str(self.id) + ': ', background='#810d2b')
         self.idLabel.place(x=self.place[0] + 10, y=self.place[1] - 30)
 
+        self.nameLabel = Label(self.frame, text='Name: ', background='#810d2b')
+        self.nameLabel.place(x=self.place[0] + 5, y=self.place[1] + 70)
         self.nameLabel = Label(self.frame, textvariable=str(self.name), background='#810d2b')
         self.nameLabel.place(x=self.place[0] + 25, y=self.place[1] - 30)
 
@@ -63,14 +65,20 @@ class Container:
         self.densityValLabel = Label(self.frame, textvariable=str(self.density), background='#810d2b')
         self.densityValLabel.place(x=self.place[0] + 35, y=self.place[1] + 70)
 
+        self.tanninsValLabel = Label(self.frame, text='Tnn: ', background='#810d2b')
+        self.tanninsValLabel.place(x=self.place[0] + 5, y=self.place[1] + 90)
         self.tanninsValLabel = Label(self.frame, textvariable=str(self.tannins), background='#810d2b')
-        self.tanninsValLabel.place(x=self.place[0] + 10, y=self.place[1] + 90)
+        self.tanninsValLabel.place(x=self.place[0] + 35, y=self.place[1] + 90)
 
+        self.colorValLabel = Label(self.frame, text='Clr: ', background='#810d2b')
+        self.colorValLabel.place(x=self.place[0] + 5, y=self.place[1] + 110)
         self.colorValLabel = Label(self.frame, textvariable=str(self.color), background='#810d2b')
-        self.colorValLabel.place(x=self.place[0] + 10, y=self.place[1] + 110)
+        self.colorValLabel.place(x=self.place[0] + 35, y=self.place[1] + 110)
 
+        self.temperatureValLabel = Label(self.frame, text='Tmp: ', background='#810d2b')
+        self.temperatureValLabel.place(x=self.place[0] + 5, y=self.place[1] + 130)
         self.temperatureValLabel = Label(self.frame, textvariable=str(self.temperature), background='#810d2b')
-        self.temperatureValLabel.place(x=self.place[0] + 10, y=self.place[1] + 130)
+        self.temperatureValLabel.place(x=self.place[0] + 35, y=self.place[1] + 130)
 
     def initParams(self):
         self.temperature.set(NO_DETAILS)
@@ -147,11 +155,12 @@ class Container:
         contFrame.pack()
 
         canvas = FigureCanvasTkAgg(self.f, contFrame)
-        canvas.show()
+        #canvas.show()
         canvas.get_tk_widget().pack(side=tk.RIGHT, expand=True)
-        ani = animation.FuncAnimation(self.f, self.animate, interval=1000)
+        ani = animation.FuncAnimation(self.f, self.animate, interval=500)
         endProcessButton = Button(contFrame, text='End Process', command=lambda: self.endProcess(rootCont))
-        endProcessButton.place(x=40, y=200)
+        endProcessButton.place(x=40, y=20)
+        rootCont.mainloop()
 
     def animate(self, i):
         pullData = open('data.txt', 'r').read()
