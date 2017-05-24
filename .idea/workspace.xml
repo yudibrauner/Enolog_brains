@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e20eacaf-528a-4e53-b315-7533990d7aac" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Color_fast.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Color_normal.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Density_fast.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Density_normal.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Tannins_fast.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Tannins_normal.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Temperature_fast.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/Temperature_normal.txt" />
+    <list default="true" id="e20eacaf-528a-4e53-b315-7533990d7aac" name="Default" comment="nothing">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/container.py" afterPath="$PROJECT_DIR$/container.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/new_main_II.py" afterPath="$PROJECT_DIR$/new_main_II.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,8 +22,8 @@
       <file leaf-file-name="container.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/container.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
-              <caret line="191" column="111" lean-forward="false" selection-start-line="191" selection-start-column="111" selection-end-line="191" selection-end-column="111" />
+            <state relative-caret-position="344">
+              <caret line="139" column="23" lean-forward="false" selection-start-line="139" selection-start-column="23" selection-end-line="139" selection-end-column="23" />
               <folding>
                 <element signature="e#44#59#0" expanded="true" />
               </folding>
@@ -38,11 +31,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Density_slow.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Density_slow.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/Density_slow.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="17">
-              <caret line="6" column="7" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+              <caret line="6" column="7" lean-forward="false" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -52,7 +45,7 @@
         <entry file="file://$PROJECT_DIR$/data/Color_slow.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="72">
-              <caret line="10" column="4" lean-forward="true" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="7" />
+              <caret line="10" column="4" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -62,20 +55,30 @@
         <entry file="file://$PROJECT_DIR$/data/Tannins_slow.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="38">
-              <caret line="8" column="5" lean-forward="true" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
+              <caret line="8" column="5" lean-forward="false" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="new_main_II.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="new_main_II.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/new_main_II.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+            <state relative-caret-position="157">
+              <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="trying gui.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/trying gui.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="157">
+              <caret line="76" column="8" lean-forward="false" selection-start-line="76" selection-start-column="8" selection-end-line="76" selection-end-column="8" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -101,6 +104,7 @@
       <find>no co</find>
       <find>png</find>
       <find>delete</find>
+      <find>ye</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -133,8 +137,10 @@
         <option value="$PROJECT_DIR$/data/Temperature_fast.txt" />
         <option value="$PROJECT_DIR$/data/Tannins_slow.txt" />
         <option value="$PROJECT_DIR$/data/Color_slow.txt" />
-        <option value="$PROJECT_DIR$/container.py" />
         <option value="$PROJECT_DIR$/data/Density_slow.txt" />
+        <option value="$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/site-packages/matplotlib/backends/backend_tkagg.py" />
+        <option value="$PROJECT_DIR$/container.py" />
+        <option value="C:/PythonProjects/Smart_Winery/Smart_Winery/.idea/workspace.xml" />
       </list>
     </option>
   </component>
@@ -146,7 +152,7 @@
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
+    <navigator currentView="Scope" currentSubView="Project Files" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -160,7 +166,20 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Smart_Winery">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -173,36 +192,23 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Smart_Winery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Smart_Winery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../untitled/Pharser.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\yehuda\PycharmProjects" />
+      <recent name="C:\PythonProjects\Smart_Winery" />
       <recent name="C:\Users\yehuda\PycharmProjects\Smart_Winery\data" />
       <recent name="C:\Users\shivi&amp;ayala\PycharmProjects\Smart_Winery\images" />
       <recent name="C:\Users\shivi&amp;ayala\PycharmProjects\Smart_Winery" />
-      <recent name="C:\Users\shivi&amp;ayala\PycharmProjects\Smart_Winery\garbage" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\yehuda\PycharmProjects\Smart_Winery\data" />
@@ -222,24 +228,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.new_main_II">
-    <configuration default="false" name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Enolog_brains" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="new_main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -312,6 +300,24 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
+    <configuration default="false" name="new_main_II (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="C:/PythonProjects/Smart_Winery/Smart_Winery" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Enolog_brains" />
+      <option name="SCRIPT_NAME" value="C:/PythonProjects/Smart_Winery/Smart_Winery/new_main_II.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -377,19 +383,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.main (1)" />
-      <item index="1" class="java.lang.String" itemvalue="Python.new_main" />
-      <item index="2" class="java.lang.String" itemvalue="Python.exampleTasks" />
-      <item index="3" class="java.lang.String" itemvalue="Python.new_main_II" />
-      <item index="4" class="java.lang.String" itemvalue="Python.container" />
+      <item index="0" class="java.lang.String" itemvalue="Python.new_main" />
+      <item index="1" class="java.lang.String" itemvalue="Python.exampleTasks" />
+      <item index="2" class="java.lang.String" itemvalue="Python.new_main_II" />
+      <item index="3" class="java.lang.String" itemvalue="Python.container" />
+      <item index="4" class="java.lang.String" itemvalue="Python.new_main_II (1)" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.new_main_II" />
-        <item index="1" class="java.lang.String" itemvalue="Python.container" />
-        <item index="2" class="java.lang.String" itemvalue="Python.exampleTasks" />
-        <item index="3" class="java.lang.String" itemvalue="Python.new_main" />
-        <item index="4" class="java.lang.String" itemvalue="Python.main (1)" />
+        <item index="1" class="java.lang.String" itemvalue="Python.new_main_II (1)" />
+        <item index="2" class="java.lang.String" itemvalue="Python.container" />
+        <item index="3" class="java.lang.String" itemvalue="Python.exampleTasks" />
+        <item index="4" class="java.lang.String" itemvalue="Python.new_main" />
       </list>
     </recent_temporary>
   </component>
@@ -453,7 +459,14 @@
       <option name="project" value="LOCAL" />
       <updated>1495494259727</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="4 plots - fix&#10;all fermentation programs added to .txt files&#10;basic fermentation drop down added">
+      <created>1495608408455</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1495608408455</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView">
@@ -501,22 +514,16 @@
     <MESSAGE value="added end process&#10;basis for animated plot" />
     <MESSAGE value="live graph plot fix&#10;added labels" />
     <MESSAGE value="4 plots" />
-    <option name="LAST_COMMIT_MESSAGE" value="4 plots" />
+    <MESSAGE value="4 plots - fix&#10;all fermentation programs added to .txt files&#10;basic fermentation drop down added" />
+    <option name="LAST_COMMIT_MESSAGE" value="4 plots - fix&#10;all fermentation programs added to .txt files&#10;basic fermentation drop down added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <option name="time" value="14" />
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="rootCont" />
-      </configuration>
-    </watches-manager>
+    <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/gui.py" />
-    <entry file="file://$PROJECT_DIR$/main.py" />
-    <entry file="file://$PROJECT_DIR$/garbage/main.py" />
     <entry file="file://$PROJECT_DIR$/garbage/roboticArm.py" />
     <entry file="file://$PROJECT_DIR$/garbage/Simulator.py" />
     <entry file="file://$PROJECT_DIR$/garbage/allContainers.py" />
@@ -535,203 +542,76 @@
     <entry file="file://$PROJECT_DIR$/garbage/winery.py" />
     <entry file="file://$PROJECT_DIR$/garbage/container.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/tkinter/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/images/settings.png" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/images/settings.png" />
     <entry file="file://$PROJECT_DIR$/../untitled/Pharser.py" />
     <entry file="file://$PROJECT_DIR$/../Ex3A/Try1/simulator.py" />
     <entry file="file://$PROJECT_DIR$/garbage/main.py" />
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="0" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/container.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#44#59#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/container.py" />
     <entry file="file://$PROJECT_DIR$/main.py" />
     <entry file="file://$PROJECT_DIR$/new_main.py" />
-    <entry file="file://$PROJECT_DIR$/images/container.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/winery.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="23" lean-forward="true" selection-start-line="0" selection-start-column="23" selection-end-line="0" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/trying gui.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="83" column="0" lean-forward="true" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#21#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/exampleTasks.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/taskPlan.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="4" column="8" lean-forward="false" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Temperature_slow.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="27" column="4" lean-forward="false" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/images/container.png" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/winery.py" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/README.md" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/exampleTasks.py" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/taskPlan.py" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/data/Temperature_slow.txt" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/tkinter/constants.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="131">
           <caret line="69" column="0" lean-forward="false" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/data/Color_normal.txt" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/data/Tannins_normal.txt" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/data/Density_normal.txt" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/data/Temperature_normal.txt" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/data/Tannins_fast.txt" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/data/Color_fast.txt" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/data/Density_fast.txt" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/data/Temperature_fast.txt" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/data/Tannins_slow.txt" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/data/Color_slow.txt" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/data/Density_slow.txt" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/site-packages/matplotlib/backends/backend_tkagg.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1056">
+          <caret line="153" column="6" lean-forward="false" selection-start-line="153" selection-start-column="6" selection-end-line="153" selection-end-column="6" />
+          <folding>
+            <element signature="e#34#142#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/tkinter/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
+        <state relative-caret-position="134">
           <caret line="1548" column="0" lean-forward="false" selection-start-line="1548" selection-start-column="0" selection-end-line="1548" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/Color_normal.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="4" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Tannins_normal.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="4" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Density_normal.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Temperature_normal.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="2" lean-forward="false" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Tannins_fast.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="2" lean-forward="false" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Color_fast.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="2" lean-forward="false" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Density_fast.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="2" lean-forward="false" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Temperature_fast.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="2" lean-forward="false" selection-start-line="0" selection-start-column="2" selection-end-line="0" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/new_main_II.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Tannins_slow.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="8" column="5" lean-forward="true" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/Color_slow.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="10" column="4" lean-forward="true" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/trying gui.py" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/container.py" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/.idea/workspace.xml" />
+    <entry file="file://C:/PythonProjects/Smart_Winery/Smart_Winery/new_main_II.py" />
     <entry file="file://$PROJECT_DIR$/container.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="191" column="111" lean-forward="false" selection-start-line="191" selection-start-column="111" selection-end-line="191" selection-end-column="111" />
+        <state relative-caret-position="344">
+          <caret line="139" column="23" lean-forward="false" selection-start-line="139" selection-start-column="23" selection-end-line="139" selection-end-column="23" />
           <folding>
             <element signature="e#44#59#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/Density_slow.txt">
+    <entry file="file://$PROJECT_DIR$/new_main_II.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="6" column="7" lean-forward="true" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-          <folding />
+        <state relative-caret-position="157">
+          <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

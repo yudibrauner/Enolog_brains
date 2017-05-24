@@ -44,7 +44,7 @@ def settings():
     def addDetails():
         name = nameEntry.get()
         if name:
-            print('-> container added')
+            print('->  container added')
             rootCont.destroy()
 
     insertButton = Button(contFrame, text='insert details', command=addDetails)

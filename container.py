@@ -24,6 +24,7 @@ PROGRAMS = {'No Program': 'No Program',
             'Slow': SLOW_LIST,
             'Normal': NORMAL_LIST,
             'Fast': FAST_LIST}
+NEW_DATA = {}
 
 
 class Container:
@@ -59,8 +60,7 @@ class Container:
         self.data_222 = None
         self.data_223 = None
         self.data_224 = None
-        self.sub_plot = None
-        self.data = None
+        self.data_221_new = None
         self.initParams()
         self.frame.grid(row=0, column=0, columnspan=2)
 
@@ -190,8 +190,7 @@ class Container:
         ani222 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_222, self.data_222), interval=500)
         ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223), interval=500)
         ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224), interval=500)
-        #plt.show()
-        #pylab.ion()
+
         endProcessButton = Button(contFrame, text='End Process', command=lambda: self.endProcess(rootCont))
         endProcessButton.place(x=40, y=20)
         rootCont.mainloop()
