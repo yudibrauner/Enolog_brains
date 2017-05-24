@@ -11,11 +11,19 @@ matplotlib.use("TKAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
 import matplotlib.animation as animation
-
+import matplotlib.pyplot as plt
+import pylab
 
 NO_DETAILS = "N/A"
 EMPTY_IMAGE = "images/container.png"
 FULL_IMAGE = "images/containerAct.png"
+SLOW_LIST = ('data\Tannins_slow.txt', 'data\Color_slow.txt', 'data\Density_slow.txt', 'data\Temperature_slow.txt')
+NORMAL_LIST = ('data\Tannins_normal.txt', 'data\Color_normal.txt', 'data\Density_normal.txt', 'data\Temperature_normal.txt')
+FAST_LIST = ('data\Tannins_fast.txt', 'data\Color_fast.txt', 'data\Density_fast.txt', 'data\Temperature_fast.txt')
+PROGRAMS = {'No Program': 'No Program',
+            'Slow': SLOW_LIST,
+            'Normal': NORMAL_LIST,
+            'Fast': FAST_LIST}
 
 
 class Container:
@@ -29,6 +37,7 @@ class Container:
         self.color = StringVar()
         self.density = StringVar()
         self.name = StringVar()
+        self.program = StringVar()
         self.densityLabel = None
         self.buttonFunction = self.addCont
         self.isFull = False
@@ -41,13 +50,19 @@ class Container:
         self.colorValLabel = None
         self.temperatureValLabel = None
         self.nameLabel = None
-        self.initParams()
-        self.frame.grid(row=0, column=0, columnspan=2)
-        self.graph_plot = Figure(figsize=(5, 5), dpi=100)
+        self.graph_plot = Figure(figsize=(6, 4), dpi=100)
         self.sub_plot_221 = self.graph_plot.add_subplot(221)
         self.sub_plot_222 = self.graph_plot.add_subplot(222)
         self.sub_plot_223 = self.graph_plot.add_subplot(223)
         self.sub_plot_224 = self.graph_plot.add_subplot(224)
+        self.data_221 = None
+        self.data_222 = None
+        self.data_223 = None
+        self.data_224 = None
+        self.sub_plot = None
+        self.data = None
+        self.initParams()
+        self.frame.grid(row=0, column=0, columnspan=2)
 
     def setImage(self):
         self.photo = PhotoImage(file=self.image)
@@ -89,6 +104,7 @@ class Container:
         self.color.set(NO_DETAILS)
         self.density.set(NO_DETAILS)
         self.name.set(NO_DETAILS)
+        self.program.set(PROGRAMS.get('No Program'))
         self.image = EMPTY_IMAGE
         self.setImage()
         self.initLabels()
@@ -108,10 +124,15 @@ class Container:
 
     def addDetails(self, rootCont, nameEntry):
         name = nameEntry.get()
-        if name:
+        program = self.program.get()
+        if name and program != 'No Program':
             self.name.set(name)
             self.fillContainer()
             self.buttonFunction = self.showDetails
+            self.data_221 = PROGRAMS[program][0]
+            self.data_222 = PROGRAMS[program][1]
+            self.data_223 = PROGRAMS[program][2]
+            self.data_224 = PROGRAMS[program][3]
             print('-> container added')
             rootCont.destroy()
 
@@ -120,13 +141,19 @@ class Container:
         rootCont.wm_title("Adding container " + str(self.id))
         contFrame = Frame(rootCont, width=300, height=500)
         contFrame.pack()
-        nameLabel = Label(contFrame, text='name (wine type): ')
+
+        nameLabel = Label(contFrame, text='Name (wine type): ')
         nameEntry = Entry(contFrame)
         nameLabel.place(x=40, y=100)
         nameEntry.place(x=40, y=130)
 
-        insertButton = Button(contFrame, text='insert details', command=lambda: self.addDetails(rootCont, nameEntry))
-        insertButton.place(x=40, y=200)
+        programLabel = Label(contFrame, text='Fermentation Program: ')
+        programEntry = OptionMenu(contFrame, self.program, *PROGRAMS.keys())
+        programLabel.place(x=40, y=160)
+        programEntry.place(x=40, y=190)
+
+        insertButton = Button(contFrame, text='Insert details', command=lambda: self.addDetails(rootCont, nameEntry))
+        insertButton.place(x=40, y=350)
 
     def clearAllVariables(self, rootCont):
         Container(self.id, self.place, self.frame)
@@ -159,16 +186,17 @@ class Container:
 
         canvas = FigureCanvasTkAgg(self.graph_plot, contFrame)
         canvas.get_tk_widget().pack(side=tk.RIGHT, expand=True)
-        animation.FuncAnimation(self.graph_plot, self.animate(self.sub_plot_221, 'data\Tannins_slow.txt'), interval=500)
-        animation.FuncAnimation(self.graph_plot, self.animate(self.sub_plot_222, 'data\Color_slow.txt'), interval=500)
-        animation.FuncAnimation(self.graph_plot, self.animate(self.sub_plot_223, 'data\Density_slow.txt'), interval=500)
-        animation.FuncAnimation(self.graph_plot, self.animate(self.sub_plot_224, 'data\Temperature_slow.txt'), interval=500)
-
+        ani221 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_221, self.data_221), interval=500)
+        ani222 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_222, self.data_222), interval=500)
+        ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223), interval=500)
+        ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224), interval=500)
+        #plt.show()
+        #pylab.ion()
         endProcessButton = Button(contFrame, text='End Process', command=lambda: self.endProcess(rootCont))
         endProcessButton.place(x=40, y=20)
         rootCont.mainloop()
 
-    def animate(self, sub_plot, data):
+    def animate(self, i, sub_plot, data):
         pullData = open(data, 'r').read()
         dataList = pullData.split('\n')
         xList = []
@@ -179,7 +207,9 @@ class Container:
                 xList.append(float(x))
                 yList.append(float(y))
         sub_plot.clear()
-        sub_plot.plot(xList, yList)
+        sub_plot.plot(xList, yList, '#00A3E0', label='Expected')
+        sub_plot.plot(xList, yList, '#183A54', label='Observed')
+
 
 
     # SETTERS:
