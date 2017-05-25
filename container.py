@@ -1,6 +1,7 @@
 # This class represents a container of wine
 import datetime
 import random
+from data_generator import *
 from tkinter import *
 from tkinter.filedialog import *
 # from new_main_II import *
@@ -62,6 +63,8 @@ class Container:
         self.data_224 = None
         self.data_221_new = None
         self.initParams()
+        self.dynamic_data = None
+        self.generator = None
         self.frame.grid(row=0, column=0, columnspan=2)
 
     def setImage(self):
@@ -133,6 +136,8 @@ class Container:
             self.data_222 = PROGRAMS[program][1]
             self.data_223 = PROGRAMS[program][2]
             self.data_224 = PROGRAMS[program][3]
+            self.dynamic_data = 'data/dynamic_data/' + str(self.id) + '_' + str(self.name.get())
+            self.generator = DataGenerator(self.dynamic_data, PROGRAMS[self.program.get()])
             print('-> container added')
             rootCont.destroy()
 
