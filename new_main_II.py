@@ -48,7 +48,7 @@ def settings():
             rootCont.destroy()
 
     insertButton = Button(contFrame, text='insert details', command=addDetails)
-    insertButton.place(x=40, y=200)
+    # insertButton.place(x=40, y=200)
 
 settingsButton = Button(mainFrame, text='settings', command=settings)
 settingsButton.place(x=10, y=10)

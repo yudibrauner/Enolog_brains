@@ -14,6 +14,8 @@ from matplotlib.figure import Figure
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import pylab
+import os
+import time
 
 NO_DETAILS = "N/A"
 EMPTY_IMAGE = "images/container.png"
@@ -66,6 +68,7 @@ class Container:
         self.dynamic_data = None
         self.generator = None
         self.frame.grid(row=0, column=0, columnspan=2)
+        self.log = None
 
     def setImage(self):
         self.photo = PhotoImage(file=self.image)
@@ -120,16 +123,25 @@ class Container:
         self.setImage()
 
     def updateParams(self):
-        self.temperature.set(random.randrange(10, 50))
-        self.tannins.set(random.randrange(10, 50))
-        self.color.set(random.randrange(10, 50))
-        self.density.set(random.randrange(10, 50))
+        self.temperature.set(random.randrange(15, 40))
+        self.tannins.set(random.randrange(4, 81))
+        self.color.set(random.randrange(1, 6))
+        self.density.set(random.randrange(970, 1300))
 
     def addDetails(self, rootCont, nameEntry):
         name = nameEntry.get()
         program = self.program.get()
         if name and program != 'No Program':
             self.name.set(name)
+        #LOG:
+            self.log = {}
+            self.log['file_path'] = "data/" + str(self.id) + "_" + name + "_log.txt"
+            self.log['file'] = open(self.log['file_path'], "w")
+            # print('-> container added')
+            localtime = time.asctime(time.localtime(time.time()))
+            self.log['file'].write(localtime + " -> container added.\n")
+            self.log['file'].close()
+
             self.fillContainer()
             self.buttonFunction = self.showDetails
             self.data_221 = PROGRAMS[program][0]
@@ -174,6 +186,8 @@ class Container:
         self.tanninsValLabel.place_forget()
         self.colorValLabel.place_forget()
         self.densityValLabel.place_forget()
+        os.remove(self.log['file_path'])
+        self.log = None
         rootCont.destroy()
 
     def endProcess(self, rootCont):
@@ -186,17 +200,44 @@ class Container:
         rootCont = Tk()
         rootCont.attributes("-topmost", 1)
         rootCont.wm_title("Container " + str(self.id) + ': ' + str(self.name.get()))
-        contFrame = Frame(rootCont, width=1000, height=500)
-        contFrame.pack()
+        contFrameRight = LabelFrame(rootCont, width=1000, height=500)
+        contFrameRight.pack(side="right")
+        contFrameLeft = LabelFrame(rootCont, width=600, height=500)
+        contFrameLeft.pack(side="left")
 
-        canvas = FigureCanvasTkAgg(self.graph_plot, contFrame)
+        currentDetailsFrame = LabelFrame(contFrameLeft, width=100, height=200, text="details")
+        currentDetailsFrame.place(x=20,y=20)
+        logFrame = LabelFrame(contFrameLeft, width=500, height=250, text="log")
+        logFrame.place(x=20, y=240)
+
+        densityLabel = Label(currentDetailsFrame, text='Dns: ', background='#810d2b')
+        densityLabel.place(x=5, y=70)
+        densityValLabel = Label(currentDetailsFrame, text=str(self.density.get()), background='#810d2b')
+        densityValLabel.place(x=35, y=70)
+
+        tanninsValLabel = Label(currentDetailsFrame, text='Tnn: ', background='#810d2b')
+        tanninsValLabel.place(x=5, y=90)
+        tanninsValLabel = Label(currentDetailsFrame, text=str(self.tannins.get()), background='#810d2b')
+        tanninsValLabel.place(x=35, y=90)
+
+        colorValLabel = Label(currentDetailsFrame, text='Clr: ', background='#810d2b')
+        colorValLabel.place(x=5, y=110)
+        colorValLabel = Label(currentDetailsFrame, text=str(self.color.get()), background='#810d2b')
+        colorValLabel.place(x=35, y=110)
+
+        temperatureValLabel = Label(currentDetailsFrame, text='Tmp: ', background='#810d2b')
+        temperatureValLabel.place(x=5, y=130)
+        temperatureValLabel = Label(currentDetailsFrame, text=str(self.temperature.get()), background='#810d2b')
+        temperatureValLabel.place(x=35, y=130)
+
+        canvas = FigureCanvasTkAgg(self.graph_plot, contFrameRight)
         canvas.get_tk_widget().pack(side=tk.RIGHT, expand=True)
         ani221 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_221, self.data_221), interval=500)
         ani222 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_222, self.data_222), interval=500)
         ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223), interval=500)
         ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224), interval=500)
 
-        endProcessButton = Button(contFrame, text='End Process', command=lambda: self.endProcess(rootCont))
+        endProcessButton = Button(contFrameRight, text='End Process', command=lambda: self.endProcess(rootCont))
         endProcessButton.place(x=40, y=20)
         rootCont.mainloop()
 
@@ -214,8 +255,6 @@ class Container:
         sub_plot.plot(xList, yList, '#00A3E0', label='Expected')
         sub_plot.plot(xList, yList, '#183A54', label='Observed')
 
-
-
     # SETTERS:
 
     def setNumber(self, num):
@@ -224,7 +263,6 @@ class Container:
     def setName(self, _name):
         self.name = _name
 
-
 # OTHER FUNCTIONS:
 
     def cool(self):
@@ -232,19 +270,19 @@ class Container:
 
     def regulate(self): #TODO : ask Shivi how the regulator affects the color, density...
         print("there's nothing yet")
-
-    def addTask(self, taskName):
-        if taskName in TASK_NAMES:
-            task = Task(taskName)
-            self.tasks.append(task)
-        else:
-            print('-> ERROR: not a task')
-
-    def tasksToString(self):
-        lst = ''
-        for t in self.tasks:
-            lst += str(t.task) + ','
-        return lst
+    #
+    # def addTask(self, taskName):
+    #     if taskName in TASK_NAMES:
+    #         task = Task(taskName)
+    #         self.tasks.append(task)
+    #     else:
+    #         print('-> ERROR: not a task')
+    #
+    # def tasksToString(self):
+    #     lst = ''
+    #     for t in self.tasks:
+    #         lst += str(t.task) + ','
+    #     return lst
 
     def printContainer(self):
         print('Name: ' + str(self.name.get()))
