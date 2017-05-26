@@ -212,28 +212,28 @@ class Container:
         contFrameLeft.pack(side="left")
 
         currentDetailsFrame = LabelFrame(contFrameLeft, width=100, height=200, text="details")
-        currentDetailsFrame.place(x=20,y=20)
+        currentDetailsFrame.place(x=20, y=20)
         logFrame = LabelFrame(contFrameLeft, width=500, height=250, text="log")
         logFrame.place(x=20, y=240)
 
-        densityLabel = Label(currentDetailsFrame, text='Dns: ', background='#810d2b')
+        densityLabel = Label(currentDetailsFrame, text='Dns: ')
         densityLabel.place(x=5, y=70)
-        densityValLabel = Label(currentDetailsFrame, text=str(self.density.get()), background='#810d2b')
+        densityValLabel = Label(currentDetailsFrame, textvariable=str(self.density))
         densityValLabel.place(x=35, y=70)
 
-        tanninsValLabel = Label(currentDetailsFrame, text='Tnn: ', background='#810d2b')
+        tanninsValLabel = Label(currentDetailsFrame, text='Tnn: ')
         tanninsValLabel.place(x=5, y=90)
-        tanninsValLabel = Label(currentDetailsFrame, text=str(self.tannins.get()), background='#810d2b')
+        tanninsValLabel = Label(currentDetailsFrame, textvariable=str(self.tannins))
         tanninsValLabel.place(x=35, y=90)
 
-        colorValLabel = Label(currentDetailsFrame, text='Clr: ', background='#810d2b')
+        colorValLabel = Label(currentDetailsFrame, text='Clr: ')
         colorValLabel.place(x=5, y=110)
-        colorValLabel = Label(currentDetailsFrame, text=str(self.color.get()), background='#810d2b')
+        colorValLabel = Label(currentDetailsFrame, textvariable=str(self.color))
         colorValLabel.place(x=35, y=110)
 
-        temperatureValLabel = Label(currentDetailsFrame, text='Tmp: ', background='#810d2b')
+        temperatureValLabel = Label(currentDetailsFrame, text='Tmp: ')
         temperatureValLabel.place(x=5, y=130)
-        temperatureValLabel = Label(currentDetailsFrame, text=str(self.temperature.get()), background='#810d2b')
+        temperatureValLabel = Label(currentDetailsFrame, textvariable=str(self.temperature))
         temperatureValLabel.place(x=35, y=130)
 
         canvas = FigureCanvasTkAgg(self.graph_plot, contFrameRight)
