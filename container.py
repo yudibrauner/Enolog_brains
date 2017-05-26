@@ -16,6 +16,8 @@ import matplotlib.pyplot as plt
 import pylab
 import os
 import time
+import threading
+import multiprocessing
 
 NO_DETAILS = "N/A"
 EMPTY_IMAGE = "images/container.png"
@@ -69,6 +71,7 @@ class Container:
         self.generator = None
         self.frame.grid(row=0, column=0, columnspan=2)
         self.log = None
+        self.generator_thread = None
 
     def setImage(self):
         self.photo = PhotoImage(file=self.image)
@@ -133,9 +136,9 @@ class Container:
         program = self.program.get()
         if name and program != 'No Program':
             self.name.set(name)
-        #LOG:
+            #LOG:
             self.log = {}
-            self.log['file_path'] = "data/" + str(self.id) + "_" + name + "_log.txt"
+            self.log['file_path'] = "logs/" + str(self.id) + "_" + name + "_log.txt"
             self.log['file'] = open(self.log['file_path'], "w")
             # print('-> container added')
             localtime = time.asctime(time.localtime(time.time()))
@@ -149,7 +152,9 @@ class Container:
             self.data_223 = PROGRAMS[program][2]
             self.data_224 = PROGRAMS[program][3]
             self.dynamic_data = 'data/dynamic_data/' + str(self.id) + '_' + str(self.name.get())
-            self.generator = DataGenerator(self.dynamic_data, PROGRAMS[self.program.get()])
+            self.generator = DataGenerator(self, self.dynamic_data, PROGRAMS[self.program.get()])
+            self.generator_thread = threading.Thread(target=self.generator.start_generating, daemon=True)
+            self.generator_thread.start()
             print('-> container added')
             rootCont.destroy()
 
@@ -188,6 +193,7 @@ class Container:
         self.densityValLabel.place_forget()
         os.remove(self.log['file_path'])
         self.log = None
+        self.generator_thread.stay_alive = False
         rootCont.destroy()
 
     def endProcess(self, rootCont):
@@ -232,16 +238,16 @@ class Container:
 
         canvas = FigureCanvasTkAgg(self.graph_plot, contFrameRight)
         canvas.get_tk_widget().pack(side=tk.RIGHT, expand=True)
-        ani221 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_221, self.data_221), interval=500)
-        ani222 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_222, self.data_222), interval=500)
-        ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223), interval=500)
-        ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224), interval=500)
+        ani221 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_221, self.data_221, 1), interval=500)
+        ani222 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_222, self.data_222, 2), interval=500)
+        ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223, 3), interval=500)
+        ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224, 4), interval=500)
 
         endProcessButton = Button(contFrameRight, text='End Process', command=lambda: self.endProcess(rootCont))
         endProcessButton.place(x=40, y=20)
         rootCont.mainloop()
 
-    def animate(self, i, sub_plot, data):
+    def animate(self, i, sub_plot, data, sensor_type_index):         # sensor_type_index=index for parsing from generated data
         pullData = open(data, 'r').read()
         dataList = pullData.split('\n')
         xList = []
@@ -251,11 +257,33 @@ class Container:
                 x, y = eachLine.split(' ')
                 xList.append(float(x))
                 yList.append(float(y))
+
+        pullDynamicData = open(self.dynamic_data, 'r').read()
+        dynamicdataList = pullDynamicData.split('\n')
+        xdynList = []
+        ydynList = []
+        for eachLine in dynamicdataList:
+            if len(eachLine) > 1:
+                parts = eachLine.split(' ')
+                xdynList.append(float(parts[0]))
+                ydynList.append(float(parts[sensor_type_index]))
         sub_plot.clear()
         sub_plot.plot(xList, yList, '#00A3E0', label='Expected')
-        sub_plot.plot(xList, yList, '#183A54', label='Observed')
+        sub_plot.plot(xdynList, ydynList, '#183A54', label='Observed')
 
     # SETTERS:
+
+    def setTannin(self, tannin):
+        self.tannins.set(tannin)
+
+    def setColor(self, color):
+        self.color.set(color)
+
+    def setDensity(self, density):
+        self.density.set(density)
+
+    def setTemperature(self, temperature):
+        self.temperature.set(temperature)
 
     def setNumber(self, num):
         self.id = num
