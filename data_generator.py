@@ -18,11 +18,12 @@ from container import *
 
 
 class DataGenerator:
-    def __init__(self, container, file, program_files):
+    def __init__(self, container, file, program_files, interval):
         self.container = container
         self.file = file
         self.tannin, self.color, self.density, self.temperature = program_files
         self.stay_alive = True
+        self.interval = interval
 
     def generate_new_line(self, prev_line):
         parts = prev_line.split(' ')
@@ -44,7 +45,11 @@ class DataGenerator:
                 write_file.write(new_line + '\n')
                 prev_line = new_line
                 new_line = self.generate_new_line(prev_line)
-            time.sleep(2)
+            sleep = float(self.interval)/1000.0
+            print(str(sleep))
+            time.sleep(sleep)
 
+    def setInterval(self, inteval):
+        self.interval = inteval
 
 

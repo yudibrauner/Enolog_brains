@@ -12,6 +12,7 @@ matplotlib.use("TKAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
 import matplotlib.animation as animation
+from matplotlib import pyplot as plt
 import matplotlib.pyplot as plt
 import pylab
 import os
@@ -29,15 +30,17 @@ PROGRAMS = {'No Program': 'No Program',
             'Slow': SLOW_LIST,
             'Normal': NORMAL_LIST,
             'Fast': FAST_LIST}
-NEW_DATA = {}
+SENSORS = ('Tannins', 'Color', 'Density', 'Temperature')
+#plt.style.use('fivethirtyeight')
 
 
 class Container:
-    def __init__(self, _id, _place, root):
+    def __init__(self, _id, _place, root, inteval):
         self.id = _id            # number of container in winery
         self.frame = root
         self.startDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
         self.tasks = list()
+        self.interval = inteval
         self.temperature = StringVar()
         self.tannins = StringVar()
         self.color = StringVar()
@@ -56,11 +59,15 @@ class Container:
         self.colorValLabel = None
         self.temperatureValLabel = None
         self.nameLabel = None
-        self.graph_plot = Figure(figsize=(6, 4), dpi=100)
+        self.graph_plot = Figure(figsize=(10, 6), dpi=100)
         self.sub_plot_221 = self.graph_plot.add_subplot(221)
         self.sub_plot_222 = self.graph_plot.add_subplot(222)
         self.sub_plot_223 = self.graph_plot.add_subplot(223)
         self.sub_plot_224 = self.graph_plot.add_subplot(224)
+        self.sub_plot_221.title.set_text('Tannins')
+        self.sub_plot_222.set_title('Color')
+        self.sub_plot_223.set_title('Density')
+        self.sub_plot_224.set_title('Temperature')
         self.data_221 = None
         self.data_222 = None
         self.data_223 = None
@@ -152,7 +159,7 @@ class Container:
             self.data_223 = PROGRAMS[program][2]
             self.data_224 = PROGRAMS[program][3]
             self.dynamic_data = 'data/dynamic_data/' + str(self.id) + '_' + str(self.name.get())
-            self.generator = DataGenerator(self, self.dynamic_data, PROGRAMS[self.program.get()])
+            self.generator = DataGenerator(self, self.dynamic_data, PROGRAMS[self.program.get()], self.interval)
             self.generator_thread = threading.Thread(target=self.generator.start_generating, daemon=True)
             self.generator_thread.start()
             print('-> container added')
@@ -206,7 +213,7 @@ class Container:
         rootCont = Tk()
         rootCont.attributes("-topmost", 1)
         rootCont.wm_title("Container " + str(self.id) + ': ' + str(self.name.get()))
-        contFrameRight = LabelFrame(rootCont, width=1000, height=500)
+        contFrameRight = LabelFrame(rootCont, width=1200, height=1000)
         contFrameRight.pack(side="right")
         contFrameLeft = LabelFrame(rootCont, width=600, height=500)
         contFrameLeft.pack(side="left")
@@ -238,10 +245,10 @@ class Container:
 
         canvas = FigureCanvasTkAgg(self.graph_plot, contFrameRight)
         canvas.get_tk_widget().pack(side=tk.RIGHT, expand=True)
-        ani221 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_221, self.data_221, 1), interval=500)
-        ani222 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_222, self.data_222, 2), interval=500)
-        ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223, 3), interval=500)
-        ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224, 4), interval=500)
+        ani221 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_221, self.data_221, 1), interval=self.interval)
+        ani222 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_222, self.data_222, 2), interval=self.interval)
+        ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223, 3), interval=self.interval)
+        ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224, 4), interval=self.interval)
 
         endProcessButton = Button(contFrameRight, text='End Process', command=lambda: self.endProcess(rootCont))
         endProcessButton.place(x=40, y=20)
@@ -268,10 +275,15 @@ class Container:
                 xdynList.append(float(parts[0]))
                 ydynList.append(float(parts[sensor_type_index]))
         sub_plot.clear()
+        sub_plot.set_title(SENSORS[sensor_type_index-1])
+        self.graph_plot.subplots_adjust(hspace=.5)
         sub_plot.plot(xList, yList, '#00A3E0', label='Expected')
         sub_plot.plot(xdynList, ydynList, '#183A54', label='Observed')
+        sub_plot.legend(loc='upper center', bbox_to_anchor=(0.5, -0.1), ncol=5)
 
     # SETTERS:
+    def setInterval(self, interval):
+        self.interval = interval
 
     def setTannin(self, tannin):
         self.tannins.set(tannin)
