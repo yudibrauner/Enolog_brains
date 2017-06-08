@@ -215,14 +215,17 @@ class Container:
         self.tanninsValLabel.place_forget()
         self.colorValLabel.place_forget()
         self.densityValLabel.place_forget()
-        os.remove(self.log['file_path'])
-        self.log = None
-        self.generator_thread.stay_alive = False
+        # os.remove(self.log['file_path'])
+        self.logger = None
+        self.generator.stay_alive = False
         rootCont.destroy()
 
     def endProcess(self, rootCont):
         msgBox = messagebox.askyesno('End Process ' + str(self.id) + ': ' + str(self.name.get()), 'Are you sure you want to end this process?', master=rootCont)
         if msgBox:
+            self.logger.info('-> End of Process')
+            self.logger.handlers = []
+            self.generator.updateLogger(self.logger)
             self.clearAllVariables(rootCont)
             print('-> process ended')
 
@@ -247,7 +250,6 @@ class Container:
 
         # Create textLogger
         text_handler = TextHandler(st)
-
         self.logger.addHandler(text_handler)
 
         densityLabel = Label(currentDetailsFrame, text='Dns: ')
@@ -279,6 +281,13 @@ class Container:
 
         endProcessButton = Button(contFrameLeft, text='End Process', command=lambda: self.endProcess(rootCont))
         endProcessButton.place(x=60, y=600)
+
+        def onExit():
+            self.logger.removeHandler(text_handler)
+            rootCont.destroy()
+        rootCont.protocol('WM_DELETE_WINDOW', onExit)  # root is your root window
+        #
+        # #rootCont.bind('<Escape>', lambda e: rootCont.destroy())       # you can press escape to exit this frame
         rootCont.mainloop()
 
     def animate(self, i, sub_plot, data, sensor_type_index):         # sensor_type_index=index for parsing from generated data

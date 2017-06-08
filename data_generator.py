@@ -55,4 +55,6 @@ class DataGenerator:
     def setInterval(self, inteval):
         self.interval = inteval
 
+    def updateLogger(self, logger):
+        self.logger = logger
 
