@@ -16,7 +16,7 @@ allContainers = []
 labelsContainers = {}
 num_of_containers = 10
 
-ANIMATION_INTERVAL = 500
+ANIMATION_INTERVAL = 0.5
 # tasks['long'] = TaskPlan("long", exampleTasks.getLong(), 14)
 # tasks['normal'] = TaskPlan("normal", exampleTasks.getNormal(), 10)
 # tasks['short'] = TaskPlan("short", exampleTasks.getShort(), 7)
@@ -40,7 +40,7 @@ def settings():
     contFrame.pack()
     numOfContainersLabel = Label(contFrame, text='Set number of containers: ')
     numOfContainersEntry = Entry(contFrame, text=str(num_of_containers))
-    sensorsIntervalLabel = Label(contFrame, text='Set Sensors Interval (ms): ')
+    sensorsIntervalLabel = Label(contFrame, text='Set Sensors Interval (sec): ')
     sensorsIntervalEntry = Entry(contFrame, text=str(ANIMATION_INTERVAL))
     numOfContainersLabel.place(x=40, y=100)
     numOfContainersEntry.place(x=40, y=130)
@@ -62,6 +62,14 @@ def settings():
     cancelButton.place(x=40, y=300)
     insertButton = Button(contFrame, text='OK', command=addDetails)
     insertButton.place(x=150, y=300)
+
+
+def swapNewForOldContainer(old_id, new_container):
+    for container in allContainers:
+        if container.id == old_id:
+            allContainers.remove(container)
+    allContainers.append(new_container)
+
 
 settingsButton = Button(mainFrame, text='settings', command=settings)
 settingsButton.place(x=10, y=10)

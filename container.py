@@ -19,6 +19,9 @@ import os
 import time
 import threading
 import multiprocessing
+from logger import *
+import tkinter.scrolledtext as ScrolledText
+
 
 NO_DETAILS = "N/A"
 EMPTY_IMAGE = "images/container.png"
@@ -35,12 +38,13 @@ SENSORS = ('Tannins', 'Color', 'Density', 'Temperature')
 
 
 class Container:
-    def __init__(self, _id, _place, root, inteval):
+    def __init__(self, _id, _place, root, interval):
         self.id = _id            # number of container in winery
         self.frame = root
         self.startDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
         self.tasks = list()
-        self.interval = inteval
+        self.interval = interval
+        self.animationInterval = interval * 1000
         self.temperature = StringVar()
         self.tannins = StringVar()
         self.color = StringVar()
@@ -58,6 +62,10 @@ class Container:
         self.tanninsValLabel = None
         self.colorValLabel = None
         self.temperatureValLabel = None
+        self.densityValLabel_in_details = None
+        self.tanninsValLabel_in_details = None
+        self.colorValLabel_in_details = None
+        self.temperatureValLabel_in_details = None
         self.nameLabel = None
         self.graph_plot = Figure(figsize=(10, 6), dpi=100)
         self.sub_plot_221 = self.graph_plot.add_subplot(221)
@@ -77,7 +85,7 @@ class Container:
         self.dynamic_data = None
         self.generator = None
         self.frame.grid(row=0, column=0, columnspan=2)
-        self.log = None
+        self.logger = None
         self.generator_thread = None
 
     def setImage(self):
@@ -144,13 +152,20 @@ class Container:
         if name and program != 'No Program':
             self.name.set(name)
             #LOG:
-            self.log = {}
-            self.log['file_path'] = "logs/" + str(self.id) + "_" + name + "_log.txt"
-            self.log['file'] = open(self.log['file_path'], "w")
-            # print('-> container added')
-            localtime = time.asctime(time.localtime(time.time()))
-            self.log['file'].write(localtime + " -> container added.\n")
-            self.log['file'].close()
+            # self.log = dict()
+            # self.log['file_path'] = "logs/" + str(self.id) + "_" + name + "_log.txt"
+            # self.log['file'] = open(self.log['file_path'], "w")
+            print('-> container added')
+            # localtime = time.asctime(time.localtime(time.time()))
+            # self.log['file'].write(localtime + " -> container added.\n")
+            # self.log['file'].close()
+            logging.basicConfig(filename='logs/' + str(self.name.get()) + '_' + str(self.id) + '.log',
+                                level=logging.INFO,
+                                format='%(asctime)s - %(levelname)s - %(message)s')
+
+            # Add the handler to logger
+            self.logger = logging.getLogger()
+            self.logger.info('-> container added')
 
             self.fillContainer()
             self.buttonFunction = self.showDetails
@@ -159,7 +174,7 @@ class Container:
             self.data_223 = PROGRAMS[program][2]
             self.data_224 = PROGRAMS[program][3]
             self.dynamic_data = 'data/dynamic_data/' + str(self.id) + '_' + str(self.name.get())
-            self.generator = DataGenerator(self, self.dynamic_data, PROGRAMS[self.program.get()], self.interval)
+            self.generator = DataGenerator(self, self.dynamic_data, PROGRAMS[self.program.get()], self.interval, self.logger)
             self.generator_thread = threading.Thread(target=self.generator.start_generating, daemon=True)
             self.generator_thread.start()
             print('-> container added')
@@ -185,7 +200,9 @@ class Container:
         insertButton.place(x=40, y=350)
 
     def clearAllVariables(self, rootCont):
-        Container(self.id, self.place, self.frame)
+        new_container = Container(self.id, self.place, self.frame, self.interval)
+        # TODO: add this new container to allContainers from main and remove previous container from there.
+        # swapNewForOldContainer(self.id, new_container)
         self.id = NO_DETAILS
         self.temperature.set(None)
         self.tannins.set(None)
@@ -213,20 +230,30 @@ class Container:
         rootCont = Tk()
         rootCont.attributes("-topmost", 1)
         rootCont.wm_title("Container " + str(self.id) + ': ' + str(self.name.get()))
-        contFrameRight = LabelFrame(rootCont, width=1200, height=1000)
+        contFrameRight = LabelFrame(rootCont, width=500, height=700)
         contFrameRight.pack(side="right")
-        contFrameLeft = LabelFrame(rootCont, width=600, height=500)
+        contFrameLeft = LabelFrame(rootCont, width=500, height=700)
         contFrameLeft.pack(side="left")
 
         currentDetailsFrame = LabelFrame(contFrameLeft, width=100, height=200, text="details")
         currentDetailsFrame.place(x=20, y=20)
-        logFrame = LabelFrame(contFrameLeft, width=500, height=250, text="log")
+        logFrame = LabelFrame(contFrameLeft, width=200, height=250, text="log")
         logFrame.place(x=20, y=240)
+
+        # Add text widget to display logging info
+        st = ScrolledText.ScrolledText(logFrame)  # , state='disabled')
+        st.configure(font='TkFixedFont')
+        st.grid(column=0, row=1, sticky='w', columnspan=4)
+
+        # Create textLogger
+        text_handler = TextHandler(st)
+
+        self.logger.addHandler(text_handler)
 
         densityLabel = Label(currentDetailsFrame, text='Dns: ')
         densityLabel.place(x=5, y=70)
-        densityValLabel = Label(currentDetailsFrame, textvariable=str(self.density))
-        densityValLabel.place(x=35, y=70)
+        self.densityValLabel_in_details = Label(currentDetailsFrame, textvariable=str(self.density))
+        self.densityValLabel_in_details.place(x=35, y=70)
 
         tanninsValLabel = Label(currentDetailsFrame, text='Tnn: ')
         tanninsValLabel.place(x=5, y=90)
@@ -245,13 +272,13 @@ class Container:
 
         canvas = FigureCanvasTkAgg(self.graph_plot, contFrameRight)
         canvas.get_tk_widget().pack(side=tk.RIGHT, expand=True)
-        ani221 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_221, self.data_221, 1), interval=self.interval)
-        ani222 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_222, self.data_222, 2), interval=self.interval)
-        ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223, 3), interval=self.interval)
-        ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224, 4), interval=self.interval)
+        ani221 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_221, self.data_221, 1), interval=self.animationInterval)
+        ani222 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_222, self.data_222, 2), interval=self.animationInterval)
+        ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223, 3), interval=self.animationInterval)
+        ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224, 4), interval=self.animationInterval)
 
-        endProcessButton = Button(contFrameRight, text='End Process', command=lambda: self.endProcess(rootCont))
-        endProcessButton.place(x=40, y=20)
+        endProcessButton = Button(contFrameLeft, text='End Process', command=lambda: self.endProcess(rootCont))
+        endProcessButton.place(x=60, y=600)
         rootCont.mainloop()
 
     def animate(self, i, sub_plot, data, sensor_type_index):         # sensor_type_index=index for parsing from generated data

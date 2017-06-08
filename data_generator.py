@@ -18,12 +18,13 @@ from container import *
 
 
 class DataGenerator:
-    def __init__(self, container, file, program_files, interval):
+    def __init__(self, container, file, program_files, interval, logger):
         self.container = container
         self.file = file
         self.tannin, self.color, self.density, self.temperature = program_files
         self.stay_alive = True
-        self.interval = interval
+        self.interval = float(interval)
+        self.logger = logger
 
     def generate_new_line(self, prev_line):
         parts = prev_line.split(' ')
@@ -31,7 +32,9 @@ class DataGenerator:
         color = (round(float((float(parts[2])) + random.random()), 1))
         density = (int(parts[3]) + randrange(-15, 0))
         temperature = (int(parts[1]) + randrange(0, 2))
-        new_line = str((int(parts[0]) + 12)) + ' ' + str(tannins) + ' ' + str(color) + ' ' + str(density) + ' ' + str(temperature)
+        new_time = float(parts[0]) + float(self.interval)
+        # print('new_time: ' + str(new_time))
+        new_line = str(new_time) + ' ' + str(tannins) + ' ' + str(color) + ' ' + str(density) + ' ' + str(temperature)
         self.container.setTemperature(temperature)
         self.container.setTannin(tannins)
         self.container.setColor(color)
@@ -43,11 +46,11 @@ class DataGenerator:
         while self.stay_alive:
             with open(self.file, 'a') as write_file:
                 write_file.write(new_line + '\n')
+                self.logger.info(new_line)
                 prev_line = new_line
                 new_line = self.generate_new_line(prev_line)
-            sleep = float(self.interval)/1000.0
-            print(str(sleep))
-            time.sleep(sleep)
+            # print(str(self.interval))
+            time.sleep(float(self.interval))
 
     def setInterval(self, inteval):
         self.interval = inteval
