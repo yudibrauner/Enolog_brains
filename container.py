@@ -21,6 +21,7 @@ import threading
 import multiprocessing
 from logger import *
 import tkinter.scrolledtext as ScrolledText
+from decider import *
 
 
 NO_DETAILS = "N/A"
@@ -80,6 +81,10 @@ class Container:
         self.data_222 = None
         self.data_223 = None
         self.data_224 = None
+        self.ani221 = None
+        self.ani222 = None
+        self.ani223 = None
+        self.ani224 = None
         self.data_221_new = None
         self.initParams()
         self.dynamic_data = None
@@ -87,6 +92,7 @@ class Container:
         self.frame.grid(row=0, column=0, columnspan=2)
         self.logger = None
         self.generator_thread = None
+        self.decider = None
 
     def setImage(self):
         self.photo = PhotoImage(file=self.image)
@@ -151,14 +157,8 @@ class Container:
         program = self.program.get()
         if name and program != 'No Program':
             self.name.set(name)
-            #LOG:
-            # self.log = dict()
-            # self.log['file_path'] = "logs/" + str(self.id) + "_" + name + "_log.txt"
-            # self.log['file'] = open(self.log['file_path'], "w")
             print('-> container added')
-            # localtime = time.asctime(time.localtime(time.time()))
-            # self.log['file'].write(localtime + " -> container added.\n")
-            # self.log['file'].close()
+            # Configure logger
             logging.basicConfig(filename='logs/' + str(self.name.get()) + '_' + str(self.id) + '.log',
                                 level=logging.INFO,
                                 format='%(asctime)s - %(levelname)s - %(message)s')
@@ -230,10 +230,9 @@ class Container:
             print('-> process ended')
 
     def showDetails(self):
-        rootCont = Tk()
-        rootCont.attributes("-topmost", 1)
+        rootCont = Toplevel()
         rootCont.wm_title("Container " + str(self.id) + ': ' + str(self.name.get()))
-        contFrameRight = LabelFrame(rootCont, width=500, height=700)
+        contFrameRight = LabelFrame(rootCont, width=400, height=700)
         contFrameRight.pack(side="right")
         contFrameLeft = LabelFrame(rootCont, width=500, height=700)
         contFrameLeft.pack(side="left")
@@ -274,21 +273,22 @@ class Container:
 
         canvas = FigureCanvasTkAgg(self.graph_plot, contFrameRight)
         canvas.get_tk_widget().pack(side=tk.RIGHT, expand=True)
-        ani221 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_221, self.data_221, 1), interval=self.animationInterval)
-        ani222 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_222, self.data_222, 2), interval=self.animationInterval)
-        ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223, 3), interval=self.animationInterval)
-        ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224, 4), interval=self.animationInterval)
+        self.ani221 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_221, self.data_221, 1), interval=self.animationInterval)
+        self.ani222 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_222, self.data_222, 2), interval=self.animationInterval)
+        self.ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223, 3), interval=self.animationInterval)
+        self.ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224, 4), interval=self.animationInterval)
 
         endProcessButton = Button(contFrameLeft, text='End Process', command=lambda: self.endProcess(rootCont))
         endProcessButton.place(x=60, y=600)
+
+        # rootCont.mainloop()
 
         def onExit():
             self.logger.removeHandler(text_handler)
             rootCont.destroy()
         rootCont.protocol('WM_DELETE_WINDOW', onExit)  # root is your root window
-        #
-        # #rootCont.bind('<Escape>', lambda e: rootCont.destroy())       # you can press escape to exit this frame
-        rootCont.mainloop()
+
+        rootCont.bind('<Escape>', lambda e: onExit())       # you can press escape to exit this frame
 
     def animate(self, i, sub_plot, data, sensor_type_index):         # sensor_type_index=index for parsing from generated data
         pullData = open(data, 'r').read()

@@ -39,6 +39,7 @@ class DataGenerator:
         self.container.setTannin(tannins)
         self.container.setColor(color)
         self.container.setDensity(density)
+        # self.container.decider.setNewData(new_time, tannins, color, density, temperature)
         return new_line
 
     def start_generating(self):
@@ -46,11 +47,15 @@ class DataGenerator:
         while self.stay_alive:
             with open(self.file, 'a') as write_file:
                 write_file.write(new_line + '\n')
-                self.logger.info(new_line)
+                self.logger.info(self.prettyNewLine(new_line))
                 prev_line = new_line
                 new_line = self.generate_new_line(prev_line)
             # print(str(self.interval))
             time.sleep(float(self.interval))
+
+    def prettyNewLine(self, new_line):
+        parsed = str(new_line).split(' ')
+        return 'Time: ' + parsed[0] + ' Tannins:' + parsed[1] + ' Color: ' + parsed[2] + ' Density: ' + parsed[3] + ' Temperature: ' + parsed[3]
 
     def setInterval(self, inteval):
         self.interval = inteval
