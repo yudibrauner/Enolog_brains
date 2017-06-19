@@ -91,8 +91,12 @@ class Container:
         self.generator = None
         self.frame.grid(row=0, column=0, columnspan=2)
         self.logger = None
+        self.logger_name = None
         self.generator_thread = None
         self.decider = None
+        self.text_handler = None
+        self.st = None
+        self.rootCont = None
 
     def setImage(self):
         self.photo = PhotoImage(file=self.image)
@@ -159,12 +163,14 @@ class Container:
             self.name.set(name)
             print('-> container added')
             # Configure logger
-            logging.basicConfig(filename='logs/' + str(self.name.get()) + '_' + str(self.id) + '.log',
-                                level=logging.INFO,
-                                format='%(asctime)s - %(levelname)s - %(message)s')
+            self.logger_name = str(self.name.get()) + '_' + str(self.id)
+            #logging.basicConfig(filename='logs/' + self.logger_name + '.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
             # Add the handler to logger
-            self.logger = logging.getLogger()
+            self.logger = logging.getLogger(self.logger_name)
+            logging.basicConfig(filename='logs/' + self.logger_name + '.log',
+                                level=logging.INFO,
+                                format='%(asctime)s - %(levelname)s - %(message)s')
             self.logger.info('-> container added')
 
             self.fillContainer()
@@ -181,9 +187,9 @@ class Container:
             rootCont.destroy()
 
     def addCont(self):
-        rootCont = Tk()
-        rootCont.wm_title("Adding container " + str(self.id))
-        contFrame = Frame(rootCont, width=300, height=500)
+        self.rootCont = Toplevel()
+        self.rootCont.wm_title("Adding container " + str(self.id))
+        contFrame = Frame(self.rootCont, width=300, height=500)
         contFrame.pack()
 
         nameLabel = Label(contFrame, text='Name (wine type): ')
@@ -196,7 +202,7 @@ class Container:
         programLabel.place(x=40, y=160)
         programEntry.place(x=40, y=190)
 
-        insertButton = Button(contFrame, text='Insert details', command=lambda: self.addDetails(rootCont, nameEntry))
+        insertButton = Button(contFrame, text='Insert details', command=lambda: self.addDetails(self.rootCont, nameEntry))
         insertButton.place(x=40, y=350)
 
     def clearAllVariables(self, rootCont):
@@ -228,48 +234,74 @@ class Container:
             self.generator.updateLogger(self.logger)
             self.clearAllVariables(rootCont)
             print('-> process ended')
+            self.rootCont = Toplevel()
+            self.rootCont.wm_title("Rate The Wine")
+            frame = Frame(self.rootCont, width=200, height=150)
+            frame.pack()
+            scoreLabel = Label(frame, text='Score [0-100]: ')
+            scoreEntry = Entry(frame)
+            scoreLabel.place(x=40, y=40)
+            scoreEntry.place(x=40, y=70)
+
+            def addToDataBase(rootCont):
+                # TODO: put data in DB (scoreEntry + self.generator.file)
+                if int(scoreEntry.get()) not in list(range(0, 101)):
+                    print('Invalid Score -> Try Again')
+                    print(str(scoreEntry.get()))
+                else:
+                    print('Adding score and process to DB: ' + str(scoreEntry.get()) + ' + ' + str(self.generator.file))
+                    rootCont.destroy()
+
+            saveButton = Button(frame, text='Save', command=lambda: addToDataBase(self.rootCont))
+            saveButton.place(x=100, y=100)
+
+            dontSaveButton = Button(frame, text='Don\'t Save', command=self.rootCont.destroy)
+            dontSaveButton.place(x=20, y=100)
+
 
     def showDetails(self):
-        rootCont = Toplevel()
-        rootCont.wm_title("Container " + str(self.id) + ': ' + str(self.name.get()))
-        contFrameRight = LabelFrame(rootCont, width=400, height=700)
+        self.rootCont = Toplevel()
+        self.rootCont.wm_title("Container " + str(self.id) + ': ' + str(self.name.get()))
+        contFrameRight = LabelFrame(self.rootCont, width=400, height=500)
         contFrameRight.pack(side="right")
-        contFrameLeft = LabelFrame(rootCont, width=500, height=700)
-        contFrameLeft.pack(side="left")
+        # contFrameLeft = LabelFrame(self.rootCont, width=200, height=500)
+        # contFrameLeft.pack(side="left")
+        contFramebottom = LabelFrame(self.rootCont, width=1000, height=250)
+        contFramebottom.pack(side="bottom")
 
-        currentDetailsFrame = LabelFrame(contFrameLeft, width=100, height=200, text="details")
+        currentDetailsFrame = LabelFrame(self.rootCont, width=80, height=120, text="details")
         currentDetailsFrame.place(x=20, y=20)
-        logFrame = LabelFrame(contFrameLeft, width=200, height=250, text="log")
-        logFrame.place(x=20, y=240)
+        logFrame = LabelFrame(contFramebottom, width=200, height=250, text="log")
+        logFrame.place()
 
         # Add text widget to display logging info
-        st = ScrolledText.ScrolledText(logFrame)  # , state='disabled')
-        st.configure(font='TkFixedFont')
-        st.grid(column=0, row=1, sticky='w', columnspan=4)
+        self.st = ScrolledText.ScrolledText(logFrame)  # , state='disabled')
+        self.st.configure(font='TkFixedFont')
+        self.st.grid(column=0, row=1, sticky='w', columnspan=10)
 
         # Create textLogger
-        text_handler = TextHandler(st)
-        self.logger.addHandler(text_handler)
+        self.text_handler = TextHandler(self.st)
+        self.logger.addHandler(self.text_handler)
 
         densityLabel = Label(currentDetailsFrame, text='Dns: ')
-        densityLabel.place(x=5, y=70)
+        densityLabel.place(x=5, y=10)
         self.densityValLabel_in_details = Label(currentDetailsFrame, textvariable=str(self.density))
-        self.densityValLabel_in_details.place(x=35, y=70)
+        self.densityValLabel_in_details.place(x=35, y=10)
 
         tanninsValLabel = Label(currentDetailsFrame, text='Tnn: ')
-        tanninsValLabel.place(x=5, y=90)
+        tanninsValLabel.place(x=5, y=30)
         tanninsValLabel = Label(currentDetailsFrame, textvariable=str(self.tannins))
-        tanninsValLabel.place(x=35, y=90)
+        tanninsValLabel.place(x=35, y=30)
 
         colorValLabel = Label(currentDetailsFrame, text='Clr: ')
-        colorValLabel.place(x=5, y=110)
+        colorValLabel.place(x=5, y=50)
         colorValLabel = Label(currentDetailsFrame, textvariable=str(self.color))
-        colorValLabel.place(x=35, y=110)
+        colorValLabel.place(x=35, y=50)
 
         temperatureValLabel = Label(currentDetailsFrame, text='Tmp: ')
-        temperatureValLabel.place(x=5, y=130)
+        temperatureValLabel.place(x=5, y=70)
         temperatureValLabel = Label(currentDetailsFrame, textvariable=str(self.temperature))
-        temperatureValLabel.place(x=35, y=130)
+        temperatureValLabel.place(x=35, y=70)
 
         canvas = FigureCanvasTkAgg(self.graph_plot, contFrameRight)
         canvas.get_tk_widget().pack(side=tk.RIGHT, expand=True)
@@ -278,17 +310,17 @@ class Container:
         self.ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223, 3), interval=self.animationInterval)
         self.ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224, 4), interval=self.animationInterval)
 
-        endProcessButton = Button(contFrameLeft, text='End Process', command=lambda: self.endProcess(rootCont))
+        endProcessButton = Button(self.rootCont, text='End Process', command=lambda: self.endProcess(self.rootCont))
         endProcessButton.place(x=60, y=600)
 
         # rootCont.mainloop()
 
         def onExit():
-            self.logger.removeHandler(text_handler)
-            rootCont.destroy()
-        rootCont.protocol('WM_DELETE_WINDOW', onExit)  # root is your root window
+            self.logger.removeHandler(self.text_handler)
+            self.rootCont.destroy()
+        self.rootCont.protocol('WM_DELETE_WINDOW', onExit)  # root is your root window
 
-        rootCont.bind('<Escape>', lambda e: onExit())       # you can press escape to exit this frame
+        self.rootCont.bind('<Escape>', lambda e: onExit())       # you can press escape to exit this frame
 
     def animate(self, i, sub_plot, data, sensor_type_index):         # sensor_type_index=index for parsing from generated data
         pullData = open(data, 'r').read()

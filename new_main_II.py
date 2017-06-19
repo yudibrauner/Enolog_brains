@@ -74,13 +74,11 @@ def swapNewForOldContainer(old_id, new_container):
 settingsButton = Button(mainFrame, text='settings', command=settings)
 settingsButton.place(x=10, y=10)
 # creating all the containers
-curID = 0
 for i in range(0, 5):
     for j in range(0, 2):
-        id = curID
+        id = (i+1)*(j+1)
         place = (170 * i + 150, 250*j + 100)
         allContainers.append(Container(id, place, mainFrame, ANIMATION_INTERVAL))
-        curID += 1
 
 
 root.mainloop()

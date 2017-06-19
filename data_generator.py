@@ -20,6 +20,7 @@ from container import *
 class DataGenerator:
     def __init__(self, container, file, program_files, interval, logger):
         self.container = container
+        self.wine_name = self.container.name.get()
         self.file = file
         self.tannin, self.color, self.density, self.temperature = program_files
         self.stay_alive = True
@@ -47,7 +48,7 @@ class DataGenerator:
         while self.stay_alive:
             with open(self.file, 'a') as write_file:
                 write_file.write(new_line + '\n')
-                self.logger.info(self.prettyNewLine(new_line))
+                self.logger.info( '[' + str(self.container.id) + '] ' + str(self.wine_name) + ' ' + self.prettyNewLine(new_line))
                 prev_line = new_line
                 new_line = self.generate_new_line(prev_line)
             # print(str(self.interval))
@@ -57,8 +58,8 @@ class DataGenerator:
         parsed = str(new_line).split(' ')
         return 'Time: ' + parsed[0] + ' Tannins:' + parsed[1] + ' Color: ' + parsed[2] + ' Density: ' + parsed[3] + ' Temperature: ' + parsed[3]
 
-    def setInterval(self, inteval):
-        self.interval = inteval
+    def setInterval(self, interval):
+        self.interval = interval
 
     def updateLogger(self, logger):
         self.logger = logger
