@@ -68,7 +68,7 @@ class Container:
         self.colorValLabel_in_details = None
         self.temperatureValLabel_in_details = None
         self.nameLabel = None
-        self.graph_plot = Figure(figsize=(10, 6), dpi=100)
+        self.graph_plot = Figure(figsize=(8, 6), dpi=100)
         self.sub_plot_221 = self.graph_plot.add_subplot(221)
         self.sub_plot_222 = self.graph_plot.add_subplot(222)
         self.sub_plot_223 = self.graph_plot.add_subplot(223)
@@ -271,11 +271,11 @@ class Container:
 
         currentDetailsFrame = LabelFrame(self.rootCont, width=80, height=120, text="details")
         currentDetailsFrame.place(x=20, y=20)
-        logFrame = LabelFrame(contFramebottom, width=200, height=250, text="log")
-        logFrame.place()
+        # logFrame = LabelFrame(contFramebottom, width=200, height=250, text="log")
+        # logFrame.place()
 
         # Add text widget to display logging info
-        self.st = ScrolledText.ScrolledText(logFrame)  # , state='disabled')
+        self.st = ScrolledText.ScrolledText(contFramebottom)  # , state='disabled')
         self.st.configure(font='TkFixedFont')
         self.st.grid(column=0, row=1, sticky='w', columnspan=10)
 
