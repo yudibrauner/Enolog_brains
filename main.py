@@ -16,6 +16,8 @@ allContainers = []
 labelsContainers = {}
 num_of_containers = 10
 
+abc = 40
+
 ANIMATION_INTERVAL = 0.5
 # tasks['long'] = TaskPlan("long", exampleTasks.getLong(), 14)
 # tasks['normal'] = TaskPlan("normal", exampleTasks.getNormal(), 10)
