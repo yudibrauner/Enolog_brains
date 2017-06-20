@@ -35,7 +35,7 @@ PROGRAMS = {'No Program': 'No Program',
             'Normal': NORMAL_LIST,
             'Fast': FAST_LIST}
 SENSORS = ('Tannins', 'Color', 'Density', 'Temperature')
-#plt.style.use('fivethirtyeight')
+plt.style.use('fivethirtyeight')
 
 
 class Container:
