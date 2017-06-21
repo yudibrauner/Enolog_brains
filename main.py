@@ -15,8 +15,7 @@ tasks = {}
 allContainers = []
 labelsContainers = {}
 num_of_containers = 10
-
-abc = 40
+BACKGROUND = '#37474f'
 
 ANIMATION_INTERVAL = 0.5
 # tasks['long'] = TaskPlan("long", exampleTasks.getLong(), 14)
@@ -30,7 +29,7 @@ root.wm_title("Smart winery app")
 
 # FRAMES:
 
-mainFrame = Frame(root, width=1000, height=600, bg='#810d2b')
+mainFrame = Frame(root, width=1000, height=600, bg=BACKGROUND)
 mainFrame.pack()
 
 

@@ -21,12 +21,15 @@ import threading
 import multiprocessing
 from logger import *
 import tkinter.scrolledtext as ScrolledText
+from tkinter.font import Font
 from decider import *
 
 
 NO_DETAILS = "N/A"
 EMPTY_IMAGE = "images/container.png"
 FULL_IMAGE = "images/containerAct.png"
+EMPTY_CONT_IMAGE = "images/emptyCont.png"
+FULL_CONT_IMAGE = "images/fullCont.png"
 SLOW_LIST = ('data\Tannins_slow.txt', 'data\Color_slow.txt', 'data\Density_slow.txt', 'data\Temperature_slow.txt')
 NORMAL_LIST = ('data\Tannins_normal.txt', 'data\Color_normal.txt', 'data\Density_normal.txt', 'data\Temperature_normal.txt')
 FAST_LIST = ('data\Tannins_fast.txt', 'data\Color_fast.txt', 'data\Density_fast.txt', 'data\Temperature_fast.txt')
@@ -35,15 +38,19 @@ PROGRAMS = {'No Program': 'No Program',
             'Normal': NORMAL_LIST,
             'Fast': FAST_LIST}
 SENSORS = ('Tannins', 'Color', 'Density', 'Temperature')
-plt.style.use('fivethirtyeight')
+# plt.style.use('fivethirtyeight')
+BACKGROUND = '#37474f'
+CONT_NAME_BG = '#78909C'
 
 
 class Container:
     def __init__(self, _id, _place, root, interval):
         self.id = _id            # number of container in winery
         self.frame = root
+        self.specFrame = LabelFrame(self.frame, bg=BACKGROUND, width=139, height=116)
         self.startDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
         self.tasks = list()
+        self.newImage = PhotoImage(file=EMPTY_CONT_IMAGE)
         self.interval = interval
         self.animationInterval = interval * 1000
         self.temperature = StringVar()
@@ -100,36 +107,32 @@ class Container:
 
     def setImage(self):
         self.photo = PhotoImage(file=self.image)
-        contButton = Button(self.frame, height=44, width=52, image=self.photo, relief=FLAT, background='#810d2b', command=self.buttonFunction)
-        contButton.place(x=self.place[0], y=self.place[1])
+        # contButton = Button(self.frame, height=44, width=52, image=self.photo, relief=FLAT, background=BACKGROUND, command=self.buttonFunction)
+        # contButton.place(x=self.place[0], y=self.place[1])
+        newContButton = Button(self.specFrame, height=106, width=129, image=self.photo, relief=FLAT, background=BACKGROUND, command=self.buttonFunction)
+        self.specFrame.place(x=self.place[0], y=self.place[1])
+        newContButton.place(x=0, y=0)
 
     def initLabels(self):
-        self.idLabel = Label(self.frame, text=str(self.id) + ': ', background='#810d2b')
+        nameFont = Font(family="Times New Roman", size=13, weight='bold')
+        labelFont = Font(family="Times New Roman", size=8)
+
+        self.idLabel = Label(self.specFrame, text=str(self.id) + ': ', background=BACKGROUND)
         self.idLabel.place(x=self.place[0] + 10, y=self.place[1] - 30)
 
-        self.nameLabel = Label(self.frame, text='Name: ', background='#810d2b')
-        self.nameLabel.place(x=self.place[0] + 5, y=self.place[1] + 70)
-        self.nameLabel = Label(self.frame, textvariable=str(self.name), background='#810d2b')
-        self.nameLabel.place(x=self.place[0] + 25, y=self.place[1] - 30)
+        self.nameLabel = Label(self.specFrame, textvariable=str(self.name), font=nameFont, background=CONT_NAME_BG)
+        self.nameLabel.place(x=70 - 10*len(self.name.get())/2, y=83)
 
-        self.densityLabel = Label(self.frame, text='Dns: ', background='#810d2b')
-        self.densityLabel.place(x=self.place[0] + 5, y=self.place[1] + 70)
-        self.densityValLabel = Label(self.frame, textvariable=str(self.density), background='#810d2b')
-        self.densityValLabel.place(x=self.place[0] + 35, y=self.place[1] + 70)
+        self.densityValLabel = Label(self.specFrame, textvariable=str(self.density), background=BACKGROUND)
+        self.densityValLabel.place(x=, y=)
 
-        self.tanninsValLabel = Label(self.frame, text='Tnn: ', background='#810d2b')
-        self.tanninsValLabel.place(x=self.place[0] + 5, y=self.place[1] + 90)
-        self.tanninsValLabel = Label(self.frame, textvariable=str(self.tannins), background='#810d2b')
+        self.tanninsValLabel = Label(self.specFrame, textvariable=str(self.tannins), background=BACKGROUND)
         self.tanninsValLabel.place(x=self.place[0] + 35, y=self.place[1] + 90)
 
-        self.colorValLabel = Label(self.frame, text='Clr: ', background='#810d2b')
-        self.colorValLabel.place(x=self.place[0] + 5, y=self.place[1] + 110)
-        self.colorValLabel = Label(self.frame, textvariable=str(self.color), background='#810d2b')
+        self.colorValLabel = Label(self.specFrame, textvariable=str(self.color), background=BACKGROUND)
         self.colorValLabel.place(x=self.place[0] + 35, y=self.place[1] + 110)
 
-        self.temperatureValLabel = Label(self.frame, text='Tmp: ', background='#810d2b')
-        self.temperatureValLabel.place(x=self.place[0] + 5, y=self.place[1] + 130)
-        self.temperatureValLabel = Label(self.frame, textvariable=str(self.temperature), background='#810d2b')
+        self.temperatureValLabel = Label(self.specFrame, textvariable=str(self.temperature), background=BACKGROUND)
         self.temperatureValLabel.place(x=self.place[0] + 35, y=self.place[1] + 130)
 
     def initParams(self):
@@ -139,16 +142,17 @@ class Container:
         self.density.set(NO_DETAILS)
         self.name.set(NO_DETAILS)
         self.program.set(PROGRAMS.get('No Program'))
-        self.image = EMPTY_IMAGE
+        self.image = EMPTY_CONT_IMAGE
         self.setImage()
-        self.initLabels()
 
     def fillContainer(self):
         self.updateParams()
         self.isFull = True
         self.image = FULL_IMAGE
+        self.image = FULL_CONT_IMAGE
         self.buttonFunction = self.showDetails
         self.setImage()
+        self.initLabels()
 
     def updateParams(self):
         self.temperature.set(random.randrange(15, 40))
