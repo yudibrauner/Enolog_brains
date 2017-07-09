@@ -124,7 +124,7 @@ class Container:
         self.nameLabel.place(x=70 - 10*len(self.name.get())/2, y=83)
 
         self.densityValLabel = Label(self.specFrame, textvariable=str(self.density), background=BACKGROUND)
-        self.densityValLabel.place(x=, y=)
+        self.densityValLabel.place(x=70, y=83)
 
         self.tanninsValLabel = Label(self.specFrame, textvariable=str(self.tannins), background=BACKGROUND)
         self.tanninsValLabel.place(x=self.place[0] + 35, y=self.place[1] + 90)
