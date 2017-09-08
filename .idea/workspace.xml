@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e20eacaf-528a-4e53-b315-7533990d7aac" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Enolog_brains.iml" afterPath="$PROJECT_DIR$/.idea/Enolog_brains.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/container.py" afterPath="$PROJECT_DIR$/container.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data_generator.py" afterPath="$PROJECT_DIR$/data_generator.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,8 +25,8 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
-              <caret line="67" column="35" lean-forward="true" selection-start-line="67" selection-start-column="35" selection-end-line="67" selection-end-column="35" />
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -33,10 +37,47 @@
       <file leaf-file-name="container.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/container.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2104">
-              <caret line="121" column="0" lean-forward="true" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
+            <state relative-caret-position="34">
+              <caret line="2" column="8" lean-forward="true" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
               <folding>
-                <element signature="e#44#59#0" expanded="true" />
+                <element signature="e#2300#3006#0" expanded="false" />
+                <element signature="e#3046#3246#0" expanded="false" />
+                <element signature="e#3281#3634#0" expanded="false" />
+                <element signature="e#3670#4088#0" expanded="false" />
+                <element signature="e#4124#4869#0" expanded="false" />
+                <element signature="e#4903#5404#0" expanded="false" />
+                <element signature="e#6701#6977#0" expanded="false" />
+                <element signature="e#7235#7432#0" expanded="false" />
+                <element signature="e#7489#9013#0" expanded="false" />
+                <element signature="e#9052#9068#0" expanded="false" />
+                <element signature="e#9101#9786#0" expanded="false" />
+                <element signature="e#9839#10608#0" expanded="false" />
+                <element signature="e#10654#15403#0" expanded="false" />
+                <element signature="e#15438#15569#0" expanded="false" />
+                <element signature="e#15606#19927#0" expanded="false" />
+                <element signature="e#20064#21123#0" expanded="false" />
+                <element signature="e#21185#21209#0" expanded="false" />
+                <element signature="e#21252#21276#0" expanded="false" />
+                <element signature="e#21317#21338#0" expanded="false" />
+                <element signature="e#21383#21408#0" expanded="false" />
+                <element signature="e#21461#21494#0" expanded="false" />
+                <element signature="e#21534#21547#0" expanded="false" />
+                <element signature="e#21587#21604#0" expanded="false" />
+                <element signature="e#21654#21675#0" expanded="false" />
+                <element signature="e#21775#21803#0" expanded="false" />
+                <element signature="e#22202#22478#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="data_generator.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data_generator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="546">
+              <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+              <folding>
+                <element signature="e#60#69#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -53,19 +94,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>e1</find>
-      <find>howMuch</find>
-      <find>canvas</find>
-      <find>text</find>
-      <find>nothing</find>
-      <find>dest</find>
-      <find>des</find>
-      <find>no co</find>
-      <find>png</find>
-      <find>delete</find>
-      <find>ye</find>
-      <find>th</find>
-      <find>thread</find>
       <find>log</find>
       <find>handler</find>
       <find>root</find>
@@ -75,6 +103,27 @@
       <find>'#810d2b'</find>
       <find>810d2b</find>
       <find>detail</find>
+      <find>PROGRAMS</find>
+      <find>labelFont</find>
+      <find>f.ima</find>
+      <find>elf.image</find>
+      <find>butto</find>
+      <find>FULL_C</find>
+      <find>self.pho</find>
+      <find>self.endProcess</find>
+      <find>endProcess</find>
+      <find>graph_plot</find>
+      <find>self.program</find>
+      <find>slow</find>
+      <find>self.pr</find>
+      <find>self.an</find>
+      <find>Data_</find>
+      <find>Data_g</find>
+      <find>data</find>
+      <find>interval</find>
+      <find>datag</find>
+      <find>BACKGROUND</find>
+      <find>1:</find>
     </findStrings>
     <replaceStrings>
       <replace>BACKGROUND</replace>
@@ -95,7 +144,6 @@
         <option value="$PROJECT_DIR$/Simulator.py" />
         <option value="$PROJECT_DIR$/garbage/main.py" />
         <option value="$PROJECT_DIR$/winery.py" />
-        <option value="$PROJECT_DIR$/trying gui.py" />
         <option value="$PROJECT_DIR$/new_main.py" />
         <option value="$PROJECT_DIR$/emptyContainer.py" />
         <option value="$PROJECT_DIR$/taskPlan.py" />
@@ -107,7 +155,6 @@
         <option value="$PROJECT_DIR$/data/Color_normal.txt" />
         <option value="$PROJECT_DIR$/data/Temperature_normal.txt" />
         <option value="$PROJECT_DIR$/data/Tannins_fast.txt" />
-        <option value="$PROJECT_DIR$/data/Color_fast.txt" />
         <option value="$PROJECT_DIR$/data/Density_fast.txt" />
         <option value="$PROJECT_DIR$/data/Temperature_fast.txt" />
         <option value="$PROJECT_DIR$/data/Tannins_slow.txt" />
@@ -136,17 +183,20 @@
         <option value="$PROJECT_DIR$/logger.py" />
         <option value="$PROJECT_DIR$/logs/aaa_2.log" />
         <option value="$PROJECT_DIR$/logs/e_0.log" />
-        <option value="$PROJECT_DIR$/data_generator.py" />
         <option value="$PROJECT_DIR$/new_main_II.py" />
+        <option value="$PROJECT_DIR$/trying gui.py" />
+        <option value="$PROJECT_DIR$/data/Color_fast.txt" />
+        <option value="$PROJECT_DIR$/data_generator.py" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/container.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-7" />
-    <option name="width" value="1370" />
-    <option name="height" value="735" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -164,20 +214,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="Smart_Winery">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -204,13 +241,40 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Smart_Winery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Smart_Winery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Smart_Winery">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/container.py" />
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -277,24 +341,6 @@
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="taskPlan" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Enolog_brains" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/taskPlan.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="data_generator" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -326,6 +372,24 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="Enolog_brains" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="trying gui" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Enolog_brains" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/trying gui.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -398,17 +462,17 @@
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.new_main_II" />
       <item index="1" class="java.lang.String" itemvalue="Python.container" />
-      <item index="2" class="java.lang.String" itemvalue="Python.taskPlan" />
-      <item index="3" class="java.lang.String" itemvalue="Python.data_generator" />
-      <item index="4" class="java.lang.String" itemvalue="Python.main" />
+      <item index="2" class="java.lang.String" itemvalue="Python.data_generator" />
+      <item index="3" class="java.lang.String" itemvalue="Python.main" />
+      <item index="4" class="java.lang.String" itemvalue="Python.trying gui" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.main" />
-        <item index="1" class="java.lang.String" itemvalue="Python.new_main_II" />
-        <item index="2" class="java.lang.String" itemvalue="Python.data_generator" />
-        <item index="3" class="java.lang.String" itemvalue="Python.container" />
-        <item index="4" class="java.lang.String" itemvalue="Python.taskPlan" />
+        <item index="1" class="java.lang.String" itemvalue="Python.trying gui" />
+        <item index="2" class="java.lang.String" itemvalue="Python.container" />
+        <item index="3" class="java.lang.String" itemvalue="Python.new_main_II" />
+        <item index="4" class="java.lang.String" itemvalue="Python.data_generator" />
       </list>
     </recent_temporary>
   </component>
@@ -597,14 +661,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1370" height="735" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17799114" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17789166" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3280757" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31861198" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -616,7 +680,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3280757" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -658,69 +722,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="37" />
+      <option name="time" value="39" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/data/dynamic_data/4_nnn" />
-    <entry file="file://$PROJECT_DIR$/data/dynamic_data/2_mmmm" />
-    <entry file="file://$PROJECT_DIR$/data/dynamic_data/4_Cabarnet" />
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logs/2_,,_log.txt" />
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/shutil.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="89" column="4" lean-forward="false" selection-start-line="89" selection-start-column="4" selection-end-line="89" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://F:/Automation/Tests/camLib/Logger.py" />
-    <entry file="file://$PROJECT_DIR$/logs/test.log" />
-    <entry file="file://$PROJECT_DIR$/logs/shivi_4.log" />
-    <entry file="file://$PROJECT_DIR$/logs/asscx_2.log" />
-    <entry file="file://$PROJECT_DIR$/logs/dsvds_2.log" />
-    <entry file="file://$PROJECT_DIR$/logs/sdd_2.log" />
-    <entry file="file://$PROJECT_DIR$/logs/vd_2.log" />
-    <entry file="file://$PROJECT_DIR$/logs/vdd_2.log" />
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/_bootlocale.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/taskPlan.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="0" lean-forward="true" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/exampleTasks.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="28" lean-forward="true" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/dynamic_data/2_q" />
-    <entry file="file://$PROJECT_DIR$/data/dynamic_data/0_q" />
-    <entry file="file://$PROJECT_DIR$/data/dynamic_data/0_aaaaa" />
-    <entry file="file://$PROJECT_DIR$/data/dynamic_data/7_dqwdddd" />
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/site-packages/matplotlib/animation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1474" column="0" lean-forward="false" selection-start-line="1474" selection-start-column="0" selection-end-line="1474" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/dynamic_data/8_qwdd" />
     <entry file="file://$PROJECT_DIR$/data/dynamic_data/0_irit" />
     <entry file="file://$PROJECT_DIR$/data/dynamic_data/1_dwqwd" />
@@ -732,13 +738,7 @@
     <entry file="file://$PROJECT_DIR$/data/dynamic_data/2_aaa" />
     <entry file="file://$PROJECT_DIR$/logs/aaa_0.log" />
     <entry file="file://$PROJECT_DIR$/logs/qqq_0.log" />
-    <entry file="file://$USER_HOME$/.PyCharmCE2017.1/system/python_stubs/132837046/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="719" column="6" lean-forward="false" selection-start-line="719" selection-start-column="6" selection-end-line="719" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2017.1/system/python_stubs/132837046/builtins.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/logging/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="103">
@@ -772,13 +772,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/logs/333_2.log" />
-    <entry file="file://$PROJECT_DIR$/logs/cabrne_3.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="12" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/cabrne_3.log" />
     <entry file="file://$PROJECT_DIR$/decider.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -786,14 +780,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data_generator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="20" lean-forward="true" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/emptyCont.png">
+    <entry file="file://$PROJECT_DIR$/images/container.png">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
@@ -803,27 +790,140 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/images/container.png">
+    <entry file="file://$PROJECT_DIR$/images/settings.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/emptyCont.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/דוגמה לצורך העבודה.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/exampleTasks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="1" lean-forward="false" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trying gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="49" column="11" lean-forward="true" selection-start-line="49" selection-start-column="11" selection-end-line="53" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/checks.bmp">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/container.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="186" column="0" lean-forward="false" selection-start-line="186" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/data-generator yudi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/cvbnm,_1.log" />
+    <entry file="file://$PROJECT_DIR$/logs/asdfgh_4.log" />
+    <entry file="file://$PROJECT_DIR$/data/dynamic_data/4_cvbn" />
+    <entry file="file://$PROJECT_DIR$/data/dynamic_data/3_fghnjm" />
+    <entry file="file://$PROJECT_DIR$/data/Color_fast.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="7" lean-forward="true" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/dynamic_data/2_sdfghjkl" />
+    <entry file="file://$PROJECT_DIR$/data/Density_fast.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/a_1.log" />
+    <entry file="file://$PROJECT_DIR$/data/dynamic_data/1_a" />
+    <entry file="file://$PROJECT_DIR$/data/dynamic_data/2_c" />
+    <entry file="file://$PROJECT_DIR$/data/dynamic_data/4_m" />
+    <entry file="file://$PROJECT_DIR$/logs/v_4.log" />
+    <entry file="file://$PROJECT_DIR$/data/dynamic_data/4_v" />
+    <entry file="file://$PROJECT_DIR$/data_generator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="546">
+          <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+          <folding>
+            <element signature="e#60#69#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/wine score.jpeg">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="67" column="35" lean-forward="true" selection-start-line="67" selection-start-column="35" selection-end-line="67" selection-end-column="35" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/images/containerAct.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/container.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2104">
-          <caret line="121" column="0" lean-forward="true" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
+        <state relative-caret-position="34">
+          <caret line="2" column="8" lean-forward="true" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
           <folding>
-            <element signature="e#44#59#0" expanded="true" />
+            <element signature="e#2300#3006#0" expanded="false" />
+            <element signature="e#3046#3246#0" expanded="false" />
+            <element signature="e#3281#3634#0" expanded="false" />
+            <element signature="e#3670#4088#0" expanded="false" />
+            <element signature="e#4124#4869#0" expanded="false" />
+            <element signature="e#4903#5404#0" expanded="false" />
+            <element signature="e#6701#6977#0" expanded="false" />
+            <element signature="e#7235#7432#0" expanded="false" />
+            <element signature="e#7489#9013#0" expanded="false" />
+            <element signature="e#9052#9068#0" expanded="false" />
+            <element signature="e#9101#9786#0" expanded="false" />
+            <element signature="e#9839#10608#0" expanded="false" />
+            <element signature="e#10654#15403#0" expanded="false" />
+            <element signature="e#15438#15569#0" expanded="false" />
+            <element signature="e#15606#19927#0" expanded="false" />
+            <element signature="e#20064#21123#0" expanded="false" />
+            <element signature="e#21185#21209#0" expanded="false" />
+            <element signature="e#21252#21276#0" expanded="false" />
+            <element signature="e#21317#21338#0" expanded="false" />
+            <element signature="e#21383#21408#0" expanded="false" />
+            <element signature="e#21461#21494#0" expanded="false" />
+            <element signature="e#21534#21547#0" expanded="false" />
+            <element signature="e#21587#21604#0" expanded="false" />
+            <element signature="e#21654#21675#0" expanded="false" />
+            <element signature="e#21775#21803#0" expanded="false" />
+            <element signature="e#22202#22478#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -1,47 +1,67 @@
 # This class represents a container of wine
+
 import datetime
 import random
-from data_generator import *
-from tkinter import *
-from tkinter.filedialog import *
-# from new_main_II import *
 import tkinter as tk
-from tkinter import messagebox
 import matplotlib
 matplotlib.use("TKAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-from matplotlib.figure import Figure
-import matplotlib.animation as animation
-from matplotlib import pyplot as plt
-import matplotlib.pyplot as plt
 import pylab
 import os
 import time
 import threading
 import multiprocessing
-from logger import *
+
+import matplotlib.animation as animation
 import tkinter.scrolledtext as ScrolledText
+import matplotlib.pyplot as plt
+
+from data_generator import *
+from tkinter import *
+from tkinter.filedialog import *
+from tkinter import messagebox
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.figure import Figure
+from matplotlib import pyplot as plt
+from logger import *
 from tkinter.font import Font
 from decider import *
 
 
+# vars:
+
 NO_DETAILS = "N/A"
+# images:
 EMPTY_IMAGE = "images/container.png"
 FULL_IMAGE = "images/containerAct.png"
 EMPTY_CONT_IMAGE = "images/emptyCont.png"
 FULL_CONT_IMAGE = "images/fullCont.png"
+END_PROCESS_IMAGE = "images/EndProcess.png"
+#programs:
 SLOW_LIST = ('data\Tannins_slow.txt', 'data\Color_slow.txt', 'data\Density_slow.txt', 'data\Temperature_slow.txt')
 NORMAL_LIST = ('data\Tannins_normal.txt', 'data\Color_normal.txt', 'data\Density_normal.txt', 'data\Temperature_normal.txt')
 FAST_LIST = ('data\Tannins_fast.txt', 'data\Color_fast.txt', 'data\Density_fast.txt', 'data\Temperature_fast.txt')
-PROGRAMS = {'No Program': 'No Program',
-            'Slow': SLOW_LIST,
-            'Normal': NORMAL_LIST,
-            'Fast': FAST_LIST}
+PROGRAMS = {'Slow': SLOW_LIST, 'Normal': NORMAL_LIST, 'Fast': FAST_LIST, 'Create a new ferm.': 'new'}
+# rates:
+COLOR_QUALITY = {'1': 1, '2': 2, '3': 3, '4': 4, '5': 5}
+COLOR_POWER = {'2': 2, '4': 4, '6': 6, '8': 8, '10': 10}
+SMELL_OZ = {'2': 2, '4': 4, '6': 6, '7': 7, '8': 8}
+SMELL_SOURCE = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6}
+SMELL_QUALITY = {'8': 8, '10': 10, '12': 12, '14': 14, '16': 16}
+TASTE_OZ = {'2': 2, '4': 4, '6': 6, '7': 7, '8': 8}
+TASTE_SOURCE = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6}
+TASTE_QUALITY = {'10': 10, '13': 13, '16': 16, '19': 19, '22': 22}
+TASTE_SHIUR = {'4': 4, '5': 5, '6': 6, '7': 7, '8': 8}
+GENERAL_RATE = {'7': 7, '8': 8, '9': 9, '10': 10, '11': 11}
+# arrays:
 SENSORS = ('Tannins', 'Color', 'Density', 'Temperature')
 # plt.style.use('fivethirtyeight')
+
+# colors:
 BACKGROUND = '#37474f'
 CONT_NAME_BG = '#78909C'
-
+ATTRS_BG = '#E0E0E0'
+EXPECTEDLINECOLOR = '#00A3E0'
+OBSERVEDLINECOLOR = '#183A54'
 
 class Container:
     def __init__(self, _id, _place, root, interval):
@@ -53,19 +73,42 @@ class Container:
         self.newImage = PhotoImage(file=EMPTY_CONT_IMAGE)
         self.interval = interval
         self.animationInterval = interval * 1000
+        self.initStringVars()
+        self.buttonFunction = self.addCont
+        self.isFull = False
+        self.place = _place
+        self.initNones()
+        self.initLabels()
+        self.initGraphs()
+        self.initParams()
+        self.frame.grid(row=0, column=0, columnspan=2)
+
+    def initStringVars(self):
         self.temperature = StringVar()
         self.tannins = StringVar()
         self.color = StringVar()
         self.density = StringVar()
         self.name = StringVar()
         self.program = StringVar()
-        self.densityLabel = None
-        self.buttonFunction = self.addCont
-        self.isFull = False
-        self.place = _place
+
+    def initNones(self):
         self.image = None
         self.photo = None
+        self.end_process_photo = None
+        self.dynamic_data = None
+        self.generator = None
+        self.logger = None
+        self.logger_name = None
+        self.generator_thread = None
+        self.decider = None
+        self.text_handler = None
+        self.st = None
+        self.rootCont = None
+
+    def initLabels(self):
+        self.densityLabel = None
         self.idLabel = None
+        self.nameLabel = None
         self.densityValLabel = None
         self.tanninsValLabel = None
         self.colorValLabel = None
@@ -74,7 +117,8 @@ class Container:
         self.tanninsValLabel_in_details = None
         self.colorValLabel_in_details = None
         self.temperatureValLabel_in_details = None
-        self.nameLabel = None
+
+    def initGraphs(self):
         self.graph_plot = Figure(figsize=(8, 6), dpi=100)
         self.sub_plot_221 = self.graph_plot.add_subplot(221)
         self.sub_plot_222 = self.graph_plot.add_subplot(222)
@@ -93,17 +137,6 @@ class Container:
         self.ani223 = None
         self.ani224 = None
         self.data_221_new = None
-        self.initParams()
-        self.dynamic_data = None
-        self.generator = None
-        self.frame.grid(row=0, column=0, columnspan=2)
-        self.logger = None
-        self.logger_name = None
-        self.generator_thread = None
-        self.decider = None
-        self.text_handler = None
-        self.st = None
-        self.rootCont = None
 
     def setImage(self):
         self.photo = PhotoImage(file=self.image)
@@ -113,27 +146,22 @@ class Container:
         self.specFrame.place(x=self.place[0], y=self.place[1])
         newContButton.place(x=0, y=0)
 
-    def initLabels(self):
+    def startLabels(self):
         nameFont = Font(family="Times New Roman", size=13, weight='bold')
-        labelFont = Font(family="Times New Roman", size=8)
-
+        labelFont = Font(family="Times New Roman", size=6)
         self.idLabel = Label(self.specFrame, text=str(self.id) + ': ', background=BACKGROUND)
         self.idLabel.place(x=self.place[0] + 10, y=self.place[1] - 30)
-
         self.nameLabel = Label(self.specFrame, textvariable=str(self.name), font=nameFont, background=CONT_NAME_BG)
         self.nameLabel.place(x=70 - 10*len(self.name.get())/2, y=83)
-
-        self.densityValLabel = Label(self.specFrame, textvariable=str(self.density), background=BACKGROUND)
-        self.densityValLabel.place(x=70, y=83)
-
-        self.tanninsValLabel = Label(self.specFrame, textvariable=str(self.tannins), background=BACKGROUND)
-        self.tanninsValLabel.place(x=self.place[0] + 35, y=self.place[1] + 90)
-
-        self.colorValLabel = Label(self.specFrame, textvariable=str(self.color), background=BACKGROUND)
-        self.colorValLabel.place(x=self.place[0] + 35, y=self.place[1] + 110)
-
-        self.temperatureValLabel = Label(self.specFrame, textvariable=str(self.temperature), background=BACKGROUND)
-        self.temperatureValLabel.place(x=self.place[0] + 35, y=self.place[1] + 130)
+        self.temperatureValLabel = Label(self.specFrame, textvariable=str(self.temperature), background=ATTRS_BG, font=labelFont)
+        self.temperatureValLabel.place(x=75, y=23)
+        self.densityValLabel = Label(self.specFrame, textvariable=str(self.density), background=ATTRS_BG, font=labelFont)
+        self.densityValLabel.place(x=75, y=60)
+        self.tanninsValLabel = Label(self.specFrame, textvariable=str(self.tannins), background=ATTRS_BG, font=labelFont)
+        self.tanninsValLabel.place(x=75, y=48)
+        self.colorValLabel = Label(self.specFrame, textvariable=str(self.color), background=ATTRS_BG, font=labelFont)
+        self.colorValLabel.place(x=75, y=35)
+        self.end_process_photo = PhotoImage(file=END_PROCESS_IMAGE)
 
     def initParams(self):
         self.temperature.set(NO_DETAILS)
@@ -141,18 +169,17 @@ class Container:
         self.color.set(NO_DETAILS)
         self.density.set(NO_DETAILS)
         self.name.set(NO_DETAILS)
-        self.program.set(PROGRAMS.get('No Program'))
+        self.program.set('No Program')
         self.image = EMPTY_CONT_IMAGE
         self.setImage()
 
     def fillContainer(self):
         self.updateParams()
         self.isFull = True
-        self.image = FULL_IMAGE
         self.image = FULL_CONT_IMAGE
         self.buttonFunction = self.showDetails
         self.setImage()
-        self.initLabels()
+        self.startLabels()
 
     def updateParams(self):
         self.temperature.set(random.randrange(15, 40))
@@ -163,20 +190,21 @@ class Container:
     def addDetails(self, rootCont, nameEntry):
         name = nameEntry.get()
         program = self.program.get()
-        if name and program != 'No Program':
+        if program == 'Create a new ferm.':
+            self.createNewProg()
+        elif program == 'No Program':
+            print("Please choose a program.")
+        elif name:
             self.name.set(name)
             print('-> container added')
             # Configure logger
             self.logger_name = str(self.name.get()) + '_' + str(self.id)
-            #logging.basicConfig(filename='logs/' + self.logger_name + '.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
             # Add the handler to logger
             self.logger = logging.getLogger(self.logger_name)
             logging.basicConfig(filename='logs/' + self.logger_name + '.log',
                                 level=logging.INFO,
                                 format='%(asctime)s - %(levelname)s - %(message)s')
             self.logger.info('-> container added')
-
             self.fillContainer()
             self.buttonFunction = self.showDetails
             self.data_221 = PROGRAMS[program][0]
@@ -184,11 +212,14 @@ class Container:
             self.data_223 = PROGRAMS[program][2]
             self.data_224 = PROGRAMS[program][3]
             self.dynamic_data = 'data/dynamic_data/' + str(self.id) + '_' + str(self.name.get())
-            self.generator = DataGenerator(self, self.dynamic_data, PROGRAMS[self.program.get()], self.interval, self.logger)
+            self.generator = DataGenerator(self, self.dynamic_data, self.program.get(), PROGRAMS[self.program.get()], self.interval, self.logger)
             self.generator_thread = threading.Thread(target=self.generator.start_generating, daemon=True)
             self.generator_thread.start()
             print('-> container added')
             rootCont.destroy()
+
+    def createNewProg(self):
+        print('TODO IT')
 
     def addCont(self):
         self.rootCont = Toplevel()
@@ -196,14 +227,12 @@ class Container:
         contFrame = Frame(self.rootCont, width=300, height=500)
         contFrame.pack()
 
-        nameLabel = Label(contFrame, text='Name (wine type): ')
+        Label(contFrame, text='Name (wine type): ').place(x=40, y=100)
         nameEntry = Entry(contFrame)
-        nameLabel.place(x=40, y=100)
         nameEntry.place(x=40, y=130)
 
-        programLabel = Label(contFrame, text='Fermentation Program: ')
+        Label(contFrame, text='Fermentation Program: ').place(x=40, y=160)
         programEntry = OptionMenu(contFrame, self.program, *PROGRAMS.keys())
-        programLabel.place(x=40, y=160)
         programEntry.place(x=40, y=190)
 
         insertButton = Button(contFrame, text='Insert details', command=lambda: self.addDetails(self.rootCont, nameEntry))
@@ -225,7 +254,6 @@ class Container:
         self.tanninsValLabel.place_forget()
         self.colorValLabel.place_forget()
         self.densityValLabel.place_forget()
-        # os.remove(self.log['file_path'])
         self.logger = None
         self.generator.stay_alive = False
         rootCont.destroy()
@@ -238,48 +266,121 @@ class Container:
             self.generator.updateLogger(self.logger)
             self.clearAllVariables(rootCont)
             print('-> process ended')
+
             self.rootCont = Toplevel()
             self.rootCont.wm_title("Rate The Wine")
-            frame = Frame(self.rootCont, width=200, height=150)
-            frame.pack()
-            scoreLabel = Label(frame, text='Score [0-100]: ')
-            scoreEntry = Entry(frame)
-            scoreLabel.place(x=40, y=40)
-            scoreEntry.place(x=40, y=70)
+            rateFrame = Frame(self.rootCont, width=600, height=500)
+            rateFrame.pack()
+            self.initRates()
+
+            showFrame = LabelFrame(self.rootCont, width=500, height=80, text="מראה")
+            showFrame.place(x=20, y=20)
+            Label(showFrame, text='צבע איכות').place(x=10, y=10)
+            CQEntry = OptionMenu(showFrame, self.rates[0], *COLOR_QUALITY.keys())
+            CQEntry.place(x=100, y=10)
+            Label(showFrame, text='צבע עוצמה').place(x=260, y=10)
+            CPEntry = OptionMenu(showFrame, self.rates[1], *COLOR_POWER.keys())
+            CPEntry.place(x=350, y=10)
+
+            smellFrame = LabelFrame(self.rootCont, width=500, height=80, text="ריח")
+            smellFrame.place(x=20, y=120)
+            Label(smellFrame, text='ריכוזיות').place(x=10, y=10)
+            SOEntry = OptionMenu(smellFrame, self.rates[2], *SMELL_OZ.keys())
+            SOEntry.place(x=60, y=10)
+            Label(smellFrame, text='מקוריות').place(x=150, y=10)
+            SSEntry = OptionMenu(smellFrame, self.rates[3], *SMELL_SOURCE.keys())
+            SSEntry.place(x=200, y=10)
+            Label(smellFrame, text='איכות').place(x=290, y=10)
+            SQEntry = OptionMenu(smellFrame, self.rates[4], *SMELL_QUALITY.keys())
+            SQEntry.place(x=340, y=10)
+
+            tasteFrame = LabelFrame(self.rootCont, width=500, height=80, text="טעם")
+            tasteFrame.place(x=20, y=220)
+            Label(tasteFrame, text='ריכוזיות').place(x=20, y=3)
+            TOEntry = OptionMenu(tasteFrame, self.rates[5], *TASTE_OZ.keys())
+            TOEntry.place(x=20, y=25)
+            Label(tasteFrame, text='מקוריות').place(x=120, y=3)
+            TSEntry = OptionMenu(tasteFrame, self.rates[6], *TASTE_SOURCE.keys())
+            TSEntry.place(x=120, y=25)
+            Label(tasteFrame, text='איכות').place(x=220, y=3)
+            TQEntry = OptionMenu(tasteFrame, self.rates[7], *TASTE_QUALITY.keys())
+            TQEntry.place(x=220, y=25)
+            Label(tasteFrame, text='שיוריות').place(x=320, y=3)
+            THEntry = OptionMenu(tasteFrame, self.rates[8], *TASTE_SHIUR.keys())
+            THEntry.place(x=320, y=25)
+
+            generalFrame = LabelFrame(self.rootCont, width=500, height=80, text="הערכה כללית")
+            generalFrame.place(x=20, y=320)
+            Label(generalFrame, text='דירוג כללי').place(x=20, y=20)
+            GEntry = OptionMenu(generalFrame, self.rates[9], *GENERAL_RATE.keys())
+            GEntry.place(x=100, y=20)
+            Label(generalFrame, text='Note:').place(x=200, y=20)
+            scoreEntry = Entry(generalFrame)
+            scoreEntry.place(x=300, y=20)
+
+            Label(rateFrame, text='Vinemaker:').place(x=20, y=420)
+            nameEntry = Entry(rateFrame)
+            nameEntry.place(x=80, y=420)
+
+            def isFullFields(self):
+                for rate in self.rates:
+                    if rate.get() == 'No Rate':
+                        return False
+                return True
+
+            def geneRate(self):
+                for rate in self.rates:
+                    if rate.get() == 'No Rate':
+                        print('no rate for ' + str(rate) + 'yet. TODO')
+
+            def calculateScore(self):
+                sum = 0
+                for rate in self.rates:
+                    sum += int(rate.get())
+                return sum
 
             def addToDataBase(rootCont):
                 # TODO: put data in DB (scoreEntry + self.generator.file)
-                if int(scoreEntry.get()) not in list(range(0, 101)):
-                    print('Invalid Score -> Try Again')
-                    print(str(scoreEntry.get()))
-                else:
-                    print('Adding score and process to DB: ' + str(scoreEntry.get()) + ' + ' + str(self.generator.file))
+                if nameEntry.get() and isFullFields(self):
+                    calc = calculateScore(self)
+                    print('Adding score and process to DB: ' + str(calc) + ' + ' + str(self.generator.file))
                     rootCont.destroy()
+                else:
+                    print('You did not fill all the fields -> Try Again')
+            geneRateButton = Button(rateFrame, text='generate the rates', command=lambda: geneRate(self))
+            geneRateButton.place(x=400, y=450)
+            saveButton = Button(rateFrame, text='Save', command=lambda: addToDataBase(self.rootCont))
+            saveButton.place(x=200, y=450)
+            dontSaveButton = Button(rateFrame, text='Don\'t Save', command=self.rootCont.destroy)
+            dontSaveButton.place(x=300, y=450)
 
-            saveButton = Button(frame, text='Save', command=lambda: addToDataBase(self.rootCont))
-            saveButton.place(x=100, y=100)
-
-            dontSaveButton = Button(frame, text='Don\'t Save', command=self.rootCont.destroy)
-            dontSaveButton.place(x=20, y=100)
-
+    def initRates(self):
+        self.rates = []
+        for i in range (0, 10):
+            self.rates.append(StringVar())
+            self.rates[i].set('No Rate')
 
     def showDetails(self):
         self.rootCont = Toplevel()
         self.rootCont.wm_title("Container " + str(self.id) + ': ' + str(self.name.get()))
-        contFrameRight = LabelFrame(self.rootCont, width=400, height=500)
-        contFrameRight.pack(side="right")
-        # contFrameLeft = LabelFrame(self.rootCont, width=200, height=500)
-        # contFrameLeft.pack(side="left")
-        contFramebottom = LabelFrame(self.rootCont, width=1000, height=250)
-        contFramebottom.pack(side="bottom")
+        # FRAMES:
+        contFrameMain = Frame(self.rootCont, width=1250, height=700, bg='#37474f')
+        contFrameMain.pack()
+        titleFont = Font(family="Times New Roman", size=30)
+        title = Label(contFrameMain, text=self.name.get(), background=BACKGROUND, font=titleFont, fg='#FFD966')
+        title.place(x=550, y=10)
+        contFrameGraphs = Frame(contFrameMain, width=650, height=535)
+        contFrameGraphs.place(x=490, y=110)
 
-        currentDetailsFrame = LabelFrame(self.rootCont, width=80, height=120, text="details")
-        currentDetailsFrame.place(x=20, y=20)
-        # logFrame = LabelFrame(contFramebottom, width=200, height=250, text="log")
-        # logFrame.place()
-
+        upContFrameLog = Frame(contFrameMain, width=385, height=300, background='#78909C')
+        upContFrameLog.place(x=60, y=350)
+        labelsFont = Font(family="Times New Roman", size=20)
+        labelProcessLog = Label(upContFrameLog, text='Process Log', background='#78909C', font=labelsFont, fg='black')
+        labelProcessLog.place(x=130, y=7)
+        contFrameLog = Frame(upContFrameLog, width=385, height=250)
+        contFrameLog.place(x=0, y=50)
         # Add text widget to display logging info
-        self.st = ScrolledText.ScrolledText(contFramebottom)  # , state='disabled')
+        self.st = ScrolledText.ScrolledText(contFrameLog)  # , state='disabled')
         self.st.configure(font='TkFixedFont')
         self.st.grid(column=0, row=1, sticky='w', columnspan=10)
 
@@ -287,37 +388,44 @@ class Container:
         self.text_handler = TextHandler(self.st)
         self.logger.addHandler(self.text_handler)
 
-        densityLabel = Label(currentDetailsFrame, text='Dns: ')
+        upContFrameDetails = Frame(contFrameMain, width=270, height=220, background='#78909C')
+        upContFrameDetails.place(x=175, y=110)
+        labelHower = Label(upContFrameDetails, text='20:00:00', background='#78909C', font=labelsFont, fg='black')
+        labelHower.place(x=10, y=5)
+        labelDate = Label(upContFrameDetails, text='20.6.17', background='#78909C', font=labelsFont, fg='black')
+        labelDate.place(x=150, y=5)
+        contFrameDetails = Frame(upContFrameDetails, width=270, height=180)
+        contFrameDetails.place(x=0, y=40)
+
+        densityLabel = Label(contFrameDetails, text='Density:')
         densityLabel.place(x=5, y=10)
-        self.densityValLabel_in_details = Label(currentDetailsFrame, textvariable=str(self.density))
-        self.densityValLabel_in_details.place(x=35, y=10)
+        self.densityValLabel_in_details = Label(contFrameDetails, textvariable=str(self.density))
+        self.densityValLabel_in_details.place(x=80, y=10)
 
-        tanninsValLabel = Label(currentDetailsFrame, text='Tnn: ')
-        tanninsValLabel.place(x=5, y=30)
-        tanninsValLabel = Label(currentDetailsFrame, textvariable=str(self.tannins))
-        tanninsValLabel.place(x=35, y=30)
+        tanninsValLabel = Label(contFrameDetails, text='Tannins:')
+        tanninsValLabel.place(x=5, y=40)
+        self.tanninsValLabel_in_details = Label(contFrameDetails, textvariable=str(self.tannins))
+        self.tanninsValLabel_in_details.place(x=80, y=40)
 
-        colorValLabel = Label(currentDetailsFrame, text='Clr: ')
-        colorValLabel.place(x=5, y=50)
-        colorValLabel = Label(currentDetailsFrame, textvariable=str(self.color))
-        colorValLabel.place(x=35, y=50)
+        colorValLabel = Label(contFrameDetails, text='Color:')
+        colorValLabel.place(x=5, y=70)
+        self.colorValLabel_in_details = Label(contFrameDetails, textvariable=str(self.color))
+        self.colorValLabel_in_details.place(x=80, y=70)
 
-        temperatureValLabel = Label(currentDetailsFrame, text='Tmp: ')
-        temperatureValLabel.place(x=5, y=70)
-        temperatureValLabel = Label(currentDetailsFrame, textvariable=str(self.temperature))
-        temperatureValLabel.place(x=35, y=70)
+        temperatureValLabel = Label(contFrameDetails, text='Temerature:')
+        temperatureValLabel.place(x=5, y=100)
+        self.temperatureValLabel_in_details = Label(contFrameDetails, textvariable=str(self.temperature))
+        self.temperatureValLabel_in_details.place(x=80, y=100)
 
-        canvas = FigureCanvasTkAgg(self.graph_plot, contFrameRight)
-        canvas.get_tk_widget().pack(side=tk.RIGHT, expand=True)
+        endProcessButton = Button(contFrameMain, image=self.end_process_photo, command=lambda: self.endProcess(self.rootCont))
+        endProcessButton.place(x=63, y=110)
+        # TODO: check what the problem in the animations is.
+        canvas = FigureCanvasTkAgg(self.graph_plot, contFrameGraphs)
+        canvas.get_tk_widget().pack(side=tk.LEFT, expand=True)
         self.ani221 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_221, self.data_221, 1), interval=self.animationInterval)
         self.ani222 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_222, self.data_222, 2), interval=self.animationInterval)
         self.ani223 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_223, self.data_223, 3), interval=self.animationInterval)
         self.ani224 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_224, self.data_224, 4), interval=self.animationInterval)
-
-        endProcessButton = Button(self.rootCont, text='End Process', command=lambda: self.endProcess(self.rootCont))
-        endProcessButton.place(x=60, y=600)
-
-        # rootCont.mainloop()
 
         def onExit():
             self.logger.removeHandler(self.text_handler)
@@ -349,8 +457,8 @@ class Container:
         sub_plot.clear()
         sub_plot.set_title(SENSORS[sensor_type_index-1])
         self.graph_plot.subplots_adjust(hspace=.5)
-        sub_plot.plot(xList, yList, '#00A3E0', label='Expected')
-        sub_plot.plot(xdynList, ydynList, '#183A54', label='Observed')
+        sub_plot.plot(xList, yList, EXPECTEDLINECOLOR, label='Expected')
+        sub_plot.plot(xdynList, ydynList, OBSERVEDLINECOLOR, label='Observed')
         sub_plot.legend(loc='upper center', bbox_to_anchor=(0.5, -0.1), ncol=5)
 
     # SETTERS:

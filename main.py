@@ -16,6 +16,7 @@ allContainers = []
 labelsContainers = {}
 num_of_containers = 10
 BACKGROUND = '#37474f'
+FONTITLE = '#FFD966'
 
 ANIMATION_INTERVAL = 0.5
 # tasks['long'] = TaskPlan("long", exampleTasks.getLong(), 14)
@@ -31,7 +32,6 @@ root.wm_title("Smart winery app")
 
 mainFrame = Frame(root, width=1000, height=600, bg=BACKGROUND)
 mainFrame.pack()
-
 
 def settings():
     #  TODO: fix up this popup
@@ -64,22 +64,26 @@ def settings():
     insertButton = Button(contFrame, text='OK', command=addDetails)
     insertButton.place(x=150, y=300)
 
-
 def swapNewForOldContainer(old_id, new_container):
     for container in allContainers:
         if container.id == old_id:
             allContainers.remove(container)
     allContainers.append(new_container)
 
+# MAIN:
 
-settingsButton = Button(mainFrame, text='settings', command=settings)
-settingsButton.place(x=10, y=10)
+titleFont = Font(family="Times New Roman", size=30)
+title = Label(mainFrame, text='WINERY DASHBOARD', background=BACKGROUND, font=titleFont, fg=FONTITLE)
+title.place(x=300, y=10)
+settingPhoto = PhotoImage(file="images/settings.png")
+settingsButton = Button(mainFrame, image=settingPhoto, command=settings)
+settingsButton.place(x=490, y=70)
+
 # creating all the containers
 for i in range(0, 5):
     for j in range(0, 2):
         id = (i+1)*(j+1)
-        place = (170 * i + 150, 250*j + 100)
+        place = (170 * i + 100, 250*j + 130)
         allContainers.append(Container(id, place, mainFrame, ANIMATION_INTERVAL))
-
 
 root.mainloop()
