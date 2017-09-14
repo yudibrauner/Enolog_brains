@@ -5,19 +5,6 @@ from random import randint, randrange, uniform  # uniform=for float range
 import time
 from container import *
 
-# TANNINS_FAST =
-# TANNINS_NORMAL =
-# TANNINS_SLOW =
-# TEMPERATURE_FAST =
-# TEMPERATURE_NORMAL =
-# TEMPERATURE_SLOW =
-# COLOR_FAST =
-# COLOR_NORMAL =
-# COLOR_SLOW =
-# DENSITY_FAST =
-# DENSITY_NORMAL =
-# DENSITY_SLOW =
-
 TRESHOLD = 1
 PROPORSION = 12
 
@@ -45,12 +32,13 @@ class DataGenerator:
         elif rand1 < 96:
             new_range = expected_dist * TRESHOLD
             new_delta = expected_dist * 0.1 + round(random.uniform(0, new_range), 2)
-        elif rand1 < 99:
-            new_range = expected_dist * TRESHOLD
-            new_delta = expected_dist * 0.2 + round(random.uniform(0, new_range), 2)
+        # elif rand1 < 99:
         else:
             new_range = expected_dist * TRESHOLD
-            new_delta = expected_dist * 0.3 + round(random.uniform(0, new_range), 2)
+            new_delta = expected_dist * 0.2 + round(random.uniform(0, new_range), 2)
+        # else:
+        #     new_range = expected_dist * TRESHOLD
+        #     new_delta = expected_dist * 0.3 + round(random.uniform(0, new_range), 2)
         rand3 = random.randint(0, 1)
         if rand3 == 0:
             return - new_delta
@@ -58,6 +46,8 @@ class DataGenerator:
             return new_delta
 
     def generateNewValue(self, prev, lst):
+        if self.run_time == len(lst): # For avoiding exceptions of out of index
+            return "end"
         expected_curr = lst[self.run_time]
         expected_prev = lst[self.run_time - 1]
         if self.run_time == 0:
@@ -74,7 +64,10 @@ class DataGenerator:
         curr_temperature = self.generateNewValue(prev_temperature, self.temperature_list)
         # new_time = float(parts[0]) + float(self.interval)
         # print('new_time: ' + str(new_time))
+        if curr_color == "end":
+            return "end"
         new_line = str(self.run_time) + ' ' + str(curr_tannins) + ' ' + str(curr_color) + ' ' + str(curr_density) + ' ' + str(curr_temperature)
+        self.container.setDateTime(datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S"))
         self.container.setTemperature(curr_temperature)
         self.container.setTannin(curr_tannins)
         self.container.setColor(curr_color)
@@ -106,11 +99,14 @@ class DataGenerator:
                 self.logger.info('[' + str(self.container.id) + '] ' + str(self.wine_name) + ' ' + self.prettyNewLine(new_line))
                 prev_line = new_line
                 new_line = self.generate_new_line(prev_line)
+                if new_line == "end":
+                    self.stay_alive = False
             time.sleep(float(self.interval))
+        self.container.fermIsFinished()
 
     def prettyNewLine(self, new_line):
         parsed = str(new_line).split(' ')
-        return 'Time: ' + parsed[0] + ' Tannins:' + parsed[1] + ' Color: ' + parsed[2] + ' Density: ' + parsed[3] + ' Temperature: ' + parsed[3]
+        return 'Time: ' + parsed[0] + ' Tannins:' + parsed[1] + ' Color: ' + parsed[2] + ' Density: ' + parsed[3] + ' Temperature: ' + parsed[4]
 
     def setInterval(self, interval):
         self.interval = interval

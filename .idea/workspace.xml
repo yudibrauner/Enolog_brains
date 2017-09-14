@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e20eacaf-528a-4e53-b315-7533990d7aac" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Enolog_brains.iml" afterPath="$PROJECT_DIR$/.idea/Enolog_brains.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="e20eacaf-528a-4e53-b315-7533990d7aac" name="Default" comment="change GUI, create generator closer, rates and more">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/helpFunctions.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images/Thumbs.db" afterPath="$PROJECT_DIR$/images/Thumbs.db" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/container.py" afterPath="$PROJECT_DIR$/container.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/Temperature_fast.txt" afterPath="$PROJECT_DIR$/data/Temperature_fast.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data_generator.py" afterPath="$PROJECT_DIR$/data_generator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/trying gui.py" afterPath="$PROJECT_DIR$/trying gui.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,57 +26,53 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="34">
+              <caret line="2" column="10" lean-forward="true" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="container.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="container.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/container.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="8" lean-forward="true" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
+            <state relative-caret-position="117">
+              <caret line="475" column="33" lean-forward="false" selection-start-line="475" selection-start-column="31" selection-end-line="475" selection-end-column="33" />
               <folding>
-                <element signature="e#2300#3006#0" expanded="false" />
-                <element signature="e#3046#3246#0" expanded="false" />
-                <element signature="e#3281#3634#0" expanded="false" />
-                <element signature="e#3670#4088#0" expanded="false" />
-                <element signature="e#4124#4869#0" expanded="false" />
-                <element signature="e#4903#5404#0" expanded="false" />
-                <element signature="e#6701#6977#0" expanded="false" />
-                <element signature="e#7235#7432#0" expanded="false" />
-                <element signature="e#7489#9013#0" expanded="false" />
-                <element signature="e#9052#9068#0" expanded="false" />
-                <element signature="e#9101#9786#0" expanded="false" />
-                <element signature="e#9839#10608#0" expanded="false" />
-                <element signature="e#10654#15403#0" expanded="false" />
-                <element signature="e#15438#15569#0" expanded="false" />
-                <element signature="e#15606#19927#0" expanded="false" />
-                <element signature="e#20064#21123#0" expanded="false" />
-                <element signature="e#21185#21209#0" expanded="false" />
-                <element signature="e#21252#21276#0" expanded="false" />
-                <element signature="e#21317#21338#0" expanded="false" />
-                <element signature="e#21383#21408#0" expanded="false" />
-                <element signature="e#21461#21494#0" expanded="false" />
-                <element signature="e#21534#21547#0" expanded="false" />
-                <element signature="e#21587#21604#0" expanded="false" />
-                <element signature="e#21654#21675#0" expanded="false" />
-                <element signature="e#21775#21803#0" expanded="false" />
-                <element signature="e#22202#22478#0" expanded="false" />
+                <element signature="e#45#60#0" expanded="true" />
+                <element signature="e#3137#3401#0" expanded="false" />
+                <element signature="e#3436#3789#0" expanded="false" />
+                <element signature="e#3825#4243#0" expanded="false" />
+                <element signature="e#4279#5024#0" expanded="false" />
+                <element signature="e#5058#5559#0" expanded="false" />
+                <element signature="e#5596#6820#0" expanded="false" />
+                <element signature="e#6856#7200#0" expanded="false" />
+                <element signature="e#7239#7420#0" expanded="false" />
+                <element signature="e#7458#7655#0" expanded="false" />
+                <element signature="e#7712#9744#0" expanded="false" />
+                <element signature="e#9783#9809#0" expanded="false" />
+                <element signature="e#9842#10527#0" expanded="false" />
+                <element signature="e#10770#11595#0" expanded="false" />
+                <element signature="e#11641#16367#0" expanded="false" />
+                <element signature="e#16402#16533#0" expanded="false" />
+                <element signature="e#16570#20970#0" expanded="false" />
+                <element signature="e#22228#22252#0" expanded="false" />
+                <element signature="e#22295#22319#0" expanded="false" />
+                <element signature="e#22360#22381#0" expanded="false" />
+                <element signature="e#22701#22714#0" expanded="false" />
+                <element signature="e#22822#22843#0" expanded="false" />
+                <element signature="e#22943#22985#0" expanded="false" />
+                <element signature="e#23490#23766#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="data_generator.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="data_generator.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/data_generator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="546">
-              <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+            <state relative-caret-position="34">
+              <caret line="88" column="19" lean-forward="true" selection-start-line="88" selection-start-column="19" selection-end-line="88" selection-end-column="19" />
               <folding>
                 <element signature="e#60#69#0" expanded="true" />
               </folding>
@@ -94,15 +91,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>log</find>
-      <find>handler</find>
-      <find>root</find>
-      <find>rootCont</find>
-      <find>END</find>
-      <find>#810d2b</find>
-      <find>'#810d2b'</find>
-      <find>810d2b</find>
-      <find>detail</find>
       <find>PROGRAMS</find>
       <find>labelFont</find>
       <find>f.ima</find>
@@ -123,6 +111,15 @@
       <find>interval</find>
       <find>datag</find>
       <find>BACKGROUND</find>
+      <find>log</find>
+      <find>self.logger</find>
+      <find>20:</find>
+      <find>time</find>
+      <find>messa</find>
+      <find>mess</find>
+      <find>print</find>
+      <find>fermI</find>
+      <find>stay_alive</find>
       <find>1:</find>
     </findStrings>
     <replaceStrings>
@@ -140,8 +137,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/gui.py" />
-        <option value="$PROJECT_DIR$/Simulator.py" />
         <option value="$PROJECT_DIR$/garbage/main.py" />
         <option value="$PROJECT_DIR$/winery.py" />
         <option value="$PROJECT_DIR$/new_main.py" />
@@ -156,7 +151,6 @@
         <option value="$PROJECT_DIR$/data/Temperature_normal.txt" />
         <option value="$PROJECT_DIR$/data/Tannins_fast.txt" />
         <option value="$PROJECT_DIR$/data/Density_fast.txt" />
-        <option value="$PROJECT_DIR$/data/Temperature_fast.txt" />
         <option value="$PROJECT_DIR$/data/Tannins_slow.txt" />
         <option value="$PROJECT_DIR$/data/Color_slow.txt" />
         <option value="$PROJECT_DIR$/data/Density_slow.txt" />
@@ -184,10 +178,15 @@
         <option value="$PROJECT_DIR$/logs/aaa_2.log" />
         <option value="$PROJECT_DIR$/logs/e_0.log" />
         <option value="$PROJECT_DIR$/new_main_II.py" />
-        <option value="$PROJECT_DIR$/trying gui.py" />
         <option value="$PROJECT_DIR$/data/Color_fast.txt" />
-        <option value="$PROJECT_DIR$/data_generator.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/data/Temperature_fast.txt" />
+        <option value="$PROJECT_DIR$/logs/longLogskghjhg_2.log" />
+        <option value="$PROJECT_DIR$/logs/longLogs/hggcjhgcf_3.log" />
+        <option value="$PROJECT_DIR$/trying gui.py" />
+        <option value="$PROJECT_DIR$/../untitled/Pharser.py" />
+        <option value="$PROJECT_DIR$/data_generator.py" />
+        <option value="$PROJECT_DIR$/email.py" />
         <option value="$PROJECT_DIR$/container.py" />
       </list>
     </option>
@@ -214,49 +213,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Smart_Winery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Smart_Winery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Smart_Winery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Smart_Winery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="images" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Smart_Winery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Smart_Winery" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -271,10 +227,25 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Smart_Winery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Smart_Winery" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/container.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Ex3A/Try1/Robot.py" />
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -648,7 +619,14 @@
       <option name="project" value="LOCAL" />
       <updated>1498019968851</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="change GUI, create generator closer, rates and more">
+      <created>1504861868940</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1504861868940</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TodoView">
@@ -711,7 +689,8 @@
     <MESSAGE value="merge with NewGUI" />
     <MESSAGE value="test for shivi" />
     <MESSAGE value="first gui changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="first gui changes" />
+    <MESSAGE value="change GUI, create generator closer, rates and more" />
+    <option name="LAST_COMMIT_MESSAGE" value="change GUI, create generator closer, rates and more" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -727,52 +706,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/data/dynamic_data/8_qwdd" />
-    <entry file="file://$PROJECT_DIR$/data/dynamic_data/0_irit" />
-    <entry file="file://$PROJECT_DIR$/data/dynamic_data/1_dwqwd" />
-    <entry file="file://$PROJECT_DIR$/logs/irit_0.log" />
-    <entry file="file://$PROJECT_DIR$/logs/111_2.log" />
-    <entry file="file://$PROJECT_DIR$/logs/1q_2.log" />
-    <entry file="file://$PROJECT_DIR$/logs/qqq_5.log" />
-    <entry file="file://$PROJECT_DIR$/logs/zzz_6.log" />
-    <entry file="file://$PROJECT_DIR$/data/dynamic_data/2_aaa" />
-    <entry file="file://$PROJECT_DIR$/logs/aaa_0.log" />
-    <entry file="file://$PROJECT_DIR$/logs/qqq_0.log" />
-    <entry file="file://$USER_HOME$/.PyCharmCE2017.1/system/python_stubs/132837046/builtins.py" />
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/logging/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="830" column="0" lean-forward="true" selection-start-line="830" selection-start-column="0" selection-end-line="831" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/python-skeletons/__builtin__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="2146" column="8" lean-forward="false" selection-start-line="2146" selection-start-column="8" selection-end-line="2146" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logs/aaa_2.log" />
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python35-32/Lib/tkinter/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="256" column="0" lean-forward="false" selection-start-line="256" selection-start-column="0" selection-end-line="256" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logs/e_0.log" />
-    <entry file="file://$PROJECT_DIR$/logs/qwe_0.log" />
-    <entry file="file://$PROJECT_DIR$/logs/u_4.log" />
-    <entry file="file://$PROJECT_DIR$/logger.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="20" column="26" lean-forward="false" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logs/333_2.log" />
-    <entry file="file://$PROJECT_DIR$/logs/cabrne_3.log" />
     <entry file="file://$PROJECT_DIR$/decider.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -800,25 +733,7 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/images/דוגמה לצורך העבודה.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/exampleTasks.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="1" lean-forward="false" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/trying gui.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="49" column="11" lean-forward="true" selection-start-line="49" selection-start-column="11" selection-end-line="53" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/images/דוגמה לצורך העבודה.png" />
     <entry file="file://$PROJECT_DIR$/images/checks.bmp">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -863,67 +778,259 @@
     <entry file="file://$PROJECT_DIR$/data/dynamic_data/4_m" />
     <entry file="file://$PROJECT_DIR$/logs/v_4.log" />
     <entry file="file://$PROJECT_DIR$/data/dynamic_data/4_v" />
-    <entry file="file://$PROJECT_DIR$/data_generator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-          <folding>
-            <element signature="e#60#69#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/wine score.jpeg">
+    <entry file="file://$PROJECT_DIR$/images/wine score.jpeg" />
+    <entry file="file://$PROJECT_DIR$/images/containerAct.png">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/data/dynamic_data/1_הנמ">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="54" lean-forward="true" selection-start-line="9" selection-start-column="54" selection-end-line="9" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/הנמ_1.log">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/asdfgh_1.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="132" lean-forward="false" selection-start-line="4" selection-start-column="132" selection-end-line="4" selection-end-column="132" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/dynamic_data/1_ghj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/ghj_1.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/taskPlan.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/exampleTasks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logger.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/winery.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="92" column="36" lean-forward="true" selection-start-line="92" selection-start-column="36" selection-end-line="92" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#23#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Temperature_slow.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Temperature_normal.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/Temperature_fast.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="5" lean-forward="false" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/typeshed/stdlib/3/datetime.pyi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/Lib/logging/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/kjghcjhv _2.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="73" lean-forward="false" selection-start-line="3" selection-start-column="73" selection-end-line="3" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/longLogskghjhg_2.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs/longLogs/hggcjhgcf_3.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="10" lean-forward="true" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Ibud1/Trying1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Ex3A/Try1/Robot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="161" column="29" lean-forward="false" selection-start-line="161" selection-start-column="25" selection-end-line="161" selection-end-column="29" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/images/containerAct.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+    <entry file="file://$PROJECT_DIR$/../Ex3A/Try1/message.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="10" lean-forward="false" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Ex3A/Try1/simulator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="13" lean-forward="false" selection-start-line="1" selection-start-column="13" selection-end-line="1" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../untitled/Pharser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28">
+          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/container.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="8" lean-forward="true" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
+        <state relative-caret-position="117">
+          <caret line="475" column="33" lean-forward="false" selection-start-line="475" selection-start-column="31" selection-end-line="475" selection-end-column="33" />
           <folding>
-            <element signature="e#2300#3006#0" expanded="false" />
-            <element signature="e#3046#3246#0" expanded="false" />
-            <element signature="e#3281#3634#0" expanded="false" />
-            <element signature="e#3670#4088#0" expanded="false" />
-            <element signature="e#4124#4869#0" expanded="false" />
-            <element signature="e#4903#5404#0" expanded="false" />
-            <element signature="e#6701#6977#0" expanded="false" />
-            <element signature="e#7235#7432#0" expanded="false" />
-            <element signature="e#7489#9013#0" expanded="false" />
-            <element signature="e#9052#9068#0" expanded="false" />
-            <element signature="e#9101#9786#0" expanded="false" />
-            <element signature="e#9839#10608#0" expanded="false" />
-            <element signature="e#10654#15403#0" expanded="false" />
-            <element signature="e#15438#15569#0" expanded="false" />
-            <element signature="e#15606#19927#0" expanded="false" />
-            <element signature="e#20064#21123#0" expanded="false" />
-            <element signature="e#21185#21209#0" expanded="false" />
-            <element signature="e#21252#21276#0" expanded="false" />
-            <element signature="e#21317#21338#0" expanded="false" />
-            <element signature="e#21383#21408#0" expanded="false" />
-            <element signature="e#21461#21494#0" expanded="false" />
-            <element signature="e#21534#21547#0" expanded="false" />
-            <element signature="e#21587#21604#0" expanded="false" />
-            <element signature="e#21654#21675#0" expanded="false" />
-            <element signature="e#21775#21803#0" expanded="false" />
-            <element signature="e#22202#22478#0" expanded="false" />
+            <element signature="e#45#60#0" expanded="true" />
+            <element signature="e#3137#3401#0" expanded="false" />
+            <element signature="e#3436#3789#0" expanded="false" />
+            <element signature="e#3825#4243#0" expanded="false" />
+            <element signature="e#4279#5024#0" expanded="false" />
+            <element signature="e#5058#5559#0" expanded="false" />
+            <element signature="e#5596#6820#0" expanded="false" />
+            <element signature="e#6856#7200#0" expanded="false" />
+            <element signature="e#7239#7420#0" expanded="false" />
+            <element signature="e#7458#7655#0" expanded="false" />
+            <element signature="e#7712#9744#0" expanded="false" />
+            <element signature="e#9783#9809#0" expanded="false" />
+            <element signature="e#9842#10527#0" expanded="false" />
+            <element signature="e#10770#11595#0" expanded="false" />
+            <element signature="e#11641#16367#0" expanded="false" />
+            <element signature="e#16402#16533#0" expanded="false" />
+            <element signature="e#16570#20970#0" expanded="false" />
+            <element signature="e#22228#22252#0" expanded="false" />
+            <element signature="e#22295#22319#0" expanded="false" />
+            <element signature="e#22360#22381#0" expanded="false" />
+            <element signature="e#22701#22714#0" expanded="false" />
+            <element signature="e#22822#22843#0" expanded="false" />
+            <element signature="e#22943#22985#0" expanded="false" />
+            <element signature="e#23490#23766#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trying gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="82" column="0" lean-forward="true" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helpFunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="106">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_generator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="88" column="19" lean-forward="true" selection-start-line="88" selection-start-column="19" selection-end-line="88" selection-end-column="19" />
+          <folding>
+            <element signature="e#60#69#0" expanded="true" />
           </folding>
         </state>
       </provider>

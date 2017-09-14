@@ -10,6 +10,8 @@ import os
 import time
 import threading
 import multiprocessing
+import tkinter.messagebox
+import helpFunctions
 
 import matplotlib.animation as animation
 import tkinter.scrolledtext as ScrolledText
@@ -35,6 +37,7 @@ EMPTY_IMAGE = "images/container.png"
 FULL_IMAGE = "images/containerAct.png"
 EMPTY_CONT_IMAGE = "images/emptyCont.png"
 FULL_CONT_IMAGE = "images/fullCont.png"
+FINISH_CONT_IMAGE = "images/finishCont.png"
 END_PROCESS_IMAGE = "images/EndProcess.png"
 #programs:
 SLOW_LIST = ('data\Tannins_slow.txt', 'data\Color_slow.txt', 'data\Density_slow.txt', 'data\Temperature_slow.txt')
@@ -90,6 +93,8 @@ class Container:
         self.density = StringVar()
         self.name = StringVar()
         self.program = StringVar()
+        self.time = StringVar()
+        self.date = StringVar()
 
     def initNones(self):
         self.image = None
@@ -169,6 +174,8 @@ class Container:
         self.color.set(NO_DETAILS)
         self.density.set(NO_DETAILS)
         self.name.set(NO_DETAILS)
+        self.time.set(NO_DETAILS)
+        self.date.set(NO_DETAILS)
         self.program.set('No Program')
         self.image = EMPTY_CONT_IMAGE
         self.setImage()
@@ -193,18 +200,28 @@ class Container:
         if program == 'Create a new ferm.':
             self.createNewProg()
         elif program == 'No Program':
-            print("Please choose a program.")
-        elif name:
+            self.mesBox("Please choose a program.", "")
+        elif name == "":
+            self.mesBox("Please enter the wine's name.", "")
+        else:
             self.name.set(name)
-            print('-> container added')
             # Configure logger
             self.logger_name = str(self.name.get()) + '_' + str(self.id)
+            self.shortLogger_name = 'S_' + str(self.name.get()) + '_' + str(self.id)
             # Add the handler to logger
             self.logger = logging.getLogger(self.logger_name)
-            logging.basicConfig(filename='logs/' + self.logger_name + '.log',
+            logging.basicConfig(filename='logs/longLogs/' + self.logger_name + '.log',
                                 level=logging.INFO,
                                 format='%(asctime)s - %(levelname)s - %(message)s')
             self.logger.info('-> container added')
+
+            # Add the handler to logger
+            self.shortLogger = logging.getLogger(self.shortLogger_name)
+            logging.basicConfig(filename='logs/shortLogs/' + self.shortLogger_name + '.log',
+                                level=logging.INFO,
+                                format='%(asctime)s - %(levelname)s - %(message)s')
+            self.shortLogger.info('-> container addedgggg')
+
             self.fillContainer()
             self.buttonFunction = self.showDetails
             self.data_221 = PROGRAMS[program][0]
@@ -215,11 +232,10 @@ class Container:
             self.generator = DataGenerator(self, self.dynamic_data, self.program.get(), PROGRAMS[self.program.get()], self.interval, self.logger)
             self.generator_thread = threading.Thread(target=self.generator.start_generating, daemon=True)
             self.generator_thread.start()
-            print('-> container added')
             rootCont.destroy()
 
     def createNewProg(self):
-        print('TODO IT')
+        self.mesBox('TODO IT', '')
 
     def addCont(self):
         self.rootCont = Toplevel()
@@ -238,6 +254,11 @@ class Container:
         insertButton = Button(contFrame, text='Insert details', command=lambda: self.addDetails(self.rootCont, nameEntry))
         insertButton.place(x=40, y=350)
 
+    def fermIsFinished(self):
+        self.image = FINISH_CONT_IMAGE
+        self.setImage()
+        helpFunctions.sendMail(self.name.get() + "in container" + str(self.id) + "is finished")
+
     def clearAllVariables(self, rootCont):
         new_container = Container(self.id, self.place, self.frame, self.interval)
         # TODO: add this new container to allContainers from main and remove previous container from there.
@@ -248,6 +269,8 @@ class Container:
         self.color.set(None)
         self.density.set(None)
         self.name.set(None)
+        self.time.set(None)
+        self.date.set(None)
         self.idLabel.place_forget()
         self.nameLabel.place_forget()
         self.temperatureValLabel.place_forget()
@@ -265,7 +288,6 @@ class Container:
             self.logger.handlers = []
             self.generator.updateLogger(self.logger)
             self.clearAllVariables(rootCont)
-            print('-> process ended')
 
             self.rootCont = Toplevel()
             self.rootCont.wm_title("Rate The Wine")
@@ -331,7 +353,7 @@ class Container:
             def geneRate(self):
                 for rate in self.rates:
                     if rate.get() == 'No Rate':
-                        print('no rate for ' + str(rate) + 'yet. TODO')
+                        self.mesBox('no rate for ' + str(rate) + 'yet.', "TODO")
 
             def calculateScore(self):
                 sum = 0
@@ -346,7 +368,7 @@ class Container:
                     print('Adding score and process to DB: ' + str(calc) + ' + ' + str(self.generator.file))
                     rootCont.destroy()
                 else:
-                    print('You did not fill all the fields -> Try Again')
+                    self.mesBox('You did not fill all the fields', 'Try Again')
             geneRateButton = Button(rateFrame, text='generate the rates', command=lambda: geneRate(self))
             geneRateButton.place(x=400, y=450)
             saveButton = Button(rateFrame, text='Save', command=lambda: addToDataBase(self.rootCont))
@@ -390,9 +412,10 @@ class Container:
 
         upContFrameDetails = Frame(contFrameMain, width=270, height=220, background='#78909C')
         upContFrameDetails.place(x=175, y=110)
-        labelHower = Label(upContFrameDetails, text='20:00:00', background='#78909C', font=labelsFont, fg='black')
-        labelHower.place(x=10, y=5)
-        labelDate = Label(upContFrameDetails, text='20.6.17', background='#78909C', font=labelsFont, fg='black')
+        # TODO: check why the time and date aren't good
+        labelTime = Label(upContFrameDetails, textvariable=str(self.time), background='#78909C', font=labelsFont, fg='black')
+        labelTime.place(x=10, y=5)
+        labelDate = Label(upContFrameDetails, textvariable=str(self.date), background='#78909C', font=labelsFont, fg='black')
         labelDate.place(x=150, y=5)
         contFrameDetails = Frame(upContFrameDetails, width=270, height=180)
         contFrameDetails.place(x=0, y=40)
@@ -477,11 +500,16 @@ class Container:
     def setTemperature(self, temperature):
         self.temperature.set(temperature)
 
+    def setDateTime(self, dateTime):
+        self.date = dateTime.split(' ')[0]
+        self.time = dateTime.split(' ')[1]
+
     def setNumber(self, num):
         self.id = num
 
     def setName(self, _name):
         self.name = _name
+
 
 # OTHER FUNCTIONS:
 
@@ -489,7 +517,7 @@ class Container:
         self.temperature -= 5
 
     def regulate(self): #TODO : ask Shivi how the regulator affects the color, density...
-        print("there's nothing yet")
+        self.mesBox("there's nothing yet", 'todo')
     #
     # def addTask(self, taskName):
     #     if taskName in TASK_NAMES:
@@ -503,6 +531,9 @@ class Container:
     #     for t in self.tasks:
     #         lst += str(t.task) + ','
     #     return lst
+
+    def mesBox(self, message, note):
+        tkinter.messagebox.showinfo("Error", message + "\n" + note)
 
     def printContainer(self):
         print('Name: ' + str(self.name.get()))
