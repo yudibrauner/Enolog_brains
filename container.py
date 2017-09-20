@@ -18,6 +18,7 @@ import tkinter.scrolledtext as ScrolledText
 import matplotlib.pyplot as plt
 
 from data_generator import *
+from sensors import *
 from tkinter import *
 from tkinter.filedialog import *
 from tkinter import messagebox
@@ -101,6 +102,8 @@ class Container:
         self.photo = None
         self.end_process_photo = None
         self.dynamic_data = None
+        self.wine_data = None
+        self.sensors_data = None
         self.generator = None
         self.logger = None
         self.logger_name = None
@@ -154,8 +157,8 @@ class Container:
     def startLabels(self):
         nameFont = Font(family="Times New Roman", size=13, weight='bold')
         labelFont = Font(family="Times New Roman", size=6)
-        self.idLabel = Label(self.specFrame, text=str(self.id) + ': ', background=BACKGROUND)
-        self.idLabel.place(x=self.place[0] + 10, y=self.place[1] - 30)
+        # self.idLabel = Label(self.specFrame, text=str(self.id) + ': ', background=BACKGROUND)
+        # self.idLabel.place(x=self.place[0] + 10, y=self.place[1] - 30)
         self.nameLabel = Label(self.specFrame, textvariable=str(self.name), font=nameFont, background=CONT_NAME_BG)
         self.nameLabel.place(x=70 - 10*len(self.name.get())/2, y=83)
         self.temperatureValLabel = Label(self.specFrame, textvariable=str(self.temperature), background=ATTRS_BG, font=labelFont)
@@ -181,7 +184,7 @@ class Container:
         self.setImage()
 
     def fillContainer(self):
-        self.updateParams()
+        #self.updateParams()
         self.isFull = True
         self.image = FULL_CONT_IMAGE
         self.buttonFunction = self.showDetails
@@ -228,10 +231,13 @@ class Container:
             self.data_222 = PROGRAMS[program][1]
             self.data_223 = PROGRAMS[program][2]
             self.data_224 = PROGRAMS[program][3]
-            self.dynamic_data = 'data/dynamic_data/' + str(self.id) + '_' + str(self.name.get())
-            self.generator = DataGenerator(self, self.dynamic_data, self.program.get(), PROGRAMS[self.program.get()], self.interval, self.logger)
+            self.dynamic_data = 'data/dynamic_data/'
+            self.wine_data = self.dynamic_data + 'generator/' + str(self.id) + '_' + str(self.name.get())
+            self.sensors_data = self.dynamic_data + 'sensors/' + str(self.id) + '_' + str(self.name.get())
+            self.generator = DataGenerator(self, self.wine_data, self.program.get(), PROGRAMS[self.program.get()], self.interval, self.logger)
             self.generator_thread = threading.Thread(target=self.generator.start_generating, daemon=True)
             self.generator_thread.start()
+            self.sensors = Sensors(self, self.generator, self.sensors_data)
             rootCont.destroy()
 
     def createNewProg(self):
@@ -468,7 +474,7 @@ class Container:
                 xList.append(float(x))
                 yList.append(float(y))
 
-        pullDynamicData = open(self.dynamic_data, 'r').read()
+        pullDynamicData = open(self.sensors_data, 'r').read()
         dynamicdataList = pullDynamicData.split('\n')
         xdynList = []
         ydynList = []

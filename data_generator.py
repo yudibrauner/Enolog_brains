@@ -23,6 +23,7 @@ class DataGenerator:
         self.color_list = list()
         self.tannin_list = list()
         self.run_time = -1
+        self.isFirstRound = True
 
     def getNewDelta(self, expected_dist):
         rand1 = randrange(1, 101)
@@ -53,7 +54,9 @@ class DataGenerator:
         if self.run_time == 0:
             expected_prev = prev
         expected_dist = expected_curr - expected_prev
-        return prev + expected_dist + self.getNewDelta(expected_dist)
+        if expected_dist == 0:
+            expected_dist = round(random.uniform(-0.1, 0.1), 2)
+        return round(prev + expected_dist + self.getNewDelta(expected_dist), 2)
 
     def generate_new_line(self, prev_line):
         parts = prev_line.split(' ')
@@ -72,6 +75,9 @@ class DataGenerator:
         self.container.setTannin(curr_tannins)
         self.container.setColor(curr_color)
         self.container.setDensity(curr_density)
+        if self.isFirstRound:  # starts sensors reading - only after first data is written
+            self.container.sensors.startReading()
+            self.isFirstRound = False
         # self.container.decider.setNewData(new_time, tannins, color, density, temperature)
         return new_line
 

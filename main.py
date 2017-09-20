@@ -18,7 +18,7 @@ num_of_containers = 10
 BACKGROUND = '#37474f'
 FONTITLE = '#FFD966'
 
-ANIMATION_INTERVAL = 0.5
+ANIMATION_INTERVAL = 1
 # tasks['long'] = TaskPlan("long", exampleTasks.getLong(), 14)
 # tasks['normal'] = TaskPlan("normal", exampleTasks.getNormal(), 10)
 # tasks['short'] = TaskPlan("short", exampleTasks.getShort(), 7)
