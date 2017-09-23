@@ -92,6 +92,10 @@ class Container:
         self.tannins = StringVar()
         self.color = StringVar()
         self.density = StringVar()
+        self.realTemperature = StringVar()
+        self.realTannins = StringVar()
+        self.realColor = StringVar()
+        self.realDensity = StringVar()
         self.name = StringVar()
         self.program = StringVar()
         self.time = StringVar()
@@ -161,13 +165,13 @@ class Container:
         # self.idLabel.place(x=self.place[0] + 10, y=self.place[1] - 30)
         self.nameLabel = Label(self.specFrame, textvariable=str(self.name), font=nameFont, background=CONT_NAME_BG)
         self.nameLabel.place(x=70 - 10*len(self.name.get())/2, y=83)
-        self.temperatureValLabel = Label(self.specFrame, textvariable=str(self.temperature), background=ATTRS_BG, font=labelFont)
+        self.temperatureValLabel = Label(self.specFrame, textvariable=str(self.realTemperature), background=ATTRS_BG, font=labelFont)
         self.temperatureValLabel.place(x=75, y=23)
-        self.densityValLabel = Label(self.specFrame, textvariable=str(self.density), background=ATTRS_BG, font=labelFont)
+        self.densityValLabel = Label(self.specFrame, textvariable=str(self.realDensity), background=ATTRS_BG, font=labelFont)
         self.densityValLabel.place(x=75, y=60)
-        self.tanninsValLabel = Label(self.specFrame, textvariable=str(self.tannins), background=ATTRS_BG, font=labelFont)
+        self.tanninsValLabel = Label(self.specFrame, textvariable=str(self.realTannins), background=ATTRS_BG, font=labelFont)
         self.tanninsValLabel.place(x=75, y=48)
-        self.colorValLabel = Label(self.specFrame, textvariable=str(self.color), background=ATTRS_BG, font=labelFont)
+        self.colorValLabel = Label(self.specFrame, textvariable=str(self.realColor), background=ATTRS_BG, font=labelFont)
         self.colorValLabel.place(x=75, y=35)
         self.end_process_photo = PhotoImage(file=END_PROCESS_IMAGE)
 
@@ -176,6 +180,10 @@ class Container:
         self.tannins.set(NO_DETAILS)
         self.color.set(NO_DETAILS)
         self.density.set(NO_DETAILS)
+        self.realTemperature.set(NO_DETAILS)
+        self.realTannins.set(NO_DETAILS)
+        self.realColor.set(NO_DETAILS)
+        self.realDensity.set(NO_DETAILS)
         self.name.set(NO_DETAILS)
         self.time.set(NO_DETAILS)
         self.date.set(NO_DETAILS)
@@ -190,12 +198,6 @@ class Container:
         self.buttonFunction = self.showDetails
         self.setImage()
         self.startLabels()
-
-    def updateParams(self):
-        self.temperature.set(random.randrange(15, 40))
-        self.tannins.set(random.randrange(4, 81))
-        self.color.set(random.randrange(1, 6))
-        self.density.set(random.randrange(970, 1300))
 
     def addDetails(self, rootCont, nameEntry):
         name = nameEntry.get()
@@ -274,6 +276,10 @@ class Container:
         self.tannins.set(None)
         self.color.set(None)
         self.density.set(None)
+        self.realTemperature.set(None)
+        self.realTannins.set(None)
+        self.realColor.set(None)
+        self.realDensity.set(None)
         self.name.set(None)
         self.time.set(None)
         self.date.set(None)
@@ -428,22 +434,22 @@ class Container:
 
         densityLabel = Label(contFrameDetails, text='Density:')
         densityLabel.place(x=5, y=10)
-        self.densityValLabel_in_details = Label(contFrameDetails, textvariable=str(self.density))
+        self.densityValLabel_in_details = Label(contFrameDetails, textvariable=str(self.realDensity))
         self.densityValLabel_in_details.place(x=80, y=10)
 
         tanninsValLabel = Label(contFrameDetails, text='Tannins:')
         tanninsValLabel.place(x=5, y=40)
-        self.tanninsValLabel_in_details = Label(contFrameDetails, textvariable=str(self.tannins))
+        self.tanninsValLabel_in_details = Label(contFrameDetails, textvariable=str(self.realTannins))
         self.tanninsValLabel_in_details.place(x=80, y=40)
 
         colorValLabel = Label(contFrameDetails, text='Color:')
         colorValLabel.place(x=5, y=70)
-        self.colorValLabel_in_details = Label(contFrameDetails, textvariable=str(self.color))
+        self.colorValLabel_in_details = Label(contFrameDetails, textvariable=str(self.realColor))
         self.colorValLabel_in_details.place(x=80, y=70)
 
         temperatureValLabel = Label(contFrameDetails, text='Temerature:')
         temperatureValLabel.place(x=5, y=100)
-        self.temperatureValLabel_in_details = Label(contFrameDetails, textvariable=str(self.temperature))
+        self.temperatureValLabel_in_details = Label(contFrameDetails, textvariable=str(self.realTemperature))
         self.temperatureValLabel_in_details.place(x=80, y=100)
 
         endProcessButton = Button(contFrameMain, image=self.end_process_photo, command=lambda: self.endProcess(self.rootCont))
@@ -505,6 +511,18 @@ class Container:
 
     def setTemperature(self, temperature):
         self.temperature.set(temperature)
+
+    def setRealTannin(self, tannin):
+        self.realTannins.set(tannin)
+
+    def setRealColor(self, color):
+        self.realColor.set(color)
+
+    def setRealDensity(self, density):
+        self.realDensity.set(density)
+
+    def setRealTemperature(self, temperature):
+        self.realTemperature.set(temperature)
 
     def setDateTime(self, dateTime):
         self.date = dateTime.split(' ')[0]

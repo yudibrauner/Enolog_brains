@@ -26,7 +26,7 @@ class Sensors:
     def readData(self):
         while self.generator.stay_alive:
             self.tannin = self.container.tannins.get()
-            print('self.container.tannins.get(): ' + self.container.tannins.get())
+            # print('self.container.tannins.get(): ' + self.container.tannins.get())
             self.color = self.container.color.get()
             self.density = self.container.density.get()
             self.temperature = self.container.temperature.get()
@@ -35,36 +35,61 @@ class Sensors:
             time.sleep(SENSORS_INTERVAL)  # Read data every SENSORS_INTERVAL seconds
 
     def addSensorError(self):
-        numOfSensors = 3
+        numOfSensors = 5
         threshold = 1
         dataValues = list()
         for sensor in self.SENSORS:
-            if sensor == self.density or sensor == self.tannin:
+            if sensor == self.density or sensor == self.tannin: # TODO: every sensor should have its own threshold
                 threshold = 10
+                # TODO: we need to create a function that finds the average of the closest 4 sensors and ignores the fifth
             for i in range(numOfSensors):
                 rand1 = randrange(1, 101)
-                print(sensor)
-                if rand1 < 90:
+                # print(sensor)
+                if rand1 < 99:  # most of the times there won't be a mistake
                     tempThresh = round(random.uniform(0, threshold), 2)
-                    print('tempThresh: ' + str(tempThresh))
                 else:
-                    tempThresh = round(random.uniform(0, threshold*1.1), 2)
-                    print('tempThresh: ' + str(tempThresh))
+                    tempThresh = round(random.uniform(0, threshold * 40), 2)
+                    # print('tempThresh: ' + str(tempThresh))
                 rand2 = random.randint(0, 1)
                 if rand2 == 0:
                     dataValues.append(sensor - tempThresh)
                 else:
                     dataValues.append(sensor + tempThresh)
-            print(' dataValues: ' + str(dataValues))
+            # print(' dataValues: ' + str(dataValues))
             sensor = round(sum(dataValues) / float(len(dataValues)), 2)
-            print('final average:' + str(sensor))
-            # time.sleep(SENSORS_INTERVAL)
+            # print('final average:' + str(sensor))
+
+
+
+
+            # dataValues = list()
+        # for sensor in self.SENSORS:
+        #     if sensor == self.density or sensor == self.tannin:
+        #         threshold = 10
+        #     for i in range(numOfSensors):
+        #         rand1 = randrange(1, 101)
+        #         # print(sensor)
+        #         if rand1 < 99: # most of the times there won't be a mistake
+        #             tempThresh = round(random.uniform(0, threshold), 2)
+        #             # print('tempThresh: ' + str(tempThresh))
+        #         else:
+        #             tempThresh = round(random.uniform(0, threshold * 40), 2)
+        #             # print('tempThresh: ' + str(tempThresh))
+        #         rand2 = random.randint(0, 1)
+        #         if rand2 == 0:
+        #             dataValues.append(sensor - tempThresh)
+        #         else:
+        #             dataValues.append(sensor + tempThresh)
+        #     # print(' dataValues: ' + str(dataValues))
+        #     sensor = round(sum(dataValues) / float(len(dataValues)), 2)
+        #     # print('final average:' + str(sensor))
+        #     # time.sleep(SENSORS_INTERVAL)
 
     def writeData(self):
         new_line = str(self.generator.run_time) + ' ' + str(self.tannin) + ' ' + str(self.color) + ' ' + str(self.density) + ' ' + str(self.temperature)
+        self.container.setRealColor(self.color)
+        self.container.setRealDensity(self.density)
+        self.container.setRealTannin(self.tannin)
+        self.container.setRealTemperature(self.temperature)
         with open(self.file, 'a') as write_file:
             write_file.write(new_line + '\n')
-
-
-
-

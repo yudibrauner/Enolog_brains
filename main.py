@@ -70,6 +70,8 @@ def swapNewForOldContainer(old_id, new_container):
             allContainers.remove(container)
     allContainers.append(new_container)
 
+def deleteLogs():
+    print("TODO")
 # MAIN:
 
 titleFont = Font(family="Times New Roman", size=30)
@@ -78,6 +80,10 @@ title.place(x=300, y=10)
 settingPhoto = PhotoImage(file="images/settings.png")
 settingsButton = Button(mainFrame, image=settingPhoto, command=settings)
 settingsButton.place(x=490, y=70)
+
+deleteButton = Button(mainFrame, text="delete all the logs", command=deleteLogs)
+deleteButton.place(x=200, y=70)
+
 
 # creating all the containers
 for i in range(0, 5):
