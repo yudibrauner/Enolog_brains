@@ -14,11 +14,11 @@ class DataGenerator:
         self.wine_name = self.container.name.get()
         self.file = file
         self.program = program
-        self.tannin, self.color, self.density, self.temperature = program_files
+        self.tannin, self.color, self.density, self.cool = program_files
         self.stay_alive = True
         self.interval = float(interval)
         self.logger = logger
-        self.temperature_list = list()
+        self.cool_list = list()
         self.density_list = list()
         self.color_list = list()
         self.tannin_list = list()
@@ -54,31 +54,49 @@ class DataGenerator:
             expected_dist = round(random.uniform(-0.1, 0.1), 2)
         return round(prev + expected_dist + self.getNewDelta(expected_dist), 2)
 
+    def generateNewTemp(self, lst):
+        if self.run_time == len(lst): # For avoiding exceptions of out of index
+            return "end"
+        expected_curr = self.container.getDefTemp()
+        dist = lst[self.run_time]
+        randPercent = randrange(1, 101)
+        randPositivity = random.randint(0, 1)
+        plus = 0.1
+        if randPositivity == 0:
+            plus *= -1
+        if randPercent < 90:
+            value = expected_curr + 0.1 * dist
+        elif randPercent < 96:
+            value = expected_curr + 0.1 * dist + plus
+        else:
+            value = expected_curr + 0.1 * dist + plus * 2
+        return value
+
     def generate_new_line(self, prev_line):
         parts = prev_line.split(' ')
-        prev_tannins, prev_color, prev_density, prev_temperature = float(parts[1]), float(parts[2]), float(parts[3]), float(parts[4])
+        prev_tannins, prev_color, prev_density, prev_cool = float(parts[1]), float(parts[2]), float(parts[3]), float(parts[4])
         curr_tannins = self.generateNewValue(prev_tannins, self.tannin_list)
         curr_color = self.generateNewValue(prev_color, self.color_list)
         curr_density = self.generateNewValue(prev_density, self.density_list)
-        curr_temperature = self.generateNewValue(prev_temperature, self.temperature_list)
-        # new_time = float(parts[0]) + float(self.interval)
-        # print('new_time: ' + str(new_time))
+        curr_cool = 0
+        curr_temp = self.generateNewTemp(self.cool_list)
         if curr_color == "end":
             return "end"
-        new_line = str(self.run_time) + ' ' + str(curr_tannins) + ' ' + str(curr_color) + ' ' + str(curr_density) + ' ' + str(curr_temperature)
+        new_line = str(self.run_time) + ' ' + str(curr_tannins) + ' ' + str(curr_color) + ' ' + str(curr_density) + ' ' + str(curr_cool)
         self.container.setDateTime(datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S"))
-        self.container.setTemperature(curr_temperature)
+        # self.container.setCool(curr_cool)
         self.container.setTannins(curr_tannins)
         self.container.setColor(curr_color)
         self.container.setDensity(curr_density)
+        self.container.setTemperature(curr_temp)
         if self.isFirstRound:  # starts sensors reading - only after first data is written
             self.container.sensors.startReading()
             self.isFirstRound = False
-        # self.container.decider.setNewData(new_time, tannins, color, density, temperature)
+        # self.container.decider.setNewData(new_time, tannins, color, density, cool)
         return new_line
 
     def createDataLists(self):
-        for (file, lst) in zip([self.tannin, self.color, self.density, self.temperature], [self.tannin_list, self.color_list, self.density_list, self.temperature_list]):
+        for (file, lst) in zip([self.tannin, self.color, self.density, self.cool], [self.tannin_list, self.color_list, self.density_list, self.cool_list]):
             with open(file, 'r') as f:
                 lines = f.readlines()
                 prev = round(float(lines[0].split(' ')[-1]), 2)
@@ -92,7 +110,7 @@ class DataGenerator:
                     prev = curr
 
     def start_generating(self):
-        new_line = '0 5 1 1110 0.5'  # time tannins color density temperature
+        new_line = '0 5 1 1110 0.5'  # time tannins color density cool
         self.createDataLists()
         while self.stay_alive:
             self.run_time += 1
@@ -108,7 +126,7 @@ class DataGenerator:
 
     def prettyNewLine(self, new_line):
         parsed = str(new_line).split(' ')
-        return 'Time: ' + parsed[0] + ' Tannins:' + parsed[1] + ' Color: ' + parsed[2] + ' Density: ' + parsed[3] + ' Temperature: ' + parsed[4]
+        return 'Time: ' + parsed[0] + ' Tannins:' + parsed[1] + ' Color: ' + parsed[2] + ' Density: ' + parsed[3] + ' Cool: ' + parsed[4]
 
     def setInterval(self, interval):
         self.interval = interval

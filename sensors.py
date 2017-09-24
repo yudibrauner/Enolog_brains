@@ -9,15 +9,15 @@ class Sensors:
     def __init__(self, container):#, generator, file):
         self.container = container
         self.generator = container.generator
-        self.sensorsNames = ["tannins", "color", "density", "temperature"]
-        self.sensors = {"tannins": 0, "color": 0, "density": 0, "temperature": 0}
+        self.sensorsNames = ["tannins", "color", "density", "cool", "temperature"]
+        self.sensors = {"tannins": 0, "color": 0, "density": 0, "cool": 0, "temperature":0}
         # the thresholds now are one percent of the distance between the max value and min value of the attribute, TODO: think of that thresholds
-        self.thresholds = {"tannins": 0.75, "color": 0.025, "density": 1.15, "temperature": 0.085}
+        self.thresholds = {"tannins": 0.75, "color": 0.025, "density": 1.15, "cool": 0.085, "temperature":0}
         self.sensorsInterval = container.sensorsInterval
         self.numOfSensors = container.numOfSensors
         self.file = container.sensors_data
         self.sensors_thread = None
-        self.decider = Decider()
+        self.decider = Decider(container)
 
     # This method is run by the data generator after first data is written to the container
     def startReading(self):
@@ -28,7 +28,12 @@ class Sensors:
         self.sensorsInterval = self.container.sensorsInterval
         while self.generator.stay_alive:
             for sensorName in self.sensorsNames:
-                self.sensors[sensorName] = self.addSensorError(sensorName)
+                if sensorName == "temperature":
+                    self.sensors[sensorName] = self.container.attr(sensorName)
+                elif sensorName == "cool":
+                    self.container.setCool(0)
+                else:
+                    self.sensors[sensorName] = self.addSensorError(sensorName)
             self.writeData()
             time.sleep(self.sensorsInterval)  # Read data every SENSORS_INTERVAL seconds
 
@@ -73,9 +78,11 @@ class Sensors:
         return outValue
 
     def writeData(self):
-        new_line = str(self.generator.run_time) + ' ' + str(self.sensors['tannins']) + ' ' + str(self.sensors['color']) + ' ' + str(self.sensors['density']) + ' ' + str(self.sensors['temperature'])
-        # print('tannins:' + str(self.sensors['tannins']) + ', color:' + str(self.sensors['color']) + ', dens:' + str(self.sensors['density']) + ', temp:' + str(self.sensors['temperature']))
+        new_line = str(self.generator.run_time) + ' ' + str(self.sensors['tannins']) + ' ' + str(self.sensors['color']) + ' ' + str(self.sensors['density']) + ' ' + str(self.sensors['cool'])
+        # print('tannins:' + str(self.sensors['tannins']) + ', color:' + str(self.sensors['color']) + ', dens:' + str(self.sensors['density']) + ', temp:' + str(self.sensors['cool']))
         for sensorName in self.sensorsNames:
             self.container.setRealValue(sensorName, self.sensors[sensorName])
         with open(self.file, 'a') as write_file:
             write_file.write(new_line + '\n')
+        self.container.checkTemp()
+        self.decider.decide()
