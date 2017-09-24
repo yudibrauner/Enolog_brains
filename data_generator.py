@@ -5,7 +5,7 @@ from random import randint, randrange, uniform  # uniform=for float range
 import time
 from container import *
 
-TRESHOLD = 1
+THRESHOLD = 1
 PROPORSION = 12
 
 class DataGenerator:
@@ -28,18 +28,14 @@ class DataGenerator:
     def getNewDelta(self, expected_dist):
         rand1 = randrange(1, 101)
         if rand1 < 90:
-            new_range = expected_dist * TRESHOLD
+            new_range = expected_dist * THRESHOLD
             new_delta = round(random.uniform(0, new_range), 2)
         elif rand1 < 96:
-            new_range = expected_dist * TRESHOLD
+            new_range = expected_dist * THRESHOLD
             new_delta = expected_dist * 0.1 + round(random.uniform(0, new_range), 2)
-        # elif rand1 < 99:
         else:
-            new_range = expected_dist * TRESHOLD
+            new_range = expected_dist * THRESHOLD
             new_delta = expected_dist * 0.2 + round(random.uniform(0, new_range), 2)
-        # else:
-        #     new_range = expected_dist * TRESHOLD
-        #     new_delta = expected_dist * 0.3 + round(random.uniform(0, new_range), 2)
         rand3 = random.randint(0, 1)
         if rand3 == 0:
             return - new_delta
@@ -72,7 +68,7 @@ class DataGenerator:
         new_line = str(self.run_time) + ' ' + str(curr_tannins) + ' ' + str(curr_color) + ' ' + str(curr_density) + ' ' + str(curr_temperature)
         self.container.setDateTime(datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S"))
         self.container.setTemperature(curr_temperature)
-        self.container.setTannin(curr_tannins)
+        self.container.setTannins(curr_tannins)
         self.container.setColor(curr_color)
         self.container.setDensity(curr_density)
         if self.isFirstRound:  # starts sensors reading - only after first data is written

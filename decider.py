@@ -4,9 +4,9 @@ from data_generator import  *
 
 class Decider:
 
-    def __init__(self, fermentation, fermentation_file):
-        self.fermentation_program = fermentation
-        self.fermentation_file = fermentation_file
+    def __init__(self):#, fermentation, fermentation_file):
+        # self.fermentation_program = fermentation
+        # self.fermentation_file = fermentation_file
         self.times = list()
         self.tannins = list()
         self.color = list()

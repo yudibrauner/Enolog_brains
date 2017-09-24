@@ -33,6 +33,9 @@ from decider import *
 # vars:
 
 NO_DETAILS = "N/A"
+SENSORS_INTERVAL = 5
+NUM_OF_SENSORS = 5
+
 # images:
 EMPTY_IMAGE = "images/container.png"
 FULL_IMAGE = "images/containerAct.png"
@@ -40,6 +43,7 @@ EMPTY_CONT_IMAGE = "images/emptyCont.png"
 FULL_CONT_IMAGE = "images/fullCont.png"
 FINISH_CONT_IMAGE = "images/finishCont.png"
 END_PROCESS_IMAGE = "images/EndProcess.png"
+SETTINGS_IMAGE = "images/settings.png"
 #programs:
 SLOW_LIST = ('data\Tannins_slow.txt', 'data\Color_slow.txt', 'data\Density_slow.txt', 'data\Temperature_slow.txt')
 NORMAL_LIST = ('data\Tannins_normal.txt', 'data\Color_normal.txt', 'data\Density_normal.txt', 'data\Temperature_normal.txt')
@@ -66,6 +70,7 @@ CONT_NAME_BG = '#78909C'
 ATTRS_BG = '#E0E0E0'
 EXPECTEDLINECOLOR = '#00A3E0'
 OBSERVEDLINECOLOR = '#183A54'
+FONTITLECOLOR = '#FFD966'
 
 class Container:
     def __init__(self, _id, _place, root, interval):
@@ -100,6 +105,8 @@ class Container:
         self.program = StringVar()
         self.time = StringVar()
         self.date = StringVar()
+        self.numOfSensors = NUM_OF_SENSORS
+        self.sensorsInterval = SENSORS_INTERVAL
 
     def initNones(self):
         self.image = None
@@ -174,6 +181,7 @@ class Container:
         self.colorValLabel = Label(self.specFrame, textvariable=str(self.realColor), background=ATTRS_BG, font=labelFont)
         self.colorValLabel.place(x=75, y=35)
         self.end_process_photo = PhotoImage(file=END_PROCESS_IMAGE)
+        self.settingPhoto = PhotoImage(file=SETTINGS_IMAGE)
 
     def initParams(self):
         self.temperature.set(NO_DETAILS)
@@ -199,8 +207,10 @@ class Container:
         self.setImage()
         self.startLabels()
 
-    def addDetails(self, rootCont, nameEntry):
+    def addDetails(self, rootCont, nameEntry, numSensorsEntry, intervalSensorsEntry):
         name = nameEntry.get()
+        numSensors = numSensorsEntry.get()
+        intervalSensors = intervalSensorsEntry.get()
         program = self.program.get()
         if program == 'Create a new ferm.':
             self.createNewProg()
@@ -209,6 +219,12 @@ class Container:
         elif name == "":
             self.mesBox("Please enter the wine's name.", "")
         else:
+            if numSensors == "":
+                numSensors = NUM_OF_SENSORS
+            if intervalSensors == "":
+                intervalSensors = SENSORS_INTERVAL
+            self.numOfSensors = int(numSensors)
+            self.sensorsInterval = int(intervalSensors)
             self.name.set(name)
             # Configure logger
             self.logger_name = str(self.name.get()) + '_' + str(self.id)
@@ -239,7 +255,7 @@ class Container:
             self.generator = DataGenerator(self, self.wine_data, self.program.get(), PROGRAMS[self.program.get()], self.interval, self.logger)
             self.generator_thread = threading.Thread(target=self.generator.start_generating, daemon=True)
             self.generator_thread.start()
-            self.sensors = Sensors(self, self.generator, self.sensors_data)
+            self.sensors = Sensors(self)#, self.generator, self.sensors_data)
             rootCont.destroy()
 
     def createNewProg(self):
@@ -248,23 +264,35 @@ class Container:
     def addCont(self):
         self.rootCont = Toplevel()
         self.rootCont.wm_title("Adding container " + str(self.id))
-        contFrame = Frame(self.rootCont, width=300, height=500)
+        contFrame = Frame(self.rootCont, width=250, height=450)
         contFrame.pack()
 
-        Label(contFrame, text='Name (wine type): ').place(x=40, y=100)
+        Label(contFrame, text='Name (wine type): ').place(x=40, y=20)
         nameEntry = Entry(contFrame)
-        nameEntry.place(x=40, y=130)
+        nameEntry.place(x=40, y=50)
 
-        Label(contFrame, text='Fermentation Program: ').place(x=40, y=160)
+        Label(contFrame, text='Fermentation Program: ').place(x=40, y=80)
         programEntry = OptionMenu(contFrame, self.program, *PROGRAMS.keys())
-        programEntry.place(x=40, y=190)
+        programEntry.place(x=40, y=100)
 
-        insertButton = Button(contFrame, text='Insert details', command=lambda: self.addDetails(self.rootCont, nameEntry))
-        insertButton.place(x=40, y=350)
+        Label(contFrame, text='How many sensors?').place(x=40, y=140)
+        numSensorsEntry = Entry(contFrame)
+        numSensorsEntry.place(x=40, y=170)
+
+        Label(contFrame, text='How much time to sense?').place(x=40, y=200)
+        intervalSensorsEntry = Entry(contFrame)
+        intervalSensorsEntry.place(x=40, y=230)
+
+        insertButton = Button(contFrame, text='Insert details', command=lambda: self.addDetails(self.rootCont, nameEntry, numSensorsEntry, intervalSensorsEntry))
+        insertButton.place(x=40, y=400)
 
     def fermIsFinished(self):
         self.image = FINISH_CONT_IMAGE
         self.setImage()
+        self.tannins.set(NO_DETAILS)
+        self.temperature.set(NO_DETAILS)
+        self.density.set(NO_DETAILS)
+        self.color.set(NO_DETAILS)
         helpFunctions.sendMail(self.name.get() + "in container" + str(self.id) + "is finished")
 
     def clearAllVariables(self, rootCont):
@@ -292,6 +320,24 @@ class Container:
         self.logger = None
         self.generator.stay_alive = False
         rootCont.destroy()
+
+    def settingsProcess(self, rootCont):
+        self.rootCont = Toplevel()
+        self.rootCont.wm_title("Settings")
+        settingsFrame = Frame(self.rootCont, width=200, height=300)
+        settingsFrame.pack()
+        Label(settingsFrame, text='How much time to sense?').place(x=40, y=20)
+        intervalSensorsEntry = Entry(settingsFrame)
+        intervalSensorsEntry.place(x=40, y=50)
+
+        insertButton = Button(settingsFrame, text='Insert details', command=lambda: self.changeDetails(self.rootCont, intervalSensorsEntry))
+        insertButton.place(x=40, y=250)
+
+    def changeDetails(self, rootCont, intervalSensorsEntry):
+        intervalSensors = intervalSensorsEntry.get()
+        if intervalSensors != '':
+            self.sensorsInterval = int(intervalSensors)
+            rootCont.destroy()
 
     def endProcess(self, rootCont):
         msgBox = messagebox.askyesno('End Process ' + str(self.id) + ': ' + str(self.name.get()), 'Are you sure you want to end this process?', master=rootCont)
@@ -401,8 +447,11 @@ class Container:
         contFrameMain = Frame(self.rootCont, width=1250, height=700, bg='#37474f')
         contFrameMain.pack()
         titleFont = Font(family="Times New Roman", size=30)
-        title = Label(contFrameMain, text=self.name.get(), background=BACKGROUND, font=titleFont, fg='#FFD966')
+        title = Label(contFrameMain, text=self.name.get(), background=BACKGROUND, font=titleFont, fg=FONTITLECOLOR)
         title.place(x=550, y=10)
+        subTitleFont = Font(family="Times New Roman", size=15)
+        subTitle = Label(contFrameMain, text=self.program.get(), background=BACKGROUND, font=subTitleFont, fg=FONTITLECOLOR)
+        subTitle.place(x=580, y=60)
         contFrameGraphs = Frame(contFrameMain, width=650, height=535)
         contFrameGraphs.place(x=490, y=110)
 
@@ -454,7 +503,10 @@ class Container:
 
         endProcessButton = Button(contFrameMain, image=self.end_process_photo, command=lambda: self.endProcess(self.rootCont))
         endProcessButton.place(x=63, y=110)
-        # TODO: check what the problem in the animations is.
+
+        settingsButton = Button(contFrameMain, image=self.settingPhoto, command=lambda: self.settingsProcess(self.rootCont))
+        settingsButton.place(x=63, y=210)
+
         canvas = FigureCanvasTkAgg(self.graph_plot, contFrameGraphs)
         canvas.get_tk_widget().pack(side=tk.LEFT, expand=True)
         self.ani221 = animation.FuncAnimation(self.graph_plot, self.animate, fargs=(self.sub_plot_221, self.data_221, 1), interval=self.animationInterval)
@@ -500,7 +552,7 @@ class Container:
     def setInterval(self, interval):
         self.interval = interval
 
-    def setTannin(self, tannin):
+    def setTannins(self, tannin):
         self.tannins.set(tannin)
 
     def setColor(self, color):
@@ -512,7 +564,7 @@ class Container:
     def setTemperature(self, temperature):
         self.temperature.set(temperature)
 
-    def setRealTannin(self, tannin):
+    def setRealTannins(self, tannin):
         self.realTannins.set(tannin)
 
     def setRealColor(self, color):
@@ -523,6 +575,16 @@ class Container:
 
     def setRealTemperature(self, temperature):
         self.realTemperature.set(temperature)
+
+    def setRealValue(self, nameOfAttr, value):
+        if nameOfAttr == "density":
+            self.setRealDensity(value)
+        elif nameOfAttr == "color":
+            self.setRealColor(value)
+        elif nameOfAttr == "tannins":
+            self.setRealTannins(value)
+        elif nameOfAttr == "temperature":
+            self.setRealTemperature(value)
 
     def setDateTime(self, dateTime):
         self.date = dateTime.split(' ')[0]
@@ -535,6 +597,17 @@ class Container:
         self.name = _name
 
 
+#GETTERS:
+
+    def attr(self, attrName):
+        if attrName == "density":
+            return self.density.get()
+        elif attrName == "temperature":
+            return self.temperature.get()
+        elif attrName == "color":
+            return self.color.get()
+        elif attrName == "tannins":
+            return self.tannins.get()
 # OTHER FUNCTIONS:
 
     def cool(self):
