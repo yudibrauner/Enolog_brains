@@ -70,6 +70,7 @@ CONT_NAME_BG = '#78909C'
 ATTRS_BG = '#E0E0E0'
 EXPECTEDLINECOLOR = '#00A3E0'
 OBSERVEDLINECOLOR = '#183A54'
+REALDATALINECOLOR = '#D3D3D3'
 FONTITLECOLOR = '#FFD966'
 
 class Container:
@@ -188,16 +189,16 @@ class Container:
         self.settingPhoto = PhotoImage(file=SETTINGS_IMAGE)
 
     def initParams(self):
-        self.cool.set(NO_DETAILS)
-        self.tannins.set(NO_DETAILS)
-        self.color.set(NO_DETAILS)
-        self.density.set(NO_DETAILS)
-        self.temperature.set(NO_DETAILS)
-        self.realTemperature.set(NO_DETAILS)
-        self.realCool.set(NO_DETAILS)
-        self.realTannins.set(NO_DETAILS)
-        self.realColor.set(NO_DETAILS)
-        self.realDensity.set(NO_DETAILS)
+        self.cool.set(NO_DETAILS)                # generator data
+        self.tannins.set(NO_DETAILS)             # generator data
+        self.color.set(NO_DETAILS)               # generator data
+        self.density.set(NO_DETAILS)             # generator data
+        self.temperature.set(NO_DETAILS)         # generator data
+        self.realTemperature.set(NO_DETAILS)     # sensor data
+        self.realCool.set(NO_DETAILS)            # sensor data
+        self.realTannins.set(NO_DETAILS)         # sensor data
+        self.realColor.set(NO_DETAILS)           # sensor data
+        self.realDensity.set(NO_DETAILS)         # sensor data
         self.name.set(NO_DETAILS)
         self.time.set(NO_DETAILS)
         self.date.set(NO_DETAILS)
@@ -560,11 +561,23 @@ class Container:
                 parts = eachLine.split(' ')
                 xdynList.append(float(parts[0]))
                 ydynList.append(float(parts[sensor_type_index]))
+
+        pullDynamicRealData = open(self.wine_data, 'r').read()
+        dynamicRealdataList = pullDynamicRealData.split('\n')
+        xdynRealList = []
+        ydynRealList = []
+        for eachLine in dynamicRealdataList:
+            if len(eachLine) > 1:
+                parts = eachLine.split(' ')
+                xdynRealList.append(float(parts[0]))
+                ydynRealList.append(float(parts[sensor_type_index]))
+
         sub_plot.clear()
         sub_plot.set_title(SENSORS[sensor_type_index-1])
         self.graph_plot.subplots_adjust(hspace=.5)
         sub_plot.plot(xList, yList, EXPECTEDLINECOLOR, label='Expected')
         sub_plot.plot(xdynList, ydynList, OBSERVEDLINECOLOR, label='Observed')
+        sub_plot.plot(xdynRealList, ydynRealList, REALDATALINECOLOR)
         sub_plot.legend(loc='upper center', bbox_to_anchor=(0.5, -0.1), ncol=5)
 
     # SETTERS:

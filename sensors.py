@@ -12,7 +12,7 @@ class Sensors:
         self.sensorsNames = ["tannins", "color", "density", "cool", "temperature"]
         self.sensors = {"tannins": 0, "color": 0, "density": 0, "cool": 0, "temperature":0}
         # the thresholds now are one percent of the distance between the max value and min value of the attribute, TODO: think of that thresholds
-        self.thresholds = {"tannins": 0.75, "color": 0.025, "density": 1.15, "cool": 0.085, "temperature":0}
+        self.thresholds = {"tannins": 1.2, "color": 0.025, "density": 1.5, "cool": 0.085, "temperature":0}
         self.sensorsInterval = container.sensorsInterval
         self.numOfSensors = container.numOfSensors
         self.file = container.sensors_data
