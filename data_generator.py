@@ -79,7 +79,7 @@ class DataGenerator:
         curr_color = self.generateNewValue(prev_color, self.color_list)
         curr_density = self.generateNewValue(prev_density, self.density_list)
         curr_cool = 0
-        curr_temp = self.generateNewTemp(self.cool_list)
+        curr_temp = round(self.generateNewTemp(self.cool_list), 2)
         if curr_color == "end":
             return "end"
         new_line = str(self.run_time) + ' ' + str(curr_tannins) + ' ' + str(curr_color) + ' ' + str(curr_density) + ' ' + str(curr_cool)
@@ -116,7 +116,7 @@ class DataGenerator:
             self.run_time += 1
             with open(self.file, 'a') as write_file:
                 write_file.write(new_line + '\n')
-                self.logger.info('[' + str(self.container.id) + '] ' + str(self.wine_name) + ' ' + self.prettyNewLine(new_line))
+                # self.logger.info('[' + str(self.container.id) + '] ' + str(self.wine_name) + ' ' + self.prettyNewLine(new_line))
                 prev_line = new_line
                 new_line = self.generate_new_line(prev_line)
                 if new_line == "end":

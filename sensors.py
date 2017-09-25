@@ -6,9 +6,10 @@ from decider import *
 
 
 class Sensors:
-    def __init__(self, container):#, generator, file):
+    def __init__(self, container, logger):#, generator, file):
         self.container = container
         self.generator = container.generator
+        self.logger = logger
         self.sensorsNames = ["tannins", "color", "density", "cool", "temperature"]
         self.sensors = {"tannins": 0, "color": 0, "density": 0, "cool": 0, "temperature":0}
         # the thresholds now are one percent of the distance between the max value and min value of the attribute, TODO: think of that thresholds
@@ -84,5 +85,9 @@ class Sensors:
             self.container.setRealValue(sensorName, self.sensors[sensorName])
         with open(self.file, 'a') as write_file:
             write_file.write(new_line + '\n')
+        self.logger.info('[' + str(self.container.id) + '] ' + str(self.container.name.get()) + ' ' + new_line)
         self.container.checkTemp()
         self.decider.decide()
+
+    def setSensorsInterval(self):
+        self.sensorsInterval = self.container.sensorsInterval

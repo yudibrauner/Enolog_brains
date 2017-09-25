@@ -49,6 +49,7 @@ SLOW_LIST = ('data\Tannins_slow.txt', 'data\Color_slow.txt', 'data\Density_slow.
 NORMAL_LIST = ('data\Tannins_normal.txt', 'data\Color_normal.txt', 'data\Density_normal.txt', 'data\Cool_normal.txt')
 FAST_LIST = ('data\Tannins_fast.txt', 'data\Color_fast.txt', 'data\Density_fast.txt', 'data\Cool_fast.txt')
 PROGRAMS = {'Slow': SLOW_LIST, 'Normal': NORMAL_LIST, 'Fast': FAST_LIST, 'Create a new ferm.': 'new'}
+LOGTYPES = {'Short log': 'sort', 'Long log': 'long', 'Both': 'both'}
 # rates:
 COLOR_QUALITY = {'1': 1, '2': 2, '3': 3, '4': 4, '5': 5}
 COLOR_POWER = {'2': 2, '4': 4, '6': 6, '8': 8, '10': 10}
@@ -92,6 +93,7 @@ class Container:
         self.initGraphs()
         self.initParams()
         self.frame.grid(row=0, column=0, columnspan=2)
+        self.showingLog = self.shortLogger
 
     def initStringVars(self):
         self.temperature = StringVar()
@@ -108,6 +110,7 @@ class Container:
         self.program = StringVar()
         self.time = StringVar()
         self.date = StringVar()
+        self.logTypes = StringVar()
         self.numOfCools = 0
         self.numOfRegulations = 0
         self.numOfSensors = NUM_OF_SENSORS
@@ -123,10 +126,14 @@ class Container:
         self.generator = None
         self.logger = None
         self.logger_name = None
+        self.shortLogger = None
+        self.shortLogger_name = None
         self.generator_thread = None
         self.decider = None
         self.text_handler = None
-        self.st = None
+        # self.st = ScrolledText.ScrolledText(wrap=tk.WORD, width=45, height=20)
+        # self.st.configure(font='TkFixedFont')
+        # self.st.grid(column=0, row=1, sticky='w', columnspan=10)
         self.rootCont = None
 
     def initLabels(self):
@@ -236,18 +243,22 @@ class Container:
             # Configure logger
             self.logger_name = str(self.name.get()) + '_' + str(self.id)
             self.shortLogger_name = 'S_' + str(self.name.get()) + '_' + str(self.id)
+
             # Add the handler to logger
+            self.setup_logger(str(self.logger_name), 'logs/longLogs/' + str(self.logger_name) + '.log')
             self.logger = logging.getLogger(self.logger_name)
-            logging.basicConfig(filename='logs/longLogs/' + self.logger_name + '.log',
-                                level=logging.INFO,
-                                format='%(asctime)s - %(levelname)s - %(message)s')
+            # self.logger = logging.getLogger(self.logger_name)
+            # logging.basicConfig(filename='logs/longLogs/' + self.logger_name + '.log',
+            #                     level=logging.INFO,
+            #                     format='%(asctime)s - %(levelname)s - %(message)s')
             self.logger.info('-> container added')
 
             # Add the handler to logger
-            self.shortLogger = logging.getLogger(self.shortLogger_name)
-            logging.basicConfig(filename='logs/shortLogs/' + self.shortLogger_name + '.log',
-                                level=logging.INFO,
-                                format='%(asctime)s - %(levelname)s - %(message)s')
+            self.setup_logger(str(self.shortLogger_name), 'logs/shortLogs/' + str(self.shortLogger_name) + '.log')
+            self.shortLogger = logging.getLogger(self.shortLogger_name)            # self.shortLogger = logging.getLogger(self.shortLogger_name)
+            # logging.basicConfig(filename='logs/shortLogs/' + self.shortLogger_name + '.log',
+            #                     level=logging.INFO,
+            #                     format='%(asctime)s - %(levelname)s - %(message)s')
             self.shortLogger.info('-> container addedgggg')
 
             self.fillContainer()
@@ -262,7 +273,7 @@ class Container:
             self.generator = DataGenerator(self, self.wine_data, self.program.get(), PROGRAMS[self.program.get()], self.interval, self.logger)
             self.generator_thread = threading.Thread(target=self.generator.start_generating, daemon=True)
             self.generator_thread.start()
-            self.sensors = Sensors(self)#, self.generator, self.sensors_data)
+            self.sensors = Sensors(self, self.logger)#, self.generator, self.sensors_data)
             rootCont.destroy()
 
     def createNewProg(self):
@@ -271,7 +282,7 @@ class Container:
     def addCont(self):
         self.rootCont = Toplevel()
         self.rootCont.wm_title("Adding container " + str(self.id))
-        contFrame = Frame(self.rootCont, width=250, height=450)
+        contFrame = Frame(self.rootCont, width=270, height=450)
         contFrame.pack()
 
         Label(contFrame, text='Name (wine type): ').place(x=40, y=20)
@@ -282,15 +293,17 @@ class Container:
         programEntry = OptionMenu(contFrame, self.program, *PROGRAMS.keys())
         programEntry.place(x=40, y=100)
 
-        Label(contFrame, text='How many sensors?').place(x=40, y=140)
+        Label(contFrame, text='Number of sensors in cluster:').place(x=40, y=140)
         numSensorsEntry = Entry(contFrame)
         numSensorsEntry.place(x=40, y=170)
+        numSensorsEntry.insert(0, str(NUM_OF_SENSORS))
 
-        Label(contFrame, text='How much time to sense?').place(x=40, y=200)
+        Label(contFrame, text='Sensors reading interval [sec]:').place(x=40, y=200)
         intervalSensorsEntry = Entry(contFrame)
         intervalSensorsEntry.place(x=40, y=230)
+        intervalSensorsEntry.insert(0, '5')
 
-        insertButton = Button(contFrame, text='Insert details', command=lambda: self.addDetails(self.rootCont, nameEntry, numSensorsEntry, intervalSensorsEntry))
+        insertButton = Button(contFrame, text='Start Fermentation', command=lambda: self.addDetails(self.rootCont, nameEntry, numSensorsEntry, intervalSensorsEntry))
         insertButton.place(x=40, y=400)
 
     def fermIsFinished(self):
@@ -333,22 +346,44 @@ class Container:
         rootCont.destroy()
 
     def settingsProcess(self, rootCont):
-        self.rootCont = Toplevel()
-        self.rootCont.wm_title("Settings")
-        settingsFrame = Frame(self.rootCont, width=200, height=300)
+        rootCont = Tk()
+        # self.rootCont = Toplevel()
+        # self.rootCont.wm_title("Settings")
+        settingsFrame = Frame(rootCont, width=270, height=300)
         settingsFrame.pack()
-        Label(settingsFrame, text='How much time to sense?').place(x=40, y=20)
+        Label(settingsFrame, text='Set sensors reading interval [sec]:').place(x=40, y=20)
         intervalSensorsEntry = Entry(settingsFrame)
         intervalSensorsEntry.place(x=40, y=50)
+        intervalSensorsEntry.insert(0, str(self.sensorsInterval))
 
-        insertButton = Button(settingsFrame, text='Insert details', command=lambda: self.changeDetails(self.rootCont, intervalSensorsEntry))
+        Label(rootCont, text='Log Type: ').place(x=40, y=80)
+        logTypeEntry = OptionMenu(settingsFrame, self.logTypes, *LOGTYPES.keys())
+        logTypeEntry.place(x=40, y=100)
+
+        insertButton = Button(settingsFrame, text='Set', command=lambda: self.changeDetails(rootCont, intervalSensorsEntry))
         insertButton.place(x=40, y=250)
 
     def changeDetails(self, rootCont, intervalSensorsEntry):
         intervalSensors = intervalSensorsEntry.get()
+        logEntry = self.logTypes.get()
+        if str(logEntry) == 'Short log':
+            self.logger.removeHandler(self.text_handler)
+            self.shortLogger.addHandler(self.text_handler)
+        elif str(logEntry) == 'Long log':
+            self.logger.addHandler(self.text_handler)
+            self.shortLogger.removeHandler(self.text_handler)
+        elif str(logEntry) == 'Both':
+            self.logger.addHandler(self.text_handler)
+            self.shortLogger.addHandler(self.text_handler)
+
         if intervalSensors != '':
             self.sensorsInterval = int(intervalSensors)
+            self.sensors.setSensorsInterval()
+            self.shortLogger.info('Sensors Interval Changed to ' + str(self.sensorsInterval))
             rootCont.destroy()
+        else:
+            msgBox = messagebox.showwarning(title='Interval Missing', message='Please add interval')
+
 
     def endProcess(self, rootCont):
         msgBox = messagebox.askyesno('End Process ' + str(self.id) + ': ' + str(self.name.get()), 'Are you sure you want to end this process?', master=rootCont)
@@ -364,52 +399,52 @@ class Container:
             rateFrame.pack()
             self.initRates()
 
-            showFrame = LabelFrame(self.rootCont, width=500, height=80, text="מראה")
+            showFrame = LabelFrame(self.rootCont, width=500, height=80, text="Appearance")
             showFrame.place(x=20, y=20)
-            Label(showFrame, text='צבע איכות').place(x=10, y=10)
+            Label(showFrame, text='Color quality').place(x=10, y=10)
             CQEntry = OptionMenu(showFrame, self.rates[0], *COLOR_QUALITY.keys())
             CQEntry.place(x=100, y=10)
-            Label(showFrame, text='צבע עוצמה').place(x=260, y=10)
+            Label(showFrame, text='Color strength').place(x=260, y=10)
             CPEntry = OptionMenu(showFrame, self.rates[1], *COLOR_POWER.keys())
             CPEntry.place(x=350, y=10)
 
-            smellFrame = LabelFrame(self.rootCont, width=500, height=80, text="ריח")
+            smellFrame = LabelFrame(self.rootCont, width=500, height=80, text="Fragrance")
             smellFrame.place(x=20, y=120)
-            Label(smellFrame, text='ריכוזיות').place(x=10, y=10)
+            Label(smellFrame, text='Centralization').place(x=10, y=10)
             SOEntry = OptionMenu(smellFrame, self.rates[2], *SMELL_OZ.keys())
             SOEntry.place(x=60, y=10)
-            Label(smellFrame, text='מקוריות').place(x=150, y=10)
+            Label(smellFrame, text='Originality').place(x=150, y=10)
             SSEntry = OptionMenu(smellFrame, self.rates[3], *SMELL_SOURCE.keys())
             SSEntry.place(x=200, y=10)
-            Label(smellFrame, text='איכות').place(x=290, y=10)
+            Label(smellFrame, text='Quality').place(x=290, y=10)
             SQEntry = OptionMenu(smellFrame, self.rates[4], *SMELL_QUALITY.keys())
             SQEntry.place(x=340, y=10)
 
-            tasteFrame = LabelFrame(self.rootCont, width=500, height=80, text="טעם")
+            tasteFrame = LabelFrame(self.rootCont, width=500, height=80, text="Flavor")
             tasteFrame.place(x=20, y=220)
-            Label(tasteFrame, text='ריכוזיות').place(x=20, y=3)
+            Label(tasteFrame, text='Centralization').place(x=20, y=3)
             TOEntry = OptionMenu(tasteFrame, self.rates[5], *TASTE_OZ.keys())
             TOEntry.place(x=20, y=25)
-            Label(tasteFrame, text='מקוריות').place(x=120, y=3)
+            Label(tasteFrame, text='Originality').place(x=120, y=3)
             TSEntry = OptionMenu(tasteFrame, self.rates[6], *TASTE_SOURCE.keys())
             TSEntry.place(x=120, y=25)
-            Label(tasteFrame, text='איכות').place(x=220, y=3)
+            Label(tasteFrame, text='Quality').place(x=220, y=3)
             TQEntry = OptionMenu(tasteFrame, self.rates[7], *TASTE_QUALITY.keys())
             TQEntry.place(x=220, y=25)
-            Label(tasteFrame, text='שיוריות').place(x=320, y=3)
+            Label(tasteFrame, text='Residual').place(x=320, y=3)
             THEntry = OptionMenu(tasteFrame, self.rates[8], *TASTE_SHIUR.keys())
             THEntry.place(x=320, y=25)
 
-            generalFrame = LabelFrame(self.rootCont, width=500, height=80, text="הערכה כללית")
+            generalFrame = LabelFrame(self.rootCont, width=500, height=80, text="General Evaluation")
             generalFrame.place(x=20, y=320)
-            Label(generalFrame, text='דירוג כללי').place(x=20, y=20)
+            Label(generalFrame, text='General ranking').place(x=20, y=20)
             GEntry = OptionMenu(generalFrame, self.rates[9], *GENERAL_RATE.keys())
             GEntry.place(x=100, y=20)
-            Label(generalFrame, text='Note:').place(x=200, y=20)
+            Label(generalFrame, text='Notes:').place(x=200, y=20)
             scoreEntry = Entry(generalFrame)
             scoreEntry.place(x=300, y=20)
 
-            Label(rateFrame, text='Vinemaker:').place(x=20, y=420)
+            Label(rateFrame, text='Vintner:').place(x=20, y=420)
             nameEntry = Entry(rateFrame)
             nameEntry.place(x=80, y=420)
 
@@ -447,7 +482,7 @@ class Container:
 
     def initRates(self):
         self.rates = []
-        for i in range (0, 10):
+        for i in range(0, 10):
             self.rates.append(StringVar())
             self.rates[i].set('No Rate')
 
@@ -472,15 +507,17 @@ class Container:
         labelProcessLog = Label(upContFrameLog, text='Process Log', background=CONT_NAME_BG, font=labelsFont, fg='black')
         labelProcessLog.place(x=130, y=7)
         contFrameLog = Frame(upContFrameLog, width=385, height=250)
-        contFrameLog.place(x=0, y=50)
+        contFrameLog.pack(fill='both', expand='yes')
+
         # Add text widget to display logging info
-        self.st = ScrolledText.ScrolledText(contFrameLog)  # , state='disabled')
+        self.st = ScrolledText.ScrolledText(contFrameLog, wrap=tk.WORD, width=45, height=20)
         self.st.configure(font='TkFixedFont')
         self.st.grid(column=0, row=1, sticky='w', columnspan=10)
 
         # Create textLogger
         self.text_handler = TextHandler(self.st)
-        self.logger.addHandler(self.text_handler)
+        #self.logger.addHandler(self.text_handler)
+        self.shortLogger.addHandler(self.text_handler)
 
         upContFrameDetails = Frame(contFrameMain, width=270, height=220, background=CONT_NAME_BG)
         upContFrameDetails.place(x=175, y=110)
@@ -662,8 +699,8 @@ class Container:
     def coolAct(self):
         self.numOfCools += 1
         self.cool.set(int(self.cool.get()) + 1)
-        self.temperature.set(float(self.temperature.get()) - 0.1)
-        print(self.temperature.get())
+        self.temperature.set(round(float(self.temperature.get()) - 0.1, 2))
+        #print(self.temperature.get())
 
     def regulate(self): #TODO : ask Shivi how the regulator affects the color, density...
         self.numOfRegulations += 1
@@ -691,3 +728,16 @@ class Container:
         print('Creation date&time: ' + str(self.startDateTime))
         print('Tasks: ' + self.tasksToString())
         print('cool: ' + str(self.cool.get()) + '°C')
+
+    def setup_logger(self, logger_name, log_file, level=logging.INFO):
+        l = logging.getLogger(logger_name)
+        formatter = logging.Formatter('%(asctime)s : %(message)s')
+        fileHandler = logging.FileHandler(log_file, mode='w')
+        fileHandler.setFormatter(formatter)
+        streamHandler = logging.StreamHandler()
+        streamHandler.setFormatter(formatter)
+
+        l.setLevel(level)
+        l.addHandler(fileHandler)
+        l.addHandler(streamHandler)
+

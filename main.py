@@ -79,7 +79,7 @@ title = Label(mainFrame, text='WINERY DASHBOARD', background=BACKGROUND, font=ti
 title.place(x=300, y=10)
 settingPhoto = PhotoImage(file="images/settings.png")
 settingsButton = Button(mainFrame, image=settingPhoto, command=settings)
-settingsButton.place(x=490, y=70)
+# settingsButton.place(x=490, y=70)
 
 deleteButton = Button(mainFrame, text="delete all the logs", command=deleteLogs)
 deleteButton.place(x=200, y=70)
