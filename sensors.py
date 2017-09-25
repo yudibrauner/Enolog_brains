@@ -79,14 +79,17 @@ class Sensors:
         return outValue
 
     def writeData(self):
-        new_line = str(self.generator.run_time) + ' ' + str(self.sensors['tannins']) + ' ' + str(self.sensors['color']) + ' ' + str(self.sensors['density']) + ' ' + str(self.sensors['cool'])
+        curCool = str(self.container.attr("cool"))
+        if curCool == "N/A":
+            curCool = "0"
+        new_line = str(self.generator.run_time) + ' ' + str(self.sensors['tannins']) + ' ' + str(self.sensors['color']) + ' ' + str(self.sensors['density']) + ' ' + curCool
         # print('tannins:' + str(self.sensors['tannins']) + ', color:' + str(self.sensors['color']) + ', dens:' + str(self.sensors['density']) + ', temp:' + str(self.sensors['cool']))
         for sensorName in self.sensorsNames:
             self.container.setRealValue(sensorName, self.sensors[sensorName])
+        self.container.checkTemp()
         with open(self.file, 'a') as write_file:
             write_file.write(new_line + '\n')
         self.logger.info('[' + str(self.container.id) + '] ' + str(self.container.name.get()) + ' ' + new_line)
-        self.container.checkTemp()
         self.decider.decide()
 
     def setSensorsInterval(self):

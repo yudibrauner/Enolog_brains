@@ -29,13 +29,13 @@ from logger import *
 from tkinter.font import Font
 from decider import *
 
-
 # vars:
 
 NO_DETAILS = "N/A"
 SENSORS_INTERVAL = 5
 NUM_OF_SENSORS = 5
 DEFAULT_TEMPERATURE = 0
+
 # images:
 EMPTY_IMAGE = "images/container.png"
 FULL_IMAGE = "images/containerAct.png"
@@ -44,12 +44,16 @@ FULL_CONT_IMAGE = "images/fullCont.png"
 FINISH_CONT_IMAGE = "images/finishCont.png"
 END_PROCESS_IMAGE = "images/EndProcess.png"
 SETTINGS_IMAGE = "images/settings.png"
+COOLER_IMAGE = "images/cooler.png"
+PUMP_IMAGE = "images/pump.png"
+
 #programs:
 SLOW_LIST = ('data\Tannins_slow.txt', 'data\Color_slow.txt', 'data\Density_slow.txt', 'data\Cool_slow.txt')
 NORMAL_LIST = ('data\Tannins_normal.txt', 'data\Color_normal.txt', 'data\Density_normal.txt', 'data\Cool_normal.txt')
 FAST_LIST = ('data\Tannins_fast.txt', 'data\Color_fast.txt', 'data\Density_fast.txt', 'data\Cool_fast.txt')
 PROGRAMS = {'Slow': SLOW_LIST, 'Normal': NORMAL_LIST, 'Fast': FAST_LIST, 'Create a new ferm.': 'new'}
 LOGTYPES = {'Short log': 'sort', 'Long log': 'long', 'Both': 'both'}
+
 # rates:
 COLOR_QUALITY = {'1': 1, '2': 2, '3': 3, '4': 4, '5': 5}
 COLOR_POWER = {'2': 2, '4': 4, '6': 6, '8': 8, '10': 10}
@@ -61,6 +65,7 @@ TASTE_SOURCE = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6}
 TASTE_QUALITY = {'10': 10, '13': 13, '16': 16, '19': 19, '22': 22}
 TASTE_SHIUR = {'4': 4, '5': 5, '6': 6, '7': 7, '8': 8}
 GENERAL_RATE = {'7': 7, '8': 8, '9': 9, '10': 10, '11': 11}
+
 # arrays:
 SENSORS = ('Tannins', 'Color', 'Density', 'Cool')
 # plt.style.use('fivethirtyeight')
@@ -108,9 +113,9 @@ class Container:
         self.realDensity = StringVar()
         self.name = StringVar()
         self.program = StringVar()
+        self.logTypes = StringVar()
         self.time = StringVar()
         self.date = StringVar()
-        self.logTypes = StringVar()
         self.numOfCools = 0
         self.numOfRegulations = 0
         self.numOfSensors = NUM_OF_SENSORS
@@ -184,7 +189,7 @@ class Container:
         # self.idLabel.place(x=self.place[0] + 10, y=self.place[1] - 30)
         self.nameLabel = Label(self.specFrame, textvariable=str(self.name), font=nameFont, background=CONT_NAME_BG)
         self.nameLabel.place(x=70 - 10*len(self.name.get())/2, y=83)
-        self.coolValLabel = Label(self.specFrame, textvariable=str(self.cool), background=ATTRS_BG, font=labelFont)
+        self.coolValLabel = Label(self.specFrame, textvariable=str(self.realCool), background=ATTRS_BG, font=labelFont)
         self.coolValLabel.place(x=75, y=23)
         self.densityValLabel = Label(self.specFrame, textvariable=str(self.realDensity), background=ATTRS_BG, font=labelFont)
         self.densityValLabel.place(x=75, y=60)
@@ -194,6 +199,8 @@ class Container:
         self.colorValLabel.place(x=75, y=35)
         self.end_process_photo = PhotoImage(file=END_PROCESS_IMAGE)
         self.settingPhoto = PhotoImage(file=SETTINGS_IMAGE)
+        self.coolPhoto = PhotoImage(file=COOLER_IMAGE)
+        self.pumpPhoto = PhotoImage(file=PUMP_IMAGE)
 
     def initParams(self):
         self.cool.set(NO_DETAILS)                # generator data
@@ -209,6 +216,7 @@ class Container:
         self.name.set(NO_DETAILS)
         self.time.set(NO_DETAILS)
         self.date.set(NO_DETAILS)
+        self.logTypes.set('Short log')
         self.program.set('No Program')
         self.image = EMPTY_CONT_IMAGE
         self.setImage()
@@ -355,10 +363,18 @@ class Container:
         intervalSensorsEntry = Entry(settingsFrame)
         intervalSensorsEntry.place(x=40, y=50)
         intervalSensorsEntry.insert(0, str(self.sensorsInterval))
-
-        Label(rootCont, text='Log Type: ').place(x=40, y=80)
+    # TODO: we need to see the name of the chosen log
+        Label(settingsFrame, text='Log Type: ').place(x=40, y=80)
         logTypeEntry = OptionMenu(settingsFrame, self.logTypes, *LOGTYPES.keys())
         logTypeEntry.place(x=40, y=100)
+
+        openLogButton = Button(settingsFrame, text='Open this log file',
+                              command=lambda: self.changeDetails(rootCont, intervalSensorsEntry))
+        openLogButton.place(x=40, y=150)
+
+        def openLog():
+            logType = self.logTypes.get()
+            #TODO
 
         insertButton = Button(settingsFrame, text='Set', command=lambda: self.changeDetails(rootCont, intervalSensorsEntry))
         insertButton.place(x=40, y=250)
@@ -383,7 +399,6 @@ class Container:
             rootCont.destroy()
         else:
             msgBox = messagebox.showwarning(title='Interval Missing', message='Please add interval')
-
 
     def endProcess(self, rootCont):
         msgBox = messagebox.askyesno('End Process ' + str(self.id) + ': ' + str(self.name.get()), 'Are you sure you want to end this process?', master=rootCont)
@@ -550,7 +565,7 @@ class Container:
 
         coolValLabel = Label(contFrameDetails, text='Cool acts:')
         coolValLabel.place(x=5, y=110)
-        self.coolValLabel_in_details = Label(contFrameDetails, textvariable=str(self.cool))
+        self.coolValLabel_in_details = Label(contFrameDetails, textvariable=str(self.realCool))
         self.coolValLabel_in_details.place(x=80, y=110)
 
         regulateValLabel = Label(contFrameDetails, text='Regulate acts:')
@@ -563,6 +578,10 @@ class Container:
 
         settingsButton = Button(contFrameMain, image=self.settingPhoto, command=lambda: self.settingsProcess(self.rootCont))
         settingsButton.place(x=63, y=210)
+        coolButton = Button(contFrameMain, image=self.coolPhoto, command=self.coolAct)
+        coolButton.place(x=63, y=280)
+        pumpButton = Button(contFrameMain, image=self.pumpPhoto, command=self.regulate)
+        pumpButton.place(x=120, y=280)
 
         canvas = FigureCanvasTkAgg(self.graph_plot, contFrameGraphs)
         canvas.get_tk_widget().pack(side=tk.LEFT, expand=True)
@@ -682,7 +701,7 @@ class Container:
         if attrName == "density":
             return self.density.get()
         elif attrName == "cool":
-            return self.cool.get()
+            return self.realCool.get()
         elif attrName == "color":
             return self.color.get()
         elif attrName == "tannins":
@@ -695,6 +714,7 @@ class Container:
     def checkTemp(self):
         while float(self.temperature.get()) > DEFAULT_TEMPERATURE:
             self.coolAct()
+        self.realCool.set(self.cool.get())
 
     def coolAct(self):
         self.numOfCools += 1
@@ -740,4 +760,3 @@ class Container:
         l.setLevel(level)
         l.addHandler(fileHandler)
         l.addHandler(streamHandler)
-

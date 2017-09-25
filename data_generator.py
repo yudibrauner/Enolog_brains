@@ -79,7 +79,7 @@ class DataGenerator:
         curr_color = self.generateNewValue(prev_color, self.color_list)
         curr_density = self.generateNewValue(prev_density, self.density_list)
         curr_cool = 0
-        curr_temp = round(self.generateNewTemp(self.cool_list), 2)
+        curr_temp = self.generateNewTemp(self.cool_list)
         if curr_color == "end":
             return "end"
         new_line = str(self.run_time) + ' ' + str(curr_tannins) + ' ' + str(curr_color) + ' ' + str(curr_density) + ' ' + str(curr_cool)
