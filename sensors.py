@@ -22,23 +22,26 @@ class Sensors:
 
     # This method is run by the data generator after first data is written to the container
     def startReading(self):
-        self.sensors_thread = threading.Thread(target=self.readData, daemon=True)
+        self.sensors_thread = threading.Thread(target=self.readDataLoop, daemon=True)
         self.sensors_thread.start()
 
-    def readData(self):
+    def readDataLoop(self):
         self.sensorsInterval = self.container.sensorsInterval
         while self.generator.stay_alive:
-            for sensorName in self.sensorsNames:
-                if sensorName == "temperature":
-                    self.sensors[sensorName] = self.container.attr(sensorName)
-                elif sensorName == "cool":
-                    self.container.setCool(0)
-                else:
-                    self.sensors[sensorName] = self.addSensorError(sensorName)
-            self.writeData()
+            self.readData()
             time.sleep(self.sensorsInterval)  # Read data every SENSORS_INTERVAL seconds
 
-    # This function takes a value and a threshold and creates X values, deletes the farest value, and returns the average of the others.
+    def readData(self):
+        for sensorName in self.sensorsNames:
+            if sensorName == "temperature":
+                self.sensors[sensorName] = self.container.attr(sensorName)
+            elif sensorName == "cool":
+                self.container.setCool(0)
+            else:
+                self.sensors[sensorName] = self.addSensorError(sensorName)
+        self.writeData()
+
+    # This function takes a value and a threshold and creates X values, deletes the farthest value, and returns the average of the others.
     def addSensorError(self, sensor):
         value = self.container.attr(sensor)
         threshold = self.thresholds[sensor]
@@ -86,6 +89,8 @@ class Sensors:
         # print('tannins:' + str(self.sensors['tannins']) + ', color:' + str(self.sensors['color']) + ', dens:' + str(self.sensors['density']) + ', temp:' + str(self.sensors['cool']))
         for sensorName in self.sensorsNames:
             self.container.setRealValue(sensorName, self.sensors[sensorName])
+        # TODO: get rid of the line below. It is just for testing the topColor labels
+        self.container.topColor.set(self.sensors['color'])
         self.container.checkTemp()
         with open(self.file, 'a') as write_file:
             write_file.write(new_line + '\n')

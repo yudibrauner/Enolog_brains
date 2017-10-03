@@ -45,14 +45,16 @@ FINISH_CONT_IMAGE = "images/finishCont.png"
 END_PROCESS_IMAGE = "images/EndProcess.png"
 SETTINGS_IMAGE = "images/settings.png"
 COOLER_IMAGE = "images/cooler.png"
-PUMP_IMAGE = "images/pump.png"
+PUMP_IMAGE = "images/stir.png"
+SENSE_IMAGE = "images/sense.png"
+CONTAINER_IMAGE = "images/new_container.png"
 
 #programs:
 SLOW_LIST = ('data\Tannins_slow.txt', 'data\Color_slow.txt', 'data\Density_slow.txt', 'data\Cool_slow.txt')
 NORMAL_LIST = ('data\Tannins_normal.txt', 'data\Color_normal.txt', 'data\Density_normal.txt', 'data\Cool_normal.txt')
 FAST_LIST = ('data\Tannins_fast.txt', 'data\Color_fast.txt', 'data\Density_fast.txt', 'data\Cool_fast.txt')
 PROGRAMS = {'Slow': SLOW_LIST, 'Normal': NORMAL_LIST, 'Fast': FAST_LIST, 'Create a new ferm.': 'new'}
-LOGTYPES = {'Short log': 'sort', 'Long log': 'long', 'Both': 'both'}
+LOGTYPES = {'Short log': 'short', 'Long log': 'long', 'Both': 'both'}
 
 # rates:
 COLOR_QUALITY = {'1': 1, '2': 2, '3': 3, '4': 4, '5': 5}
@@ -120,6 +122,19 @@ class Container:
         self.numOfRegulations = 0
         self.numOfSensors = NUM_OF_SENSORS
         self.sensorsInterval = SENSORS_INTERVAL
+        self.topColor = StringVar()
+        self.topTemerature = StringVar()
+        self.topTannins = StringVar()
+        self.topDensity = StringVar()
+        self.midColor = StringVar()
+        self.midTemerature = StringVar()
+        self.midTannins = StringVar()
+        self.midDensity = StringVar()
+        self.bottomColor = StringVar()
+        self.bottomTemerature = StringVar()
+        self.bottomTannins = StringVar()
+        self.bottomDensity = StringVar()
+
 
     def initNones(self):
         self.image = None
@@ -155,11 +170,11 @@ class Container:
         self.coolValLabel_in_details = None
 
     def initGraphs(self):
-        self.graph_plot = Figure(figsize=(8, 6), dpi=100)
-        self.sub_plot_221 = self.graph_plot.add_subplot(221)
-        self.sub_plot_222 = self.graph_plot.add_subplot(222)
-        self.sub_plot_223 = self.graph_plot.add_subplot(223)
-        self.sub_plot_224 = self.graph_plot.add_subplot(224)
+        self.graph_plot = Figure(figsize=(4, 8), dpi=70)
+        self.sub_plot_221 = self.graph_plot.add_subplot(411)
+        self.sub_plot_222 = self.graph_plot.add_subplot(412)
+        self.sub_plot_223 = self.graph_plot.add_subplot(413)
+        self.sub_plot_224 = self.graph_plot.add_subplot(414)
         self.sub_plot_221.title.set_text('Tannins')
         self.sub_plot_222.set_title('Color')
         self.sub_plot_223.set_title('Density')
@@ -201,6 +216,8 @@ class Container:
         self.settingPhoto = PhotoImage(file=SETTINGS_IMAGE)
         self.coolPhoto = PhotoImage(file=COOLER_IMAGE)
         self.pumpPhoto = PhotoImage(file=PUMP_IMAGE)
+        self.sensePhoto = PhotoImage(file=SENSE_IMAGE)
+        self.containerPhoto = PhotoImage(file=CONTAINER_IMAGE)
 
     def initParams(self):
         self.cool.set(NO_DETAILS)                # generator data
@@ -369,15 +386,17 @@ class Container:
         logTypeEntry.place(x=40, y=100)
 
         openLogButton = Button(settingsFrame, text='Open this log file',
-                              command=lambda: self.changeDetails(rootCont, intervalSensorsEntry))
+                              command=lambda: self.openLog())
         openLogButton.place(x=40, y=150)
-
-        def openLog():
-            logType = self.logTypes.get()
-            #TODO
 
         insertButton = Button(settingsFrame, text='Set', command=lambda: self.changeDetails(rootCont, intervalSensorsEntry))
         insertButton.place(x=40, y=250)
+
+    def openLog(self):
+        logType = self.logTypes.get()
+        if logType == 'Short log':
+            os.startfile('logs/shortLogs/' + str(self.shortLogger_name) + '.log', 'open')
+        #TODO
 
     def changeDetails(self, rootCont, intervalSensorsEntry):
         intervalSensors = intervalSensorsEntry.get()
@@ -505,16 +524,23 @@ class Container:
         self.rootCont = Toplevel()
         self.rootCont.wm_title("Container " + str(self.id) + ': ' + str(self.name.get()))
         # FRAMES:
-        contFrameMain = Frame(self.rootCont, width=1250, height=700, bg='#37474f')
+        contFrameMain = Frame(self.rootCont, width=1400, height=730, bg='#37474f')
         contFrameMain.pack()
         titleFont = Font(family="Times New Roman", size=30)
         title = Label(contFrameMain, text=self.name.get(), background=BACKGROUND, font=titleFont, fg=FONTITLECOLOR)
-        title.place(x=550, y=10)
+        title.place(x=630, y=10)
         subTitleFont = Font(family="Times New Roman", size=15)
         subTitle = Label(contFrameMain, text=self.program.get(), background=BACKGROUND, font=subTitleFont, fg=FONTITLECOLOR)
-        subTitle.place(x=580, y=60)
-        contFrameGraphs = Frame(contFrameMain, width=650, height=535)
-        contFrameGraphs.place(x=490, y=110)
+        subTitle.place(x=650, y=60)
+
+        containerImageLabel = Label(contFrameMain, width=500, height=555, image=self.containerPhoto, background=None)
+        containerImageLabel.place(x=470, y=110)
+        bigLabelsFont = Font(family="Times New Roman", size=30, weight='bold')
+        labelTopColor = Label(contFrameMain, textvariable=str(self.topColor), font=bigLabelsFont, fg='black')
+        labelTopColor.place(x=480, y=130)
+        # Graphs frame
+        contFrameGraphs = Frame(contFrameMain, width=700, height=535)
+        contFrameGraphs.place(x=1000, y=110)
 
         upContFrameLog = Frame(contFrameMain, width=385, height=300, background=CONT_NAME_BG)
         upContFrameLog.place(x=60, y=350)
@@ -578,6 +604,8 @@ class Container:
 
         settingsButton = Button(contFrameMain, image=self.settingPhoto, command=lambda: self.settingsProcess(self.rootCont))
         settingsButton.place(x=63, y=210)
+        senseButton = Button(contFrameMain, image=self.sensePhoto, command=lambda: self.sensors.readData())
+        senseButton.place(x=120, y=210)
         coolButton = Button(contFrameMain, image=self.coolPhoto, command=self.coolAct)
         coolButton.place(x=63, y=280)
         pumpButton = Button(contFrameMain, image=self.pumpPhoto, command=self.regulate)
@@ -631,8 +659,8 @@ class Container:
         sub_plot.clear()
         sub_plot.set_title(SENSORS[sensor_type_index-1])
         self.graph_plot.subplots_adjust(hspace=.5)
-        sub_plot.plot(xList, yList, EXPECTEDLINECOLOR, label='Expected')
-        sub_plot.plot(xdynList, ydynList, OBSERVEDLINECOLOR, label='Observed')
+        sub_plot.plot(xList, yList, EXPECTEDLINECOLOR)#, label='Expected')
+        sub_plot.plot(xdynList, ydynList, OBSERVEDLINECOLOR)#, label='Observed')
         sub_plot.plot(xdynRealList, ydynRealList, REALDATALINECOLOR)
         sub_plot.legend(loc='upper center', bbox_to_anchor=(0.5, -0.1), ncol=5)
 

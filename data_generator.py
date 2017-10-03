@@ -70,7 +70,7 @@ class DataGenerator:
             value = expected_curr + 0.1 * dist + plus
         else:
             value = expected_curr + 0.1 * dist + plus * 2
-        return value
+        return round(value, 2)
 
     def generate_new_line(self, prev_line):
         parts = prev_line.split(' ')
