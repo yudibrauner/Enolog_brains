@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e20eacaf-528a-4e53-b315-7533990d7aac" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/new_container.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Enolog_brains.iml" afterPath="$PROJECT_DIR$/.idea/Enolog_brains.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/container.py" afterPath="$PROJECT_DIR$/container.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data_generator.py" afterPath="$PROJECT_DIR$/data_generator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sensors.py" afterPath="$PROJECT_DIR$/sensors.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -837,7 +831,14 @@
       <option name="project" value="LOCAL" />
       <updated>1506300635269</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="container layout chang - graphs&#10;and some minor issues">
+      <created>1506993543329</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1506993543329</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TodoView">
@@ -878,7 +879,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="changing the system with the arm to a new system" />
     <MESSAGE value="make the new GUI system, without the arm." />
     <MESSAGE value="some GUI changes&#10;Globalize CURRENT_CONTAINER to know which container to refer to in the frame&#10;Remove container button" />
     <MESSAGE value="added end process&#10;basis for animated plot" />
@@ -903,7 +903,8 @@
     <MESSAGE value="Added Sensors class and some minor fixes" />
     <MESSAGE value="added real data to graphs" />
     <MESSAGE value="logger and other changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="logger and other changes" />
+    <MESSAGE value="container layout chang - graphs&#10;and some minor issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="container layout chang - graphs&#10;and some minor issues" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
