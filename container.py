@@ -50,9 +50,9 @@ SENSE_IMAGE = "images/sense.png"
 CONTAINER_IMAGE = "images/new_container.png"
 
 #programs:
-SLOW_LIST = ('data\Tannins_slow.txt', 'data\Color_slow.txt', 'data\Density_slow.txt', 'data\Cool_slow.txt')
-NORMAL_LIST = ('data\Tannins_normal.txt', 'data\Color_normal.txt', 'data\Density_normal.txt', 'data\Cool_normal.txt')
-FAST_LIST = ('data\Tannins_fast.txt', 'data\Color_fast.txt', 'data\Density_fast.txt', 'data\Cool_fast.txt')
+SLOW_LIST = ('data\Tannins_slow.txt', 'data\Color_slow.txt', 'data\Density_slow.txt', 'data\Cool_slow.txt', 'data\Temperature_slow.txt', 'data\Pump_slow.txt')
+NORMAL_LIST = ('data\Tannins_normal.txt', 'data\Color_normal.txt', 'data\Density_normal.txt', 'data\Cool_normal.txt', 'data\Temperature_normal.txt', 'data\Pump_normal.txt')
+FAST_LIST = ('data\Tannins_fast.txt', 'data\Color_fast.txt', 'data\Density_fast.txt', 'data\Cool_fast.txt', 'data\Temperature_fast.txt', 'data\Pump_fast.txt')
 PROGRAMS = {'Slow': SLOW_LIST, 'Normal': NORMAL_LIST, 'Fast': FAST_LIST, 'Create a new ferm.': 'new'}
 LOGTYPES = {'Short log': 'short', 'Long log': 'long', 'Both': 'both'}
 
@@ -113,6 +113,7 @@ class Container:
         self.realTannins = StringVar()
         self.realColor = StringVar()
         self.realDensity = StringVar()
+        self.initDictVars()
         self.name = StringVar()
         self.program = StringVar()
         self.logTypes = StringVar()
@@ -123,18 +124,29 @@ class Container:
         self.numOfSensors = NUM_OF_SENSORS
         self.sensorsInterval = SENSORS_INTERVAL
         self.topColor = StringVar()
-        self.topTemerature = StringVar()
-        self.topTannins = StringVar()
-        self.topDensity = StringVar()
-        self.midColor = StringVar()
-        self.midTemerature = StringVar()
-        self.midTannins = StringVar()
-        self.midDensity = StringVar()
-        self.bottomColor = StringVar()
-        self.bottomTemerature = StringVar()
-        self.bottomTannins = StringVar()
-        self.bottomDensity = StringVar()
 
+    def initDictVars(self):
+        te1 = StringVar(value=NO_DETAILS)
+        te2 = StringVar(value=NO_DETAILS)
+        te3 = StringVar(value=NO_DETAILS)
+        ta1 = StringVar(value=NO_DETAILS)
+        ta2 = StringVar(value=NO_DETAILS)
+        ta3 = StringVar(value=NO_DETAILS)
+        d1 = StringVar(value=NO_DETAILS)
+        d2 = StringVar(value=NO_DETAILS)
+        d3 = StringVar(value=NO_DETAILS)
+        c1 = StringVar(value=NO_DETAILS)
+        c2 = StringVar(value=NO_DETAILS)
+        c3 = StringVar(value=NO_DETAILS)
+        cool = StringVar(value=NO_DETAILS)
+        pump = StringVar(value=NO_DETAILS)
+        dictTemerature = {'top': te1,'mid': te2, 'bot': te3}
+        dictTannins = {'top': ta1,'mid': ta2, 'bot': ta3}
+        dictColor = {'top': c1,'mid': c2, 'bot': c3}
+        dictDensity = {'top': d1,'mid': d2, 'bot': d3}
+        dictCool = {'center': cool}
+        dictPump = {'center': pump}
+        self.dictParams = {'density': dictDensity, 'color': dictColor, 'tannins': dictTannins, 'temperature': dictTemerature, 'cool': dictCool, 'pump': dictPump}
 
     def initNones(self):
         self.image = None
@@ -339,7 +351,8 @@ class Container:
         self.density.set(NO_DETAILS)
         self.color.set(NO_DETAILS)
         self.temperature.set(NO_DETAILS)
-        helpFunctions.sendMail(self.name.get() + " in container " + str(self.id) + " is finished")
+        self.initDictVars()
+        # helpFunctions.sendMail(self.name.get() + " in container " + str(self.id) + " is finished")
 
     def clearAllVariables(self, rootCont):
         new_container = Container(self.id, self.place, self.frame, self.interval)
@@ -356,6 +369,7 @@ class Container:
         self.realTannins.set(None)
         self.realColor.set(None)
         self.realDensity.set(None)
+        self.initDictVars()
         self.name.set(None)
         self.time.set(None)
         self.date.set(None)
@@ -527,17 +541,51 @@ class Container:
         contFrameMain = Frame(self.rootCont, width=1400, height=730, bg='#37474f')
         contFrameMain.pack()
         titleFont = Font(family="Times New Roman", size=30)
-        title = Label(contFrameMain, text=self.name.get(), background=BACKGROUND, font=titleFont, fg=FONTITLECOLOR)
-        title.place(x=630, y=10)
+        Label(contFrameMain, text=self.name.get(), background=BACKGROUND, font=titleFont, fg=FONTITLECOLOR).place(x=630, y=10)
         subTitleFont = Font(family="Times New Roman", size=15)
-        subTitle = Label(contFrameMain, text=self.program.get(), background=BACKGROUND, font=subTitleFont, fg=FONTITLECOLOR)
-        subTitle.place(x=650, y=60)
+        Label(contFrameMain, text=self.program.get(), background=BACKGROUND, font=subTitleFont, fg=FONTITLECOLOR).place(x=650, y=60)
 
         containerImageLabel = Label(contFrameMain, width=500, height=555, image=self.containerPhoto, background=None)
         containerImageLabel.place(x=470, y=110)
-        bigLabelsFont = Font(family="Times New Roman", size=30, weight='bold')
-        labelTopColor = Label(contFrameMain, textvariable=str(self.topColor), font=bigLabelsFont, fg='black')
-        labelTopColor.place(x=480, y=130)
+        bigLabelsFont = Font(family="Times New Roman", size=14, weight='bold')
+        top_up = 120
+        top_under = 155
+        mid_up = 250
+        mid_under = 285
+        bot_up = 390
+        bot_under = 425
+        left = 110
+        right = 390
+        under_line = 470
+        self.color_top_label = Label(containerImageLabel, textvariable=str(self.dictParams['color']['top']), font=bigLabelsFont, fg='black')
+        self.color_top_label.place(x=left, y=top_under)
+        self.color_mid_label = Label(containerImageLabel, textvariable=str(self.dictParams['color']['mid']), font=bigLabelsFont, fg='black')
+        self.color_mid_label.place(x=left, y=mid_under)
+        self.color_bot_label = Label(containerImageLabel, textvariable=str(self.dictParams['color']['bot']), font=bigLabelsFont, fg='black')
+        self.color_bot_label.place(x=left, y=bot_under)
+        self.density_top_label = Label(containerImageLabel, textvariable=str(self.dictParams['density']['top']), font=bigLabelsFont, fg='black')
+        self.density_top_label.place(x=left, y=top_up)
+        self.density_mid_label = Label(containerImageLabel, textvariable=str(self.dictParams['density']['mid']), font=bigLabelsFont, fg='black')
+        self.density_mid_label.place(x=left, y=mid_up)
+        self.density_bot_label = Label(containerImageLabel, textvariable=str(self.dictParams['density']['bot']), font=bigLabelsFont, fg='black')
+        self.density_bot_label.place(x=left, y=bot_up)
+        self.temperature_top_label = Label(containerImageLabel, textvariable=str(self.dictParams['temperature']['top']), font=bigLabelsFont, fg='black')
+        self.temperature_top_label.place(x=right, y=top_up)
+        self.temperature_mid_label = Label(containerImageLabel, textvariable=str(self.dictParams['temperature']['mid']), font=bigLabelsFont, fg='black')
+        self.temperature_mid_label.place(x=right, y=mid_up)
+        self.temperature_bot_label = Label(containerImageLabel, textvariable=str(self.dictParams['temperature']['bot']), font=bigLabelsFont, fg='black')
+        self.temperature_bot_label.place(x=right, y=bot_up)
+        self.tannins_top_label = Label(containerImageLabel, textvariable=str(self.dictParams['tannins']['top']), font=bigLabelsFont, fg='black')
+        self.tannins_top_label.place(x=right, y=top_under)
+        self.tannins_mid_label = Label(containerImageLabel, textvariable=str(self.dictParams['tannins']['mid']), font=bigLabelsFont, fg='black')
+        self.tannins_mid_label.place(x=right, y=mid_under)
+        self.tannins_bot_label = Label(containerImageLabel, textvariable=str(self.dictParams['tannins']['bot']), font=bigLabelsFont, fg='black')
+        self.tannins_bot_label.place(x=right, y=bot_under)
+        self.cool_label = Label(containerImageLabel, textvariable=str(self.realCool), font=bigLabelsFont, fg='black')
+        self.cool_label.place(x=right, y=under_line)
+        self.pump_label = Label(containerImageLabel, textvariable=str(self.dictParams['pump']['center']), font=bigLabelsFont, fg='black')
+        self.pump_label.place(x=left, y=under_line)
+
         # Graphs frame
         contFrameGraphs = Frame(contFrameMain, width=700, height=535)
         contFrameGraphs.place(x=1000, y=110)
@@ -545,8 +593,7 @@ class Container:
         upContFrameLog = Frame(contFrameMain, width=385, height=300, background=CONT_NAME_BG)
         upContFrameLog.place(x=60, y=350)
         labelsFont = Font(family="Times New Roman", size=20)
-        labelProcessLog = Label(upContFrameLog, text='Process Log', background=CONT_NAME_BG, font=labelsFont, fg='black')
-        labelProcessLog.place(x=130, y=7)
+        Label(upContFrameLog, text='Process Log', background=CONT_NAME_BG, font=labelsFont, fg='black').place(x=130, y=7)
         contFrameLog = Frame(upContFrameLog, width=385, height=250)
         contFrameLog.pack(fill='both', expand='yes')
 
@@ -562,54 +609,40 @@ class Container:
 
         upContFrameDetails = Frame(contFrameMain, width=270, height=220, background=CONT_NAME_BG)
         upContFrameDetails.place(x=175, y=110)
-        labelTime = Label(upContFrameDetails, textvariable=str(self.time), background=CONT_NAME_BG, font=labelsFont, fg='black')
-        labelTime.place(x=10, y=5)
-        labelDate = Label(upContFrameDetails, textvariable=str(self.date), background=CONT_NAME_BG, font=labelsFont, fg='black')
-        labelDate.place(x=150, y=5)
+        Label(upContFrameDetails, textvariable=str(self.time), background=CONT_NAME_BG, font=labelsFont, fg='black').place(x=10, y=5)
+        Label(upContFrameDetails, textvariable=str(self.date), background=CONT_NAME_BG, font=labelsFont, fg='black').place(x=150, y=5)
         contFrameDetails = Frame(upContFrameDetails, width=270, height=180)
         contFrameDetails.place(x=0, y=40)
 
-        densityLabel = Label(contFrameDetails, text='Density:')
-        densityLabel.place(x=5, y=10)
+        Label(contFrameDetails, text='Density:').place(x=5, y=10)
         self.densityValLabel_in_details = Label(contFrameDetails, textvariable=str(self.realDensity))
         self.densityValLabel_in_details.place(x=80, y=10)
 
-        tanninsValLabel = Label(contFrameDetails, text='Tannins:')
-        tanninsValLabel.place(x=5, y=35)
+        Label(contFrameDetails, text='Tannins:').place(x=5, y=35)
         self.tanninsValLabel_in_details = Label(contFrameDetails, textvariable=str(self.realTannins))
         self.tanninsValLabel_in_details.place(x=80, y=35)
 
-        colorValLabel = Label(contFrameDetails, text='Color:')
-        colorValLabel.place(x=5, y=60)
+        Label(contFrameDetails, text='Color:').place(x=5, y=60)
         self.colorValLabel_in_details = Label(contFrameDetails, textvariable=str(self.realColor))
         self.colorValLabel_in_details.place(x=80, y=60)
 
-        temperatureValLabel = Label(contFrameDetails, text='Temperature:')
-        temperatureValLabel.place(x=5, y=85)
+        Label(contFrameDetails, text='Temperature:').place(x=5, y=85)
         self.temperatureValLabel_in_details = Label(contFrameDetails, textvariable=str(self.realTemperature))
         self.temperatureValLabel_in_details.place(x=80, y=85)
 
-        coolValLabel = Label(contFrameDetails, text='Cool acts:')
-        coolValLabel.place(x=5, y=110)
+        Label(contFrameDetails, text='Cool acts:').place(x=5, y=110)
         self.coolValLabel_in_details = Label(contFrameDetails, textvariable=str(self.realCool))
         self.coolValLabel_in_details.place(x=80, y=110)
 
-        regulateValLabel = Label(contFrameDetails, text='Regulate acts:')
-        regulateValLabel.place(x=5, y=135)
+        Label(contFrameDetails, text='Regulate acts:').place(x=5, y=135)
         self.regulateValLabel_in_details = Label(contFrameDetails, textvariable=str(self.realTemperature))
         self.regulateValLabel_in_details.place(x=80, y=135)
 
-        endProcessButton = Button(contFrameMain, image=self.end_process_photo, command=lambda: self.endProcess(self.rootCont))
-        endProcessButton.place(x=63, y=110)
-
-        settingsButton = Button(contFrameMain, image=self.settingPhoto, command=lambda: self.settingsProcess(self.rootCont))
-        settingsButton.place(x=63, y=210)
-        senseButton = Button(contFrameMain, image=self.sensePhoto, command=lambda: self.sensors.readData())
-        senseButton.place(x=120, y=210)
-        coolButton = Button(contFrameMain, image=self.coolPhoto, command=self.coolAct)
-        coolButton.place(x=63, y=280)
-        pumpButton = Button(contFrameMain, image=self.pumpPhoto, command=self.regulate)
-        pumpButton.place(x=120, y=280)
+        Button(contFrameMain, image=self.end_process_photo, command=lambda: self.endProcess(self.rootCont)).place(x=63, y=110)
+        Button(contFrameMain, image=self.settingPhoto, command=lambda: self.settingsProcess(self.rootCont)).place(x=63, y=210)
+        Button(contFrameMain, image=self.sensePhoto, command=lambda: self.sensors.readData()).place(x=120, y=210)
+        Button(contFrameMain, image=self.coolPhoto, command=self.coolAct).place(x=63, y=280)
+        Button(contFrameMain, image=self.pumpPhoto, command=self.regulate).place(x=120, y=280)
 
         canvas = FigureCanvasTkAgg(self.graph_plot, contFrameGraphs)
         canvas.get_tk_widget().pack(side=tk.LEFT, expand=True)
@@ -709,6 +742,9 @@ class Container:
             self.setRealCool(value)
         elif nameOfAttr == "temperature":
             self.setRealTemperature(value)
+
+    def setRealValueDict(self, nameOfAttr, place, value):
+        self.dictParams[nameOfAttr][place].set(value)
 
     def setDateTime(self, dateTime):
         self.date.set(dateTime.split(' ')[0])

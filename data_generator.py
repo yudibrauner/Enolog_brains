@@ -14,7 +14,7 @@ class DataGenerator:
         self.wine_name = self.container.name.get()
         self.file = file
         self.program = program
-        self.tannin, self.color, self.density, self.cool = program_files
+        self.tannin, self.color, self.density, self.cool, self.temerature, self.pump = program_files
         self.stay_alive = True
         self.interval = float(interval)
         self.logger = logger
