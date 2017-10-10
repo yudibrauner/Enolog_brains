@@ -242,7 +242,7 @@ class Container:
         # self.idLabel.place(x=self.place[0] + 10, y=self.place[1] - 30)
         self.nameLabel = Label(self.specFrame, textvariable=str(self.name), font=nameFont, background=CONT_NAME_BG)
         self.nameLabel.place(x=70 - 10*len(self.name.get())/2, y=83)
-        self.coolValLabel = Label(self.specFrame, textvariable=str(self.senseDictParams['cool'].get()), background=ATTRS_BG, font=labelFont)
+        self.coolValLabel = Label(self.specFrame, textvariable=str(self.senseDictParams['cool']), background=ATTRS_BG, font=labelFont)
         # self.coolValLabel = Label(self.specFrame, textvariable=str(self.realCool), background=ATTRS_BG, font=labelFont)
         self.coolValLabel.place(x=75, y=23)
         self.densityValLabel = Label(self.specFrame, textvariable=str(self.getSenseAttr('density', 'top')), background=ATTRS_BG, font=labelFont)
@@ -663,10 +663,10 @@ class Container:
         self.expectedCoolLabel = Label(contFrameExpectedDetails, textvariable=str(self.getExpectedAttr('cool')))
         self.expectedCoolLabel.place(x=80, y=110)
         Label(contFrameExpectedDetails, text='Pump acts:').place(x=5, y=135)
-        self.expectedPumpLabel = Label(contFrameExpectedDetails, textvariable=str(self.expectedDictParams['pump'].get()))
+        self.expectedPumpLabel = Label(contFrameExpectedDetails, textvariable=str(self.getExpectedAttr('pump')))
         self.expectedPumpLabel.place(x=80, y=135)
         Label(contFrameExpectedDetails, text='Howers from start:').place(x=5, y=160)
-        self.expectedPumpLabel = Label(contFrameExpectedDetails, textvariable=str(self.howersFromStart.get()))
+        self.expectedPumpLabel = Label(contFrameExpectedDetails, textvariable=str(self.howersFromStart))
         self.expectedPumpLabel.place(x=150, y=160)
 
         Button(contFrameMain, image=self.end_process_photo, command=lambda: self.endProcess(self.rootCont)).place(x=63, y=110)
@@ -733,16 +733,16 @@ class Container:
     def add2matrix(self):
         dateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
         vector = {"howers from start": self.howersFromStart.get(),
-                  "expected tannins": self.getExpectedAttr('tannins'), "expected color": self.getExpectedAttr('color'),
-                  "expected temperature": self.getExpectedAttr('temperature'),"expected density": self.getExpectedAttr('density'),
-                  "expected cool acts": self.getExpectedAttr('cool'),"expected pump acts": self.getExpectedAttr('pump'),
-                  "top tannins sensor": self.getSenseAttr('tannins', 'top'),"middle tannins sensor": self.getSenseAttr('tannins', 'mid'),
-                  "bottom tannins sensor": self.getSenseAttr('tannins', 'bot'),"top color sensor": self.getSenseAttr('color', 'top'),
-                  "middle color sensor": self.getSenseAttr('color', 'mid'),"bottom color sensor": self.getSenseAttr('color', 'bot'),
-                  "top temperature sensor": self.getSenseAttr('temperature', 'top'),"middle temperature sensor": self.getSenseAttr('temperature', 'mid'),
-                  "bottom temperature sensor": self.getSenseAttr('temperature', 'bot'),"top density sensor": self.getSenseAttr('density', 'top'),
-                  "middle density sensor": self.getSenseAttr('density', 'mid'),"bottom density sensor": self.getSenseAttr('density', 'bot'),
-                  "cool acts": self.senseDictParams['cool'].get(),"pump acts": self.senseDictParams['pump'].get(),
+                  "expected tannins": self.get_ExpectedAttr('tannins'), "expected color": self.get_ExpectedAttr('color'),
+                  "expected temperature": self.get_ExpectedAttr('temperature'),"expected density": self.get_ExpectedAttr('density'),
+                  "expected cool acts": self.get_ExpectedAttr('cool'),"expected pump acts": self.get_ExpectedAttr('pump'),
+                  "top tannins sensor": self.get_SenseAttr('tannins', 'top'),"middle tannins sensor": self.get_SenseAttr('tannins', 'mid'),
+                  "bottom tannins sensor": self.get_SenseAttr('tannins', 'bot'),"top color sensor": self.get_SenseAttr('color', 'top'),
+                  "middle color sensor": self.get_SenseAttr('color', 'mid'),"bottom color sensor": self.get_SenseAttr('color', 'bot'),
+                  "top temperature sensor": self.get_SenseAttr('temperature', 'top'),"middle temperature sensor": self.get_SenseAttr('temperature', 'mid'),
+                  "bottom temperature sensor": self.get_SenseAttr('temperature', 'bot'),"top density sensor": self.get_SenseAttr('density', 'top'),
+                  "middle density sensor": self.get_SenseAttr('density', 'mid'),"bottom density sensor": self.get_SenseAttr('density', 'bot'),
+                  "cool acts": self.get_CounterAttr('cool'),"pump acts": self.get_CounterAttr('pump'),
                   "date": dateTime.split(' ')[0], "time": dateTime.split(' ')[1]}
         print(vector)
         self.matrixDB.append(vector)
@@ -840,10 +840,23 @@ class Container:
         return self.realDictParams[name][place].get()
 
     def getSenseAttr(self, name, place):
-        return self.senseDictParams[name][place].get()
+        return self.senseDictParams[name][place]
+
+    def get_SenseAttr(self, name, place):
+        return self.getSenseAttr(name, place).get()
+
+    def getCounterAttr(self, name):
+        return self.senseDictParams[name]
+
+    def get_CounterAttr(self, name):
+        return self.getCounterAttr(name).get()
 
     def getExpectedAttr(self, name):
-        return self.expectedDictParams[name].get()
+        return self.expectedDictParams[name]
+
+    def get_ExpectedAttr(self, name):
+        return self.getExpectedAttr(name).get()
+
 
 # the counters functions:
     # This function gets the amount of the needed pumpings and pumps by them
@@ -864,7 +877,7 @@ class Container:
         self.pumpCounter = self.pumpCounter + 1
     # This cools until the top temp will be lower than the expected
     def checkCool(self):
-        while float(self.getRealAttr('temperature', 'top')) > float(self.getExpectedAttr('temperature')):
+        while float(self.getRealAttr('temperature', 'top')) > float(self.get_ExpectedAttr('temperature')):
             self.coolIt()
     # This cools the container in 0.1 degrees
     def coolIt(self):

@@ -115,7 +115,7 @@ class Sensors:
 
     def pumpAndCool(self):
         self.container.checkCool()
-        self.container.checkPump(int(float(self.container.getExpectedAttr('pump'))))
+        self.container.checkPump(int(float(self.container.get_ExpectedAttr('pump'))))
         self.container.setCoolSum()
         self.container.setPumpSum()
 
