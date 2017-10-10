@@ -31,6 +31,8 @@ class Sensors:
     def readDataLoop(self):
         self.sensorsInterval = self.container.sensorsInterval
         while self.generator.stay_alive:
+            self.container.howersFromStart.set(float(self.container.howersFromStart.get()) + 0.5)
+            self.container.add2matrix()
             self.readData()
             time.sleep(self.sensorsInterval)  # Read data every SENSORS_INTERVAL seconds
 
@@ -38,6 +40,7 @@ class Sensors:
         for sensorName in self.sensorsNames:
             if sensorName == "temperature":
                 self.sensors[sensorName] = self.container.attr(sensorName)
+                self.dictSensors[sensorName] = self.addSensorNewError(sensorName)
             elif sensorName == "cool":
                 self.container.setCool(0)
             else:
@@ -70,7 +73,10 @@ class Sensors:
 
     def addSensorNewError(self, sensor):
         averageSensors = self.sensors[sensor]
-        return {'top': averageSensors, 'mid': averageSensors, 'bot': averageSensors}
+        top = round(float(self.container.getRealAttr(sensor, 'top')), 2)
+        mid = round(float(self.container.getRealAttr(sensor, 'mid')), 2)
+        bot = round(float(self.container.getRealAttr(sensor, 'bot')), 2)
+        return {'top': top, 'mid': mid, 'bot': bot}
 
     def createTheError(self, value, threshold):
         value = float(value)
@@ -89,22 +95,29 @@ class Sensors:
 
     def writeData(self):
         curCool = str(self.container.attr("cool"))
-        if curCool == "N/A":
-            curCool = "0"
+        # if curCool == "N/A":
+        #     curCool = "0"
         new_line = str(self.generator.run_time) + ' ' + str(self.sensors['tannins']) + ' ' + str(self.sensors['color']) + ' ' + str(self.sensors['density']) + ' ' + curCool
         # print('tannins:' + str(self.sensors['tannins']) + ', color:' + str(self.sensors['color']) + ', dens:' + str(self.sensors['density']) + ', temp:' + str(self.sensors['cool']))
         for sensorName in self.sensorsNames:
             self.container.setRealValue(sensorName, self.sensors[sensorName])
             if sensorName != 'cool' and sensorName != 'pump':
-                for place in self.sensorsHeights:
-                    self.container.setRealValueDict(sensorName, place, self.dictSensors[sensorName][place])
+                for height in self.sensorsHeights:
+                    self.container.setSenseValue(sensorName, height, self.dictSensors[sensorName][height])
         # self.container.setRealValueDict('cool', 'center', self.sensors['cool'])
         # self.container.setRealValueDict('pump', 'center', self.dictSensors['pump'])
         self.container.checkTemp()
         with open(self.file, 'a') as write_file:
             write_file.write(new_line + '\n')
         self.logger.info('[' + str(self.container.id) + '] ' + str(self.container.name.get()) + ' ' + new_line)
+        self.pumpAndCool()
         self.decider.decide()
+
+    def pumpAndCool(self):
+        self.container.checkCool()
+        self.container.checkPump(int(float(self.container.getExpectedAttr('pump'))))
+        self.container.setCoolSum()
+        self.container.setPumpSum()
 
     def setSensorsInterval(self):
         self.sensorsInterval = self.container.sensorsInterval
