@@ -33,7 +33,7 @@ from decider import *
 
 NO_DETAILS = "N/A"
 SENSORS_INTERVAL = 5
-NUM_OF_SENSORS = 5
+NUM_OF_SENSORS = 6
 DEFAULT_TEMPERATURE = 0
 
 # images:
@@ -86,11 +86,10 @@ REALDATALINECOLOR = '#D3D3D3'
 FONTITLECOLOR = '#FFD966'
 
 class Container:
-    def __init__(self, _id, _place, root, interval):
+    def __init__(self, _id, _place, root, interval, externalDB):
         self.id = _id            # number of container in winery
         self.frame = root
         self.specFrame = LabelFrame(self.frame, bg=BACKGROUND, width=139, height=116)
-        self.startDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
         self.tasks = list()
         self.listsAndDicts = {'sensorNames': SENSOR_NAMES, 'counterNames': COUNTER_NAMES, 'heights': HEIGHTS, 'attrNames': ALL_ATTR_NAMES}
         self.coolCounterGlobal, self.coolCounter = 0, 0
@@ -109,6 +108,7 @@ class Container:
         self.frame.grid(row=0, column=0, columnspan=2)
         self.showingLog = self.shortLogger
         self.matrixDB = []
+        self.exDB = externalDB
 
     def initStringVars(self):
         self.temperature = StringVar()
@@ -311,7 +311,7 @@ class Container:
             # Configure logger
             self.logger_name = str(self.name.get()) + '_' + str(self.id)
             self.shortLogger_name = 'S_' + str(self.name.get()) + '_' + str(self.id)
-
+            self.startDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
             # Add the handler to logger
             self.setup_logger(str(self.logger_name), 'logs/longLogs/' + str(self.logger_name) + '.log')
             self.logger = logging.getLogger(self.logger_name)
@@ -387,7 +387,7 @@ class Container:
         # helpFunctions.sendMail(self.name.get() + " in container " + str(self.id) + " is finished")
 
     def clearAllVariables(self, rootCont):
-        new_container = Container(self.id, self.place, self.frame, self.interval)
+        new_container = Container(self.id, self.place, self.frame, self.interval, self.exDB)
         # TODO: add this new container to allContainers from main and remove previous container from there.
         # swapNewForOldContainer(self.id, new_container)
         self.id = NO_DETAILS
@@ -471,7 +471,6 @@ class Container:
             self.logger.info('-> End of Process')
             self.logger.handlers = []
             self.generator.updateLogger(self.logger)
-            self.clearAllVariables(rootCont)
 
             self.rootCont = Toplevel()
             self.rootCont.wm_title("Rate The Wine")
@@ -487,7 +486,6 @@ class Container:
             Label(showFrame, text='Color strength').place(x=260, y=10)
             CPEntry = OptionMenu(showFrame, self.rates[1], *COLOR_POWER.keys())
             CPEntry.place(x=350, y=10)
-
             smellFrame = LabelFrame(self.rootCont, width=500, height=80, text="Fragrance")
             smellFrame.place(x=20, y=120)
             Label(smellFrame, text='Centralization').place(x=10, y=10)
@@ -528,16 +526,13 @@ class Container:
             nameEntry = Entry(rateFrame)
             nameEntry.place(x=80, y=420)
 
+            self.endDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
+
             def isFullFields(self):
                 for rate in self.rates:
                     if rate.get() == 'No Rate':
                         return False
                 return True
-
-            def geneRate(self):
-                for rate in self.rates:
-                    if rate.get() == 'No Rate':
-                        self.mesBox('no rate for ' + str(rate) + 'yet.', "TODO")
 
             def calculateScore(self):
                 sum = 0
@@ -546,19 +541,27 @@ class Container:
                 return sum
 
             def addToDataBase(rootCont):
-                # TODO: put data in DB (scoreEntry + self.generator.file)
                 if nameEntry.get() and isFullFields(self):
                     calc = calculateScore(self)
+                    line_to_DB = {"Container id": self.id, "Fermentation": self.program.get(),
+                                  "Wine name": self.name.get(), "Mistakes": 0, "Score": calc,
+                                  "Start": self.startDateTime, "End": self.endDateTime,
+                                  "C: Quality": self.rates[0].get(), "C: Strength": self.rates[1].get(),
+                                  "S: Centralization": self.rates[2].get(), "S: Originality": self.rates[3].get(), "S: Quality": self.rates[4].get(),
+                                  "T: Centralization": self.rates[5].get(), "T: Originality": self.rates[6].get(),
+                                  "T: Quality": self.rates[7].get(), "T: Residual": self.rates[8].get(),
+                                  "General ranking": self.rates[9].get(), "Note": scoreEntry.get(), "Vintner": nameEntry.get()
+                                  }
                     print('Adding score and process to DB: ' + str(calc) + ' + ' + str(self.generator.file))
+                    self.exDB.append(line_to_DB)
                     rootCont.destroy()
                 else:
                     self.mesBox('You did not fill all the fields', 'Try Again')
-            geneRateButton = Button(rateFrame, text='generate the rates', command=lambda: geneRate(self))
-            geneRateButton.place(x=400, y=450)
             saveButton = Button(rateFrame, text='Save', command=lambda: addToDataBase(self.rootCont))
             saveButton.place(x=200, y=450)
             dontSaveButton = Button(rateFrame, text='Don\'t Save', command=self.rootCont.destroy)
             dontSaveButton.place(x=300, y=450)
+            self.clearAllVariables(rootCont)
 
     def initRates(self):
         self.rates = []

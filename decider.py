@@ -18,10 +18,10 @@ class Decider:
 
     def decide(self):
         self.matrix = self.container.matrixDB
-        if len(self.matrix) < 3:
-            return
-        self.check_deriative()
-        self.check_limits()
+        # if len(self.matrix) < 3:
+        #     return
+        # self.check_deriative()
+        # self.check_limits()
 
     def check_limits(self):
         for attr in self.attrNames:

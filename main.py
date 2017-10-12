@@ -13,6 +13,7 @@ from exampleTasks import *
 
 tasks = {}
 allContainers = []
+matrixDB = []
 labelsContainers = {}
 num_of_containers = 10
 BACKGROUND = '#37474f'
@@ -82,14 +83,19 @@ settingPhoto = PhotoImage(file="images/settings.png")
 settingsButton = Button(mainFrame, image=settingPhoto, command=settings)
 # settingsButton.place(x=490, y=70)
 
-# deleteButton = Button(mainFrame, text="delete all the logs", command=deleteLogs)
-# deleteButton.place(x=200, y=70)
+def printDB():
+    print(matrixDB)
+
+
+deleteButton = Button(mainFrame, text="delete all the logs", command=printDB)
+deleteButton.place(x=200, y=70)
+
 
 # creating all the containers
 for i in range(0, 5):
     for j in range(0, 2):
         id = (i+1)*(j+1)
         place = (170 * i + 100, 250*j + 130)
-        allContainers.append(Container(id, place, mainFrame, ANIMATION_INTERVAL))
+        allContainers.append(Container(id, place, mainFrame, ANIMATION_INTERVAL, matrixDB))
 
 root.mainloop()

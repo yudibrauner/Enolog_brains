@@ -10,9 +10,9 @@ class Sensors:
         self.container = container
         self.generator = container.generator
         self.logger = logger
-        self.sensorsNames = ["tannins", "color", "density", "cool", "temperature"]
+        self.sensorsNames = ["tannins", "color", "density", "temperature"]
         self.sensorsHeights = ['top', 'mid', 'bot']
-        self.sensors = {"tannins": 0, "color": 0, "density": 0, "cool": 0, "temperature":0}
+        # self.sensors = {"tannins": 0, "color": 0, "density": 0, "cool": 0, "temperature":0}
         self.dictSensors = {"tannins": {'top': 0, 'mid': 0, 'bot': 0}, "color": {'top': 0, 'mid': 0, 'bot': 0},
                             "density": {'top': 0, 'mid': 0, 'bot': 0}, "temperature": {'top': 0, 'mid': 0, 'bot': 0}, "cool": 0, 'pump': 0}
         # the thresholds now are one percent of the distance between the max value and min value of the attribute, TODO: think of that thresholds
@@ -38,14 +38,15 @@ class Sensors:
 
     def readData(self):
         for sensorName in self.sensorsNames:
-            if sensorName == "temperature":
-                self.sensors[sensorName] = self.container.attr(sensorName)
-                self.dictSensors[sensorName] = self.addSensorNewError(sensorName)
-            elif sensorName == "cool":
-                self.container.setCool(0)
-            else:
-                self.sensors[sensorName] = self.addSensorError(sensorName)
-                self.dictSensors[sensorName] = self.addSensorNewError(sensorName)
+            self.dictSensors[sensorName] = self.addSensorNewError(sensorName)
+            # if sensorName == "temperature":
+            #     # self.sensors[sensorName] = self.container.attr(sensorName)
+            #     self.dictSensors[sensorName] = self.addSensorNewError(sensorName)
+            # elif sensorName == "cool":
+            #     self.container.setCool(0)
+            # else:
+            #     # self.sensors[sensorName] = self.addSensorError(sensorName)
+            #     self.dictSensors[sensorName] = self.addSensorNewError(sensorName)
         self.writeData()
 
     # This function takes a value and a threshold and creates X values, deletes the farthest value, and returns the average of the others.
@@ -70,9 +71,9 @@ class Sensors:
         averageSensors = round(sum(values) / float(numOfSensors - 1), 2)
         # print('the remain sensors get' + str(values) + '. the average is ' + str(averageSensors))
         return averageSensors
-
+    # this is the function that works. it's without threshold, take from this^
     def addSensorNewError(self, sensor):
-        averageSensors = self.sensors[sensor]
+        # averageSensors = self.sensors[sensor]
         top = round(float(self.container.getRealAttr(sensor, 'top')), 2)
         mid = round(float(self.container.getRealAttr(sensor, 'mid')), 2)
         bot = round(float(self.container.getRealAttr(sensor, 'bot')), 2)
@@ -94,19 +95,24 @@ class Sensors:
         return outValue
 
     def writeData(self):
-        curCool = str(self.container.attr("cool"))
+        # curCool = str(self.container.attr("cool"))
         # if curCool == "N/A":
         #     curCool = "0"
-        new_line = str(self.generator.run_time) + ' ' + str(self.sensors['tannins']) + ' ' + str(self.sensors['color']) + ' ' + str(self.sensors['density']) + ' ' + curCool
+        # new_line = str(self.generator.run_time) + ' ' + str(self.sensors['tannins']) + ' ' + str(self.sensors['color']) + ' ' + str(self.sensors['density']) + ' ' + curCool
         # print('tannins:' + str(self.sensors['tannins']) + ', color:' + str(self.sensors['color']) + ', dens:' + str(self.sensors['density']) + ', temp:' + str(self.sensors['cool']))
         for sensorName in self.sensorsNames:
-            self.container.setRealValue(sensorName, self.sensors[sensorName])
-            if sensorName != 'cool' and sensorName != 'pump':
-                for height in self.sensorsHeights:
-                    self.container.setSenseValue(sensorName, height, self.dictSensors[sensorName][height])
+            for height in self.sensorsHeights:
+                self.container.setSenseValue(sensorName, height, self.dictSensors[sensorName][height])
+            # if sensorName != 'cool' and sensorName != 'pump':
+            #     for height in self.sensorsHeights:
+            #         self.container.setSenseValue(sensorName, height, self.dictSensors[sensorName][height])
+            # self.container.setRealValue(sensorName, self.sensors[sensorName])
+        new_line = str(self.generator.run_time) + ' ' + str(self.dictSensors['tannins']['top']) + ' ' + str(
+            self.dictSensors['color']['top']) + ' ' + str(self.dictSensors['density']['top']) + ' ' + str(
+            self.dictSensors['temperature']['top'])
         # self.container.setRealValueDict('cool', 'center', self.sensors['cool'])
         # self.container.setRealValueDict('pump', 'center', self.dictSensors['pump'])
-        self.container.checkTemp()
+        # self.container.checkTemp()
         with open(self.file, 'a') as write_file:
             write_file.write(new_line + '\n')
         self.logger.info('[' + str(self.container.id) + '] ' + str(self.container.name.get()) + ' ' + new_line)
