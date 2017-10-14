@@ -32,7 +32,7 @@ from decider import *
 # vars:
 
 NO_DETAILS = "N/A"
-SENSORS_INTERVAL = 5
+SENSORS_INTERVAL = 1
 NUM_OF_SENSORS = 6
 DEFAULT_TEMPERATURE = 0
 
@@ -107,8 +107,9 @@ class Container:
         self.initParams()
         self.frame.grid(row=0, column=0, columnspan=2)
         self.showingLog = self.shortLogger
-        self.matrixDB = []
+        self.containerDB = []
         self.exDB = externalDB
+        self.endDateTime = ''
 
     def initStringVars(self):
         self.temperature = StringVar()
@@ -327,8 +328,7 @@ class Container:
             # logging.basicConfig(filename='logs/shortLogs/' + self.shortLogger_name + '.log',
             #                     level=logging.INFO,
             #                     format='%(asctime)s - %(levelname)s - %(message)s')
-            self.shortLogger.info('-> container addedgggg')
-
+            self.shortLogger.info('-> container added')
             self.fillContainer()
             self.buttonFunction = self.showDetails
             self.data_221 = PROGRAMS[program][0]
@@ -371,12 +371,13 @@ class Container:
         # intervalSensorsEntry.place(x=40, y=230)
         # intervalSensorsEntry.insert(0, '5')
         numOfSensors = NUM_OF_SENSORS
-        intervalSensors = '5'
+        intervalSensors = SENSORS_INTERVAL
         insertButton = Button(contFrame, text='Start Fermentation', command=lambda: self.addDetails(self.rootCont, nameEntry, numOfSensors, intervalSensors))
         insertButton.place(x=40, y=400)
 
     def fermIsFinished(self):
         self.image = FINISH_CONT_IMAGE
+        self.endDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
         self.setImage()
         self.tannins.set(NO_DETAILS)
         self.cool.set(NO_DETAILS)
@@ -390,7 +391,6 @@ class Container:
         new_container = Container(self.id, self.place, self.frame, self.interval, self.exDB)
         # TODO: add this new container to allContainers from main and remove previous container from there.
         # swapNewForOldContainer(self.id, new_container)
-        self.id = NO_DETAILS
         self.cool.set(None)
         self.tannins.set(None)
         self.color.set(None)
@@ -402,7 +402,6 @@ class Container:
         self.realColor.set(None)
         self.realDensity.set(None)
         self.initDictVars()
-        self.name.set(None)
         self.time.set(None)
         self.date.set(None)
         # TODO: what are these things?
@@ -525,9 +524,8 @@ class Container:
             Label(rateFrame, text='Vintner:').place(x=20, y=420)
             nameEntry = Entry(rateFrame)
             nameEntry.place(x=80, y=420)
-
-            self.endDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
-
+            if self.endDateTime == '':
+                self.endDateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
             def isFullFields(self):
                 for rate in self.rates:
                     if rate.get() == 'No Rate':
@@ -546,15 +544,19 @@ class Container:
                     line_to_DB = {"Container id": self.id, "Fermentation": self.program.get(),
                                   "Wine name": self.name.get(), "Mistakes": 0, "Score": calc,
                                   "Start": self.startDateTime, "End": self.endDateTime,
-                                  "C: Quality": self.rates[0].get(), "C: Strength": self.rates[1].get(),
-                                  "S: Centralization": self.rates[2].get(), "S: Originality": self.rates[3].get(), "S: Quality": self.rates[4].get(),
-                                  "T: Centralization": self.rates[5].get(), "T: Originality": self.rates[6].get(),
-                                  "T: Quality": self.rates[7].get(), "T: Residual": self.rates[8].get(),
-                                  "General ranking": self.rates[9].get(), "Note": scoreEntry.get(), "Vintner": nameEntry.get()
+                                  "C: Quality": int(self.rates[0].get()), "C: Strength": int(self.rates[1].get()),
+                                  "S: Centralization": int(self.rates[2].get()), "S: Originality": int(self.rates[3].get()), "S: Quality": int(self.rates[4].get()),
+                                  "T: Centralization": int(self.rates[5].get()), "T: Originality": int(self.rates[6].get()),
+                                  "T: Quality": int(self.rates[7].get()), "T: Residual": int(self.rates[8].get()),
+                                  "General ranking": int(self.rates[9].get()), "Note": scoreEntry.get(), "Vintner": nameEntry.get()
                                   }
-                    print('Adding score and process to DB: ' + str(calc) + ' + ' + str(self.generator.file))
-                    self.exDB.append(line_to_DB)
+                    # print('Adding score and process to DB: ' + str(calc) + ' + ' + str(self.generator.file))
+                    self.exDB['general'].append(line_to_DB)
+                    new_dict = {'id': self.id, 'name': self.name.get(), 'log': self.containerDB}
+                    self.exDB['containers'].append(new_dict)
                     rootCont.destroy()
+                    self.id = NO_DETAILS
+                    self.name.set(None)
                 else:
                     self.mesBox('You did not fill all the fields', 'Try Again')
             saveButton = Button(rateFrame, text='Save', command=lambda: addToDataBase(self.rootCont))
@@ -568,6 +570,7 @@ class Container:
         for i in range(0, 10):
             self.rates.append(StringVar())
             self.rates[i].set('No Rate')
+            self.rates[i].set('5')
 
     def showDetails(self):
         self.rootCont = Toplevel()
@@ -668,9 +671,9 @@ class Container:
         Label(contFrameExpectedDetails, text='Pump acts:').place(x=5, y=135)
         self.expectedPumpLabel = Label(contFrameExpectedDetails, textvariable=str(self.getExpectedAttr('pump')))
         self.expectedPumpLabel.place(x=80, y=135)
-        Label(contFrameExpectedDetails, text='Howers from start:').place(x=5, y=160)
+        Label(contFrameExpectedDetails, text='Howers left:').place(x=5, y=160)
         self.expectedPumpLabel = Label(contFrameExpectedDetails, textvariable=str(self.howersFromStart))
-        self.expectedPumpLabel.place(x=150, y=160)
+        self.expectedPumpLabel.place(x=80, y=160)
 
         Button(contFrameMain, image=self.end_process_photo, command=lambda: self.endProcess(self.rootCont)).place(x=63, y=110)
         Button(contFrameMain, image=self.settingPhoto, command=lambda: self.settingsProcess(self.rootCont)).place(x=63, y=210)
@@ -734,21 +737,24 @@ class Container:
 #DB parts
     #in the end of the fermentation we will have a "matrix" of all the ferm, and we'll be able to add it to DB
     def add2matrix(self):
+        if self.get_SenseAttr('temperature', 'bot') == 'N/A':
+            return
         dateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
-        vector = {"howers from start": self.howersFromStart.get(),
-                  "expected tannins": self.get_ExpectedAttr('tannins'), "expected color": self.get_ExpectedAttr('color'),
-                  "expected temperature": self.get_ExpectedAttr('temperature'),"expected density": self.get_ExpectedAttr('density'),
-                  "expected cool acts": self.get_ExpectedAttr('cool'),"expected pump acts": self.get_ExpectedAttr('pump'),
-                  "top tannins sensor": self.get_SenseAttr('tannins', 'top'),"middle tannins sensor": self.get_SenseAttr('tannins', 'mid'),
-                  "bottom tannins sensor": self.get_SenseAttr('tannins', 'bot'),"top color sensor": self.get_SenseAttr('color', 'top'),
-                  "middle color sensor": self.get_SenseAttr('color', 'mid'),"bottom color sensor": self.get_SenseAttr('color', 'bot'),
-                  "top temperature sensor": self.get_SenseAttr('temperature', 'top'),"middle temperature sensor": self.get_SenseAttr('temperature', 'mid'),
-                  "bottom temperature sensor": self.get_SenseAttr('temperature', 'bot'),"top density sensor": self.get_SenseAttr('density', 'top'),
-                  "middle density sensor": self.get_SenseAttr('density', 'mid'),"bottom density sensor": self.get_SenseAttr('density', 'bot'),
-                  "cool acts": self.get_CounterAttr('cool'),"pump acts": self.get_CounterAttr('pump'),
+        vector = {"howers from start": float(self.howersFromStart.get()),
+                  "expected tannins": float(self.get_ExpectedAttr('tannins')), "expected color": float(self.get_ExpectedAttr('color')),
+                  "expected temperature": float(self.get_ExpectedAttr('temperature')),"expected density": float(self.get_ExpectedAttr('density')),
+                  "expected cool acts": float(self.get_ExpectedAttr('cool')),"expected pump acts": float(self.get_ExpectedAttr('pump')),
+                  "top tannins sensor": float(self.get_SenseAttr('tannins', 'top')),"middle tannins sensor": float(self.get_SenseAttr('tannins', 'mid')),
+                  "bottom tannins sensor": float(self.get_SenseAttr('tannins', 'bot')),"top color sensor": float(self.get_SenseAttr('color', 'top')),
+                  "middle color sensor": float(self.get_SenseAttr('color', 'mid')),"bottom color sensor": float(self.get_SenseAttr('color', 'bot')),
+                  "top temperature sensor": float(self.get_SenseAttr('temperature', 'top')),"middle temperature sensor": float(self.get_SenseAttr('temperature', 'mid')),
+                  "bottom temperature sensor": float(self.get_SenseAttr('temperature', 'bot')),"top density sensor": float(self.get_SenseAttr('density', 'top')),
+                  "middle density sensor": float(self.get_SenseAttr('density', 'mid')),"bottom density sensor": float(self.get_SenseAttr('density', 'bot')),
+                  "cool acts": float(self.get_CounterAttr('cool')),"pump acts": float(self.get_CounterAttr('pump')),
                   "date": dateTime.split(' ')[0], "time": dateTime.split(' ')[1]}
-        print(vector)
-        self.matrixDB.append(vector)
+
+        # print(vector)
+        self.containerDB.append(vector)
 
     # SETTERS:
     def setInterval(self, interval):
@@ -840,9 +846,13 @@ class Container:
 # OTHER FUNCTIONS:
 
     def getRealAttr(self, name, place):
+        if place == 0:
+            return self.realDictParams[name].get()
         return self.realDictParams[name][place].get()
 
     def getSenseAttr(self, name, place):
+        if place == 0:
+            return self.senseDictParams[name]
         return self.senseDictParams[name][place]
 
     def get_SenseAttr(self, name, place):
@@ -917,6 +927,10 @@ class Container:
 
     def mesBox(self, message, note):
         tkinter.messagebox.showinfo("Error", message + "\n" + note)
+
+# TODO: how to use the static class? we may need to make it dynamic
+    # def changeNote(self, message):
+    #     self.frame.
 
     def setup_logger(self, logger_name, log_file, level=logging.INFO):
         l = logging.getLogger(logger_name)

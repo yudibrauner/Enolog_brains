@@ -13,11 +13,13 @@ from exampleTasks import *
 
 tasks = {}
 allContainers = []
-matrixDB = []
+matrixDB = {'general': [], 'containers': []}
 labelsContainers = {}
 num_of_containers = 10
+NO_NOTES = 'There is no notes'
 BACKGROUND = '#37474f'
-FONTITLE = '#FFD966'
+FONTITLE_COLOR = '#FFD966'
+# note = StringVar(value=NO_NOTES)
 
 ANIMATION_INTERVAL = 1
 # tasks['long'] = TaskPlan("long", exampleTasks.getLong(), 14)
@@ -71,25 +73,89 @@ def swapNewForOldContainer(old_id, new_container):
             allContainers.remove(container)
     allContainers.append(new_container)
 
-# def deleteLogs():
-#     print("TODO")
-
-
 # MAIN:
 titleFont = Font(family="Times New Roman", size=30)
-title = Label(mainFrame, text='WINERY DASHBOARD', background=BACKGROUND, font=titleFont, fg=FONTITLE)
+noteFont = Font(family="Times New Roman", size=15)
+title = Label(mainFrame, text='WINERY DASHBOARD', background=BACKGROUND, font=titleFont, fg=FONTITLE_COLOR)
 title.place(x=300, y=10)
 settingPhoto = PhotoImage(file="images/settings.png")
 settingsButton = Button(mainFrame, image=settingPhoto, command=settings)
 # settingsButton.place(x=490, y=70)
+# noteLabel = Label(mainFrame, text='note:', background=BACKGROUND, font=noteFont, fg='white')
+# noteLabel.place(x=400, y=300)
+# notesLabel = Label(mainFrame, text=NO_NOTES, background=BACKGROUND, font=noteFont, fg='white')
+# notesLabel.place(x=450, y=300)
 
-def printDB():
-    print(matrixDB)
+def saveSQL():
+    x = 5
+    DBfile = sqlite3.connect('DB/smart winery.db')
+    c = DBfile.cursor()
+    general_name = 'general fermentations ' + str(datetime.datetime.now().strftime("%d %m %y %H %M %S"))
+    c.execute('drop table if exists ' + general_name)
+    c.execute('CREATE TABLE ' + general_name + '''
+                (Container id, Fermentation, Wine name, Mistakes, Score, Start, End,
+                C: Quality, C: Strength, S: Centralization, S: Originality, S: Quality,
+                T: Centralization, T: Originality, T: Quality, T: Residual,
+                General ranking, Note, Vintner)''')
+    for container in matrixDB['general']:
+        print(container)
+        c.execute("INSERT INTO DB VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                  (container['Container id'], container['Fermentation'], container['Wine name'], container['Mistakes'], container['Score'], container['Start'], container['End'],
+                   container['C: Quality'], container['C: Strength'], container['S: Centralization'], container['S: Originality'], container['S: Quality'],
+                    container['T: Centralization'], container['T: Originality'], container['T: Quality'], container['T: Residual'],
+                    container['ranking'], container['Note'], container['Vintner']))
 
+    for container in matrixDB['containers']:
+        general_name = 'container ' + container['name'] + ' ' + str(container['id'])
+        c.execute('drop table if exists ' + general_name)
+        c.execute('CREATE TABLE ' + general_name + '''
+                        (howers from start, expected tannins, expected color, expected temperature, expected density,
+                        expected cool acts, expected pump acts, top tannins sensor, middle tannins sensor, bottom tannins sensor,
+                        top color sensor, middle color sensor, bottom color sensor, top temperature sensor,
+                        middle temperature sensor, bottom temperature sensor, top density sensor, middle density sensor,
+                        bottom density sensor, cool acts, pump acts, date, time)''')
+        for line in container['log']:
+            x=5
+            c.execute("INSERT INTO DB VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                      (line['howers from start'], line['expected tannins'], line['expected color'],
+                       line['expected temperature'], line['expected density'], line['expected cool acts'],
+                       line['expected pump acts'], line['top tannins sensor'], line['middle tannins sensor'],
+                       line['bottom tannins sensor'], line['top color sensor'], line['middle color sensor'],
+                       line['bottom color sensor'], line['top temperature sensor'], line['middle temperature sensor'],
+                       line['bottom temperature sensor'], line['top density sensor'], line['middle density sensor'],
+                       line['bottom density sensor'], line['cool acts'], line['pump acts'], line['date'], line['time']))
+    DBfile.commit()
+    DBfile.close()
 
-deleteButton = Button(mainFrame, text="delete all the logs", command=printDB)
-deleteButton.place(x=200, y=70)
+def saveCSV():
+    general_name = 'general fermentations ' + str(datetime.datetime.now().strftime("%d %m %y %H %M %S"))
+    adress = 'DB/' + general_name + '.csv'
+    with open(adress, 'w') as csvfile:
+        fieldnames = ['Container id', 'Fermentation', 'Wine name', 'Mistakes', 'Score', 'Start', 'End',
+                      'C: Quality', 'C: Strength', 'S: Centralization', 'S: Originality', 'S: Quality', 'T: Centralization',
+                      'T: Originality', 'T: Quality', 'T: Residual', 'General ranking', 'Note', 'Vintner']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(matrixDB['general'])
+    for container in matrixDB['containers']:
+        general_name = 'container ' + container['name'] + ' ' + str(container['id'])
+        adress = 'DB/' + general_name + '.csv'
+        with open(adress, 'w') as csvfile:
+            fieldnames = ['howers from start', 'expected tannins', 'expected color', 'expected temperature',
+                          'expected density', 'expected cool acts', 'expected pump acts', 'top tannins sensor',
+                          'middle tannins sensor', 'bottom tannins sensor', 'top color sensor', 'middle color sensor',
+                          'bottom color sensor', 'top temperature sensor', 'middle temperature sensor', 'bottom temperature sensor',
+                          'top density sensor', 'middle density sensor', 'bottom density sensor', 'cool acts', 'pump acts', 'date', 'time']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(container['log'])
 
+def saveDB():
+    saveCSV()
+    # saveSQL()
+
+saveDBButton = Button(mainFrame, text="save the logs as csv and sqlDB", command=saveDB)
+saveDBButton.place(x=200, y=70)
 
 # creating all the containers
 for i in range(0, 5):

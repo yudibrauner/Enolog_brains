@@ -90,7 +90,7 @@ class DataGenerator:
     def set_expected_attrs(self):
         for attrName in self.attrNames:
             expected_curr = self.lists[attrName][self.run_time]
-            self.container.setExpectedValue(attrName, expected_curr)
+            self.container.setExpectedValue(attrName, round(expected_curr, 3))
 
     def getNewDelta(self, expected_dist):
         rand1 = randrange(1, 101)
@@ -155,10 +155,10 @@ class DataGenerator:
         parts = prev_line.split(' ')
         prev_tannins, prev_color, prev_density, prev_cool, prev_temperature, prev_pump = float(parts[1]), float(parts[2]), float(parts[3]), float(parts[4]), float(parts[5]), float(parts[6])
         self.set_expected_attrs()
-        curr_tannins = self.generateNewValue(prev_tannins, self.tannins_list)
-        curr_color = self.generateNewValue(prev_color, self.color_list)
-        curr_density = self.generateNewValue(prev_density, self.density_list)
-        curr_temperature = self.generateNewValue(prev_temperature, self.temperature_list)
+        # curr_tannins = self.generateNewValue(prev_tannins, self.tannins_list)
+        # curr_color = self.generateNewValue(prev_color, self.color_list)
+        # curr_density = self.generateNewValue(prev_density, self.density_list)
+        # curr_temperature = self.generateNewValue(prev_temperature, self.temperature_list)
         curr_tannins2 = self.generateNewValue2(prev_tannins, 'tannins')
         curr_color2 = self.generateNewValue2(prev_color, 'color')
         curr_density2 = self.generateNewValue2(prev_density, 'density')
@@ -167,16 +167,16 @@ class DataGenerator:
         curr_pump = 0
         curr_cool = 0
         curr_temp = self.generateNewTemp(self.cool_list)
-        if curr_color == "end":
+        if curr_color2 == "end":
             return "end"
-        new_line = str(self.run_time) + ' ' + str(curr_tannins) + ' ' + str(curr_color) + ' ' + str(curr_density) + ' '\
-                   + str(curr_cool) + ' ' + str(curr_temperature) + ' ' + str(curr_pump)
+        new_line = str(self.run_time) + ' ' + str(curr_tannins2) + ' ' + str(curr_color2) + ' ' + str(curr_density2) + ' '\
+                   + str(curr_cool) + ' ' + str(curr_temperature2) + ' ' + str(curr_pump)
         self.container.setDateTime(datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S"))
         # self.container.setCool(curr_cool)
-        self.container.setTannins(curr_tannins)
-        self.container.setColor(curr_color)
-        self.container.setDensity(curr_density)
-        self.container.setTemperature(curr_temp)
+        # self.container.setTannins(curr_tannins)
+        # self.container.setColor(curr_color)
+        # self.container.setDensity(curr_density)
+        # self.container.setTemperature(curr_temp)
         self.setNewValues(curr_temperature2, curr_tannins2, curr_color2, curr_density2)
         if self.isFirstRound:  # starts sensors reading - only after first data is written
             self.container.sensors.startReading()

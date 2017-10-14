@@ -17,7 +17,7 @@ class Decider:
         self.attrNames = self.container.listsAndDicts['attrNames']
 
     def decide(self):
-        self.matrix = self.container.matrixDB
+        self.matrix = self.container.containerDB
         # if len(self.matrix) < 3:
         #     return
         # self.check_deriative()

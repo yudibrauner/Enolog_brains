@@ -107,16 +107,18 @@ class Sensors:
             #     for height in self.sensorsHeights:
             #         self.container.setSenseValue(sensorName, height, self.dictSensors[sensorName][height])
             # self.container.setRealValue(sensorName, self.sensors[sensorName])
+        self.pumpAndCool()
+        self.dictSensors['pump'] = self.container.get_SenseAttr('pump', 0)
+        self.dictSensors['cool'] = self.container.get_SenseAttr('cool', 0)
         new_line = str(self.generator.run_time) + ' ' + str(self.dictSensors['tannins']['top']) + ' ' + str(
-            self.dictSensors['color']['top']) + ' ' + str(self.dictSensors['density']['top']) + ' ' + str(
-            self.dictSensors['temperature']['top'])
+            self.dictSensors['color']['top']) + ' ' + str(self.dictSensors['density']['top']) + ' ' + str(self.dictSensors['cool']) + ' ' + str(
+            self.dictSensors['temperature']['top']) + ' ' + str(self.dictSensors['pump'])
         # self.container.setRealValueDict('cool', 'center', self.sensors['cool'])
         # self.container.setRealValueDict('pump', 'center', self.dictSensors['pump'])
         # self.container.checkTemp()
         with open(self.file, 'a') as write_file:
             write_file.write(new_line + '\n')
         self.logger.info('[' + str(self.container.id) + '] ' + str(self.container.name.get()) + ' ' + new_line)
-        self.pumpAndCool()
         self.decider.decide()
 
     def pumpAndCool(self):
