@@ -46,7 +46,7 @@ class DataGenerator:
         self.createDataLists2()
         while self.stay_alive:
             self.run_time += 1
-            # self.container.howersFromStart.set(float(self.container.howersFromStart.get()) + 0.5)
+            # self.container.hoursFromStart.set(float(self.container.hoursFromStart.get()) + 0.5)
             with open(self.file, 'a') as write_file:
                 write_file.write(new_line + '\n')
                 # self.logger.info('[' + str(self.container.id) + '] ' + str(self.wine_name) + ' ' + self.prettyNewLine(new_line))

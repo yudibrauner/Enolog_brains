@@ -31,7 +31,7 @@ class Sensors:
     def readDataLoop(self):
         self.sensorsInterval = self.container.sensorsInterval
         while self.generator.stay_alive:
-            self.container.howersFromStart.set(float(self.container.howersFromStart.get()) + 0.5)
+            self.container.hoursFromStart.set(float(self.container.hoursFromStart.get()) + 0.5)
             self.container.add2matrix()
             self.readData()
             time.sleep(self.sensorsInterval)  # Read data every SENSORS_INTERVAL seconds

@@ -86,11 +86,12 @@ REALDATALINECOLOR = '#D3D3D3'
 FONTITLECOLOR = '#FFD966'
 
 class Container:
-    def __init__(self, _id, _place, root, interval, externalDB):
+    def __init__(self, _id, _place, root, interval, externalDB, note):
         self.id = _id            # number of container in winery
         self.frame = root
         self.specFrame = LabelFrame(self.frame, bg=BACKGROUND, width=139, height=116)
         self.tasks = list()
+        self.note = note
         self.listsAndDicts = {'sensorNames': SENSOR_NAMES, 'counterNames': COUNTER_NAMES, 'heights': HEIGHTS, 'attrNames': ALL_ATTR_NAMES}
         self.coolCounterGlobal, self.coolCounter = 0, 0
         self.pumpCounterGlobal, self.pumpCounter = 0, 0
@@ -110,6 +111,7 @@ class Container:
         self.containerDB = []
         self.exDB = externalDB
         self.endDateTime = ''
+        self.mistakes = 0
 
     def initStringVars(self):
         self.temperature = StringVar()
@@ -133,7 +135,7 @@ class Container:
         self.numOfSensors = NUM_OF_SENSORS
         self.sensorsInterval = SENSORS_INTERVAL
         self.topColor = StringVar()
-        self.howersFromStart = StringVar()
+        self.hoursFromStart = StringVar()
 
     def initDictVars(self):
         # te1 = StringVar(value=NO_DETAILS)
@@ -280,7 +282,7 @@ class Container:
         self.program.set('No Program')
         self.image = EMPTY_CONT_IMAGE
         self.setImage()
-        self.howersFromStart.set('0')
+        self.hoursFromStart.set('0')
 
     def fillContainer(self):
         #self.updateParams()
@@ -388,9 +390,10 @@ class Container:
         # helpFunctions.sendMail(self.name.get() + " in container " + str(self.id) + " is finished")
 
     def clearAllVariables(self, rootCont):
-        new_container = Container(self.id, self.place, self.frame, self.interval, self.exDB)
+        new_container = Container(self.id, self.place, self.frame, self.interval, self.exDB, self.note)
         # TODO: add this new container to allContainers from main and remove previous container from there.
         # swapNewForOldContainer(self.id, new_container)
+        self.shortLogger.info('fermantation has finished')
         self.cool.set(None)
         self.tannins.set(None)
         self.color.set(None)
@@ -542,7 +545,7 @@ class Container:
                 if nameEntry.get() and isFullFields(self):
                     calc = calculateScore(self)
                     line_to_DB = {"Container id": self.id, "Fermentation": self.program.get(),
-                                  "Wine name": self.name.get(), "Mistakes": 0, "Score": calc,
+                                  "Wine name": self.name.get(), "Mistakes": self.mistakes, "Score": calc,
                                   "Start": self.startDateTime, "End": self.endDateTime,
                                   "C: Quality": int(self.rates[0].get()), "C: Strength": int(self.rates[1].get()),
                                   "S: Centralization": int(self.rates[2].get()), "S: Originality": int(self.rates[3].get()), "S: Quality": int(self.rates[4].get()),
@@ -570,6 +573,7 @@ class Container:
         for i in range(0, 10):
             self.rates.append(StringVar())
             self.rates[i].set('No Rate')
+            # TODO:delete this V line
             self.rates[i].set('5')
 
     def showDetails(self):
@@ -671,15 +675,15 @@ class Container:
         Label(contFrameExpectedDetails, text='Pump acts:').place(x=5, y=135)
         self.expectedPumpLabel = Label(contFrameExpectedDetails, textvariable=str(self.getExpectedAttr('pump')))
         self.expectedPumpLabel.place(x=80, y=135)
-        Label(contFrameExpectedDetails, text='Howers left:').place(x=5, y=160)
-        self.expectedPumpLabel = Label(contFrameExpectedDetails, textvariable=str(self.howersFromStart))
+        Label(contFrameExpectedDetails, text='hours left:').place(x=5, y=160)
+        self.expectedPumpLabel = Label(contFrameExpectedDetails, textvariable=str(self.hoursFromStart))
         self.expectedPumpLabel.place(x=80, y=160)
 
         Button(contFrameMain, image=self.end_process_photo, command=lambda: self.endProcess(self.rootCont)).place(x=63, y=110)
         Button(contFrameMain, image=self.settingPhoto, command=lambda: self.settingsProcess(self.rootCont)).place(x=63, y=210)
         Button(contFrameMain, image=self.sensePhoto, command=lambda: self.sensors.readData()).place(x=120, y=210)
-        Button(contFrameMain, image=self.coolPhoto, command=self.coolIt).place(x=63, y=280)
-        Button(contFrameMain, image=self.pumpPhoto, command=self.pumpIt).place(x=120, y=280)
+        Button(contFrameMain, image=self.coolPhoto, command=lambda: self.coolIt("user")).place(x=63, y=280)
+        Button(contFrameMain, image=self.pumpPhoto, command=lambda: self.pumpIt("user")).place(x=120, y=280)
 
         canvas = FigureCanvasTkAgg(self.graph_plot, contFrameGraphs)
         canvas.get_tk_widget().pack(side=tk.LEFT, expand=True)
@@ -740,7 +744,7 @@ class Container:
         if self.get_SenseAttr('temperature', 'bot') == 'N/A':
             return
         dateTime = datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")
-        vector = {"howers from start": float(self.howersFromStart.get()),
+        vector = {"hours from start": float(self.hoursFromStart.get()),
                   "expected tannins": float(self.get_ExpectedAttr('tannins')), "expected color": float(self.get_ExpectedAttr('color')),
                   "expected temperature": float(self.get_ExpectedAttr('temperature')),"expected density": float(self.get_ExpectedAttr('density')),
                   "expected cool acts": float(self.get_ExpectedAttr('cool')),"expected pump acts": float(self.get_ExpectedAttr('pump')),
@@ -875,9 +879,9 @@ class Container:
     # This function gets the amount of the needed pumpings and pumps by them
     def checkPump(self, amount):
         for i in range(0, amount):
-            self.pumpIt()
+            self.pumpIt("auto")
     # This function makes the attrs being the average of them
-    def pumpIt(self):
+    def pumpIt(self, whoPumps):
         for sensorName in SENSOR_NAMES:
             avg = 0
             for height in HEIGHTS:
@@ -888,16 +892,20 @@ class Container:
             for height in HEIGHTS:
                 self.setRealValues(sensorName, height, avg)
         self.pumpCounter = self.pumpCounter + 1
+        if whoPumps == "user":
+            self.shortLogger.info('user pumped the container')
     # This cools until the top temp will be lower than the expected
     def checkCool(self):
         while float(self.getRealAttr('temperature', 'top')) > float(self.get_ExpectedAttr('temperature')):
-            self.coolIt()
+            self.coolIt("auto")
     # This cools the container in 0.1 degrees
-    def coolIt(self):
+    def coolIt(self, whoCools):
         for height in HEIGHTS:
             new_temp = float(self.getRealAttr('temperature', height)) - 0.1
             self.setRealValues('temperature', height, new_temp)
         self.coolCounter = self.coolCounter + 1
+        if whoCools == "user":
+            self.shortLogger.info('user cooled the container')
 
     def setCoolSum(self):
         sum = self.coolCounter - self.coolCounterGlobal
@@ -928,6 +936,8 @@ class Container:
     def mesBox(self, message, note):
         tkinter.messagebox.showinfo("Error", message + "\n" + note)
 
+    def mistake(self):
+        self.mistakes += 1
 # TODO: how to use the static class? we may need to make it dynamic
     # def changeNote(self, message):
     #     self.frame.
