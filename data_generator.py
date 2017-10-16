@@ -1,11 +1,12 @@
 # This class makes the data instead of the real containers
 
+import datetime
 import os
 from random import randint, randrange, uniform  # uniform=for float range
 import time
 from container import *
 
-THRESHOLD = 1
+THRESHOLD = 2
 PROPORSION = 12
 
 class DataGenerator:
@@ -26,6 +27,7 @@ class DataGenerator:
         self.pump_list = list()
         self.attrNames = self.container.listsAndDicts['attrNames']
         self.lists = {}
+        self.thresholds = {"tannins": 1.2, "color": 0.025, "density": 1.5, "cool": 0.085, "temperature": 0.1}
         self.files = {'tannins': self.tannins_file, 'color': self.color_file, 'density': self.density_file,
                       'temperature': self.temperature_file, 'cool': self.cool_file, 'pump': self.pump_file}
         self.dictParams = {}
@@ -44,15 +46,14 @@ class DataGenerator:
         new_line = '0 5 1 1110 0.5 18 1'  # time tannins color density cool temp pump
         self.createDataLists()
         self.createDataLists2()
+        self.maxRun = len(self.lists['color']) - 1
         while self.stay_alive:
             self.run_time += 1
-            # self.container.hoursFromStart.set(float(self.container.hoursFromStart.get()) + 0.5)
             with open(self.file, 'a') as write_file:
                 write_file.write(new_line + '\n')
-                # self.logger.info('[' + str(self.container.id) + '] ' + str(self.wine_name) + ' ' + self.prettyNewLine(new_line))
                 prev_line = new_line
                 new_line = self.generate_new_line(prev_line)
-                if new_line == "end":
+                if self.run_time >= self.maxRun:
                     self.stay_alive = False
             time.sleep(float(self.interval))
         self.container.fermIsFinished()
@@ -110,8 +111,6 @@ class DataGenerator:
             return new_delta
 
     def generateNewValue(self, prev, lst):
-        if self.run_time == len(lst): # For avoiding exceptions of out of index
-            return "end"
         expected_curr = lst[self.run_time]
         expected_prev = lst[self.run_time - 1]
         if self.run_time == 0:
@@ -122,15 +121,13 @@ class DataGenerator:
         return round(prev + expected_dist + self.getNewDelta(expected_dist), 2)
 
     def generateNewValue2(self, prev, sensorName):
-        if self.run_time == len(self.lists[sensorName]): # For avoiding exceptions of out of index
-            return "end"
         expected_curr = self.lists[sensorName][self.run_time]
         expected_prev = self.lists[sensorName][self.run_time - 1]
         if self.run_time == 0:
             expected_prev = prev
         expected_dist = expected_curr - expected_prev
         if expected_dist == 0:
-            expected_dist = round(random.uniform(-0.1, 0.1), 2)
+            expected_dist = round(random.uniform(-self.thresholds[sensorName], self.thresholds[sensorName]), 2)
         return round(prev + expected_dist + self.getNewDelta(expected_dist), 2)
 
     def generateNewTemp(self, lst):
@@ -155,10 +152,6 @@ class DataGenerator:
         parts = prev_line.split(' ')
         prev_tannins, prev_color, prev_density, prev_cool, prev_temperature, prev_pump = float(parts[1]), float(parts[2]), float(parts[3]), float(parts[4]), float(parts[5]), float(parts[6])
         self.set_expected_attrs()
-        # curr_tannins = self.generateNewValue(prev_tannins, self.tannins_list)
-        # curr_color = self.generateNewValue(prev_color, self.color_list)
-        # curr_density = self.generateNewValue(prev_density, self.density_list)
-        # curr_temperature = self.generateNewValue(prev_temperature, self.temperature_list)
         curr_tannins2 = self.generateNewValue2(prev_tannins, 'tannins')
         curr_color2 = self.generateNewValue2(prev_color, 'color')
         curr_density2 = self.generateNewValue2(prev_density, 'density')
@@ -167,43 +160,44 @@ class DataGenerator:
         curr_pump = 0
         curr_cool = 0
         curr_temp = self.generateNewTemp(self.cool_list)
-        if curr_color2 == "end":
-            return "end"
         new_line = str(self.run_time) + ' ' + str(curr_tannins2) + ' ' + str(curr_color2) + ' ' + str(curr_density2) + ' '\
                    + str(curr_cool) + ' ' + str(curr_temperature2) + ' ' + str(curr_pump)
         self.container.setDateTime(datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S"))
-        # self.container.setCool(curr_cool)
-        # self.container.setTannins(curr_tannins)
-        # self.container.setColor(curr_color)
-        # self.container.setDensity(curr_density)
-        # self.container.setTemperature(curr_temp)
         self.setNewValues(curr_temperature2, curr_tannins2, curr_color2, curr_density2)
         if self.isFirstRound:  # starts sensors reading - only after first data is written
             self.container.sensors.startReading()
             self.isFirstRound = False
-        # self.container.decider.setNewData(new_time, tannins, color, density, cool)
         return new_line
 
+    def getMatchHeight(self, value, sensorName, Height):
+        if Height == 'bot':
+            return value
+        if sensorName == 'color' or sensorName == 'tannins':
+            delta = random.uniform(0, self.thresholds[sensorName])
+            posOrNeg = random.randint(0, 1)
+            if posOrNeg == 1:
+                delta *= (-1)
+        elif sensorName == 'density':
+            if Height == 'mid':
+                delta = random.uniform(0, self.thresholds[sensorName])
+            else:
+                delta = random.uniform(self.thresholds[sensorName], 2*self.thresholds[sensorName])
+            delta *= (-1)
+        else:
+            if Height == 'mid':
+                delta = random.uniform(0, 2*self.thresholds[sensorName])
+            else:
+                delta = random.uniform(1.5*self.thresholds[sensorName], 4*self.thresholds[sensorName])
+        return value + delta
+
     def setNewValues(self, botTemperature, botTannins, botColor, botDensity):
-        SOMETHING = 1
         # for the cooler will cool the temp
-        botTemperature += 0.1 * float(self.lists['cool'][self.run_time])
+        botTemperature += 0.5 * float(self.lists['cool'][self.run_time])
 
-        self.dictParams['temperature']['top'] = botTemperature
-        self.dictParams['tannins']['top'] = botTannins
-        self.dictParams['color']['top'] = botColor
-        self.dictParams['density']['top'] = botDensity
-
-        self.dictParams['temperature']['mid'] = botTemperature + SOMETHING
-        self.dictParams['tannins']['mid'] = botTannins + SOMETHING
-        self.dictParams['color']['mid'] = botColor + SOMETHING
-        self.dictParams['density']['mid'] = botDensity + SOMETHING
-
-        self.dictParams['temperature']['bot'] = botTemperature + SOMETHING + SOMETHING
-        self.dictParams['tannins']['bot'] = botTannins + SOMETHING + SOMETHING
-        self.dictParams['color']['bot'] = botColor + SOMETHING + SOMETHING
-        self.dictParams['density']['bot'] = botDensity + SOMETHING + SOMETHING
-
+        values = {'temperature': botTemperature,'tannins': botTannins, 'density': botDensity, 'color': botColor}
+        for sensorName in self.sensorNames:
+            for height in self.heights:
+                self.dictParams[sensorName][height] = self.getMatchHeight(values[sensorName], sensorName, height)
         for sensorName in self.sensorNames:
             for height in self.heights:
                 self.container.setRealValues(sensorName, height, self.dictParams[sensorName][height])

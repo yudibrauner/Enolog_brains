@@ -16,14 +16,11 @@ allContainers = []
 matrixDB = {'general': [], 'containers': []}
 labelsContainers = {}
 num_of_containers = 10
-NO_NOTES = 'There is no notes'
+NO_NOTES = 'There are no notes'
 BACKGROUND = '#37474f'
 FONTITLE_COLOR = '#FFD966'
 
 ANIMATION_INTERVAL = 1
-# tasks['long'] = TaskPlan("long", exampleTasks.getLong(), 14)
-# tasks['normal'] = TaskPlan("normal", exampleTasks.getNormal(), 10)
-# tasks['short'] = TaskPlan("short", exampleTasks.getShort(), 7)
 
 # GUI
 
@@ -79,13 +76,10 @@ titleFont = Font(family="Times New Roman", size=30)
 noteFont = Font(family="Times New Roman", size=15)
 title = Label(mainFrame, text='WINERY DASHBOARD', background=BACKGROUND, font=titleFont, fg=FONTITLE_COLOR)
 title.place(x=300, y=10)
-settingPhoto = PhotoImage(file="images/settings.png")
-settingsButton = Button(mainFrame, image=settingPhoto, command=settings)
-# settingsButton.place(x=490, y=70)
 noteLabel = Label(mainFrame, text='note:', background=BACKGROUND, font=noteFont, fg='white')
-noteLabel.place(x=400, y=300)
+noteLabel.place(x=400, y=550)
 notesLabel = Label(mainFrame, textvariable=str(note), background=BACKGROUND, font=noteFont, fg='white')
-notesLabel.place(x=450, y=300)
+notesLabel.place(x=450, y=550)
 
 def saveSQL():
     DBfile = sqlite3.connect('DB/smart winery.db')
@@ -198,9 +192,6 @@ root.config(menu=menu)
 
 subMenu1=Menu(menu)
 menu.add_cascade(label="file", menu=subMenu1)
-# subMenu1.add_command(label="Open NMEA file", command=giveOne)
-# subMenu1.add_command(label="Open NMEA class", command=giveDirectory)
-# subMenu1.add_separator()
 subMenu1.add_command(label="Save as CSV", command=saveCSV)
 subMenu1.add_command(label="Save as SQL", command=saveSQL)
 subMenu1.add_separator()

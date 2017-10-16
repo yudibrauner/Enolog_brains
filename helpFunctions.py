@@ -24,12 +24,22 @@
 
 import smtplib
 
-def sendMail(msg):
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.ehlo()
-    server.starttls()
-    #Next, log in to the server
-    server.login("smartwinery.ariel@gmail.com", "finalproject2017")
-    #Send the mail
-    server.sendmail("smartwinery.ariel.com", "millere497@gmail.com", msg)
-    server.close()
+
+class MailHandler:
+
+    def __init__(self, mail):
+        self.recipient = mail
+
+    def sendMail(self, msg):
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.ehlo()
+        server.starttls()
+        #Next, log in to the server
+        server.login("smartwinery.ariel@gmail.com", "finalproject2017")
+        #Send the mail
+        server.sendmail("smartwinery.ariel.com", self.recipient, msg)
+        server.close()
+
+    # For setting the recipient=נמען
+    def setRecipient(self, recipient):
+        self.recipient = recipient

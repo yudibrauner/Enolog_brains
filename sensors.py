@@ -3,6 +3,7 @@ from random import randint, randrange, uniform  # uniform=for float range
 import threading
 import math
 from decider import *
+import random
 
 
 class Sensors:
@@ -16,7 +17,7 @@ class Sensors:
         self.dictSensors = {"tannins": {'top': 0, 'mid': 0, 'bot': 0}, "color": {'top': 0, 'mid': 0, 'bot': 0},
                             "density": {'top': 0, 'mid': 0, 'bot': 0}, "temperature": {'top': 0, 'mid': 0, 'bot': 0}, "cool": 0, 'pump': 0}
         # the thresholds now are one percent of the distance between the max value and min value of the attribute, TODO: think of that thresholds
-        self.thresholds = {"tannins": 1.2, "color": 0.025, "density": 1.5, "cool": 0.085, "temperature":0}
+        self.thresholds = {"tannins": 1.2, "color": 0.025, "density": 1.5, "cool": 0.085, "temperature":0.1}
         self.sensorsInterval = container.sensorsInterval
         self.numOfSensors = container.numOfSensors
         self.file = container.sensors_data
@@ -36,17 +37,12 @@ class Sensors:
             self.readData()
             time.sleep(self.sensorsInterval)  # Read data every SENSORS_INTERVAL seconds
 
+    def sense(self):
+        print("not important")
+
     def readData(self):
         for sensorName in self.sensorsNames:
             self.dictSensors[sensorName] = self.addSensorNewError(sensorName)
-            # if sensorName == "temperature":
-            #     # self.sensors[sensorName] = self.container.attr(sensorName)
-            #     self.dictSensors[sensorName] = self.addSensorNewError(sensorName)
-            # elif sensorName == "cool":
-            #     self.container.setCool(0)
-            # else:
-            #     # self.sensors[sensorName] = self.addSensorError(sensorName)
-            #     self.dictSensors[sensorName] = self.addSensorNewError(sensorName)
         self.writeData()
 
     # This function takes a value and a threshold and creates X values, deletes the farthest value, and returns the average of the others.
@@ -71,13 +67,6 @@ class Sensors:
         averageSensors = round(sum(values) / float(numOfSensors - 1), 2)
         # print('the remain sensors get' + str(values) + '. the average is ' + str(averageSensors))
         return averageSensors
-    # this is the function that works. it's without threshold, take from this^
-    def addSensorNewError(self, sensor):
-        # averageSensors = self.sensors[sensor]
-        top = round(float(self.container.getRealAttr(sensor, 'top')), 2)
-        mid = round(float(self.container.getRealAttr(sensor, 'mid')), 2)
-        bot = round(float(self.container.getRealAttr(sensor, 'bot')), 2)
-        return {'top': top, 'mid': mid, 'bot': bot}
 
     def createTheError(self, value, threshold):
         value = float(value)
@@ -93,6 +82,36 @@ class Sensors:
         else:
             outValue = value + deviation
         return outValue
+
+    def addSensorError2(self, sensor, value):
+        threshold = self.thresholds[sensor]
+        numOfSensors = self.numOfSensors
+        values = []
+        for i in range(numOfSensors):
+            newValue = self.createTheError(value, threshold)
+            values.append(newValue)
+        averageSensors = sum(values) / float(numOfSensors)
+        indexOfFarest = 0
+        farest = math.fabs(values[indexOfFarest] - averageSensors)
+        for i in range(numOfSensors):
+            curValue = math.fabs(values[i] - averageSensors)
+            if curValue > farest:
+                farest = curValue
+                indexOfFarest = i
+        del values[indexOfFarest]
+        averageSensors = round(sum(values) / float(numOfSensors - 1), 2)
+        return averageSensors
+
+    # this is the function that works. it's without threshold, take from this^
+    def addSensorNewError(self, sensor):
+        # averageSensors = self.sensors[sensor]
+        in_top = float(self.container.getRealAttr(sensor, 'top'))
+        in_mid = float(self.container.getRealAttr(sensor, 'mid'))
+        in_bot = float(self.container.getRealAttr(sensor, 'bot'))
+        out_top = round(self.addSensorError2(sensor, in_top), 2)
+        out_mid = round(self.addSensorError2(sensor, in_mid), 2)
+        out_bot = round(self.addSensorError2(sensor, in_bot), 2)
+        return {'top': out_top, 'mid': out_mid, 'bot': out_bot}
 
     def writeData(self):
         # curCool = str(self.container.attr("cool"))

@@ -18,7 +18,7 @@ class Decider:
         self.matrix = self.container.containerDB
 
     def decide(self):
-        if len(self.matrix) < 3:
+        if len(self.matrix) < 3 or len(self.matrix)%2 == 1:
             return
         # TODO: check how to make it right
         # self.check_deriative()
