@@ -150,23 +150,29 @@ def about():
 # TODO: these both functions better be in a new root:
 
 def printTABLE():
+    rootSQL = Tk()
+    rootSQL.wm_title("Ask SQLite")
+    ansFrame = Frame(rootSQL, width=300, height=500)
+    ansFrame.place(x=5, y=75)
     DBfile = sqlite3.connect('DB/smart winery.db')
     c = DBfile.cursor()
-    c.execute('SELECT * FROM generalFermentations')
-    print(c.fetchall())
+    str = 'SELECT * FROM generalFermentations'
+    c.execute(str)
+    answer = c.fetchall()
+    print(answer)
     DBfile.commit()
     DBfile.close()
 
-l2 = Label(root, text="enter question or 1 to exit:")
-e1 = Entry(root)
-
 #creats line to enter questions to the SQLite
 def askTABLE():
-    l2.pack()
-    #l2.grid(row=1, sticky=E)
-    str=""
-    def getText():
-        str = e1.get()
+    rootSQL = Tk()
+    rootSQL.wm_title("Ask SQLite")
+
+    ansFrame = Frame(rootSQL, width=300, height=500)
+    ansFrame.place(x=5, y=75)
+
+    def enterAsk():
+        str = askEntry.get()
         DBfile = sqlite3.connect('DB/smart winery.db')
         c = DBfile.cursor()
         c.execute(str)
@@ -174,11 +180,13 @@ def askTABLE():
         print(answer)
         DBfile.commit()
         DBfile.close()
-    e1.pack()
-    #e2 = Entry(root)
-    #e2.grid(row=0, column=1)
-    b = Button(root, text="Enter", width=10, command=getText)
-    b.pack()
+
+    askFrame = Frame(rootSQL, width=600, height=70)
+    askFrame.place(x=5, y=5)
+    Label(askFrame, text='Ask:').place(x=50, y=20)
+    askEntry = Entry(askFrame, text='SELECT * FROM generalFermentations')
+    askEntry.place(x=100, y=20)
+    Button(askFrame, text='Enter', command=enterAsk).place(x=5,y=20)
 
 # creating all the containers
 for i in range(0, 5):

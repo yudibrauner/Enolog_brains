@@ -3,12 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e20eacaf-528a-4e53-b315-7533990d7aac" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/container.py" afterPath="$PROJECT_DIR$/container.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data_generator.py" afterPath="$PROJECT_DIR$/data_generator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/decider.py" afterPath="$PROJECT_DIR$/decider.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/helpFunctions.py" afterPath="$PROJECT_DIR$/helpFunctions.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sensors.py" afterPath="$PROJECT_DIR$/sensors.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,29 +18,30 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="122" column="10" lean-forward="true" selection-start-line="122" selection-start-column="10" selection-end-line="122" selection-end-column="10" />
+            <state relative-caret-position="104">
+              <caret line="190" column="10" lean-forward="false" selection-start-line="190" selection-start-column="10" selection-end-line="190" selection-end-column="10" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
                 <element signature="e#644#1994#0" expanded="false" />
                 <element signature="e#2051#2201#0" expanded="false" />
                 <element signature="e#2725#5794#0" expanded="false" />
                 <element signature="e#5815#7452#0" expanded="false" />
-                <element signature="e#7563#7748#0" expanded="false" />
-                <element signature="e#7888#8326#0" expanded="false" />
+                <element signature="e#7563#7919#0" expanded="false" />
+                <element signature="e#7987#8683#0" expanded="false" />
+                <element signature="e#8741#8930#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="container.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="container.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/container.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
-              <caret line="701" column="89" lean-forward="false" selection-start-line="701" selection-start-column="89" selection-end-line="701" selection-end-column="89" />
+            <state relative-caret-position="27">
+              <caret line="594" column="34" lean-forward="true" selection-start-line="594" selection-start-column="24" selection-end-line="594" selection-end-column="34" />
               <folding>
                 <element signature="e#45#60#0" expanded="true" />
                 <element signature="e#4301#5086#0" expanded="false" />
@@ -191,8 +187,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>nsorsInterval</find>
-      <find>prin</find>
       <find>.log</find>
       <find>log</find>
       <find>CONTAINER_IMAGE</find>
@@ -221,6 +215,8 @@
       <find>self.containerImageLabel</find>
       <find>send</find>
       <find>0.1</find>
+      <find>cooled</find>
+      <find>rootCont</find>
     </findStrings>
     <replaceStrings>
       <replace>BACKGROUND</replace>
@@ -286,11 +282,11 @@
         <option value="$PROJECT_DIR$/data/dynamic_data/generator/4_dddd" />
         <option value="$PROJECT_DIR$/MySQLexample.py" />
         <option value="$PROJECT_DIR$/decider.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/helpFunctions.py" />
         <option value="$PROJECT_DIR$/data_generator.py" />
         <option value="$PROJECT_DIR$/sensors.py" />
         <option value="$PROJECT_DIR$/container.py" />
+        <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
@@ -799,7 +795,14 @@
       <option name="project" value="LOCAL" />
       <updated>1508021042493</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="add generator algo and fix problems">
+      <created>1508174089266</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1508174089266</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TodoView">
@@ -839,7 +842,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="nothing much" />
     <MESSAGE value="data generator" />
     <MESSAGE value="Merge branch 'development' of https://github.com/yudibrauner/Smart_Winery into development&#10;&#10;# Conflicts:&#10;#&#9;container.py&#10;&#10;more development of the data generator" />
     <MESSAGE value="more development of the data generator" />
@@ -864,7 +866,8 @@
     <MESSAGE value="more changes for deleting the old system" />
     <MESSAGE value="add csv save and start of DB" />
     <MESSAGE value="add SQL DB" />
-    <option name="LAST_COMMIT_MESSAGE" value="add SQL DB" />
+    <MESSAGE value="add generator algo and fix problems" />
+    <option name="LAST_COMMIT_MESSAGE" value="add generator algo and fix problems" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -992,22 +995,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="122" column="10" lean-forward="true" selection-start-line="122" selection-start-column="10" selection-end-line="122" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-            <element signature="e#644#1994#0" expanded="false" />
-            <element signature="e#2051#2201#0" expanded="false" />
-            <element signature="e#2725#5794#0" expanded="false" />
-            <element signature="e#5815#7452#0" expanded="false" />
-            <element signature="e#7563#7748#0" expanded="false" />
-            <element signature="e#7888#8326#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/decider.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="343">
@@ -1086,8 +1073,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/container.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="701" column="89" lean-forward="false" selection-start-line="701" selection-start-column="89" selection-end-line="701" selection-end-column="89" />
+        <state relative-caret-position="27">
+          <caret line="594" column="34" lean-forward="true" selection-start-line="594" selection-start-column="24" selection-end-line="594" selection-end-column="34" />
           <folding>
             <element signature="e#45#60#0" expanded="true" />
             <element signature="e#4301#5086#0" expanded="false" />
@@ -1156,6 +1143,23 @@
             <element signature="e#47174#47571#0" expanded="false" />
             <marker date="1508174041684" expanded="false" signature="2054:2574" ph="..." />
             <marker date="1508174041684" expanded="false" signature="42123:42504" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="190" column="10" lean-forward="false" selection-start-line="190" selection-start-column="10" selection-end-line="190" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+            <element signature="e#644#1994#0" expanded="false" />
+            <element signature="e#2051#2201#0" expanded="false" />
+            <element signature="e#2725#5794#0" expanded="false" />
+            <element signature="e#5815#7452#0" expanded="false" />
+            <element signature="e#7563#7919#0" expanded="false" />
+            <element signature="e#7987#8683#0" expanded="false" />
+            <element signature="e#8741#8930#0" expanded="false" />
           </folding>
         </state>
       </provider>
