@@ -20,7 +20,6 @@ class Decider:
     def decide(self):
         if len(self.matrix) < 3 or len(self.matrix)%2 == 1:
             return
-        # TODO: check how to make it right
         # self.check_deriative()
         self.check_cool()
         self.check_temperature()

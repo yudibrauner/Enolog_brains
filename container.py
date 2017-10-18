@@ -13,11 +13,9 @@ import multiprocessing
 import tkinter.messagebox
 import helpFunctions
 from helpFunctions import *
-
 import matplotlib.animation as animation
 import tkinter.scrolledtext as ScrolledText
 import matplotlib.pyplot as plt
-
 from data_generator import *
 from sensors import *
 from tkinter import *
@@ -33,7 +31,7 @@ from decider import *
 # vars:
 
 NO_DETAILS = "N/A"
-SENSORS_INTERVAL = 1
+SENSORS_INTERVAL = 5
 NUM_OF_SENSORS = 6
 DEFAULT_TEMPERATURE = 0
 
@@ -140,26 +138,6 @@ class Container:
         self.hoursFromStart = StringVar()
 
     def initDictVars(self):
-        # te1 = StringVar(value=NO_DETAILS)
-        # te2 = StringVar(value=NO_DETAILS)
-        # te3 = StringVar(value=NO_DETAILS)
-        # ta1 = StringVar(value=NO_DETAILS)
-        # ta2 = StringVar(value=NO_DETAILS)
-        # ta3 = StringVar(value=NO_DETAILS)
-        # d1 = StringVar(value=NO_DETAILS)
-        # d2 = StringVar(value=NO_DETAILS)
-        # d3 = StringVar(value=NO_DETAILS)
-        # c1 = StringVar(value=NO_DETAILS)
-        # c2 = StringVar(value=NO_DETAILS)
-        # c3 = StringVar(value=NO_DETAILS)
-        # cool = StringVar(value=NO_DETAILS)
-        # pump = StringVar(value=NO_DETAILS)
-        # dictTemerature = {'top': te1,'mid': te2, 'bot': te3}
-        # dictTannins = {'top': ta1,'mid': ta2, 'bot': ta3}
-        # dictColor = {'top': c1,'mid': c2, 'bot': c3}
-        # dictDensity = {'top': d1,'mid': d2, 'bot': d3}
-        # dictCool = {'center': cool}
-        # dictPump = {'center': pump}
         self.senseDictParams = {}
         self.realDictParams = {}
         self.expectedDictParams = {}
@@ -174,10 +152,6 @@ class Container:
             self.senseDictParams[counterName] = StringVar(value=NO_DETAILS)
             self.realDictParams[counterName] = StringVar(value=NO_DETAILS)
             self.expectedDictParams[counterName] = StringVar(value=NO_DETAILS)
-        # self.senseDictParams = {'density': dictDensity, 'color': dictColor, 'tannins': dictTannins,
-        #                    'temperature': dictTemerature, 'cool': dictCool, 'pump': dictPump}
-        # self.realDictParams = {'density': dictDensity, 'color': dictColor, 'tannins': dictTannins,
-        #                        'temperature': dictTemerature, 'cool': dictCool, 'pump': dictPump}
 
     def initNones(self):
         self.image = None
@@ -194,9 +168,6 @@ class Container:
         self.generator_thread = None
         self.decider = None
         self.text_handler = None
-        # self.st = ScrolledText.ScrolledText(wrap=tk.WORD, width=45, height=20)
-        # self.st.configure(font='TkFixedFont')
-        # self.st.grid(column=0, row=1, sticky='w', columnspan=10)
         self.rootCont = None
 
     def initLabels(self):
@@ -234,8 +205,6 @@ class Container:
 
     def setImage(self):
         self.photo = PhotoImage(file=self.image)
-        # contButton = Button(self.frame, height=44, width=52, image=self.photo, relief=FLAT, background=BACKGROUND, command=self.buttonFunction)
-        # contButton.place(x=self.place[0], y=self.place[1])
         newContButton = Button(self.specFrame, height=106, width=129, image=self.photo, relief=FLAT, background=BACKGROUND, command=self.buttonFunction)
         self.specFrame.place(x=self.place[0], y=self.place[1])
         newContButton.place(x=0, y=0)
@@ -243,8 +212,6 @@ class Container:
     def startLabels(self):
         nameFont = Font(family="Times New Roman", size=13, weight='bold')
         labelFont = Font(family="Times New Roman", size=6)
-        # self.idLabel = Label(self.specFrame, text=str(self.id) + ': ', background=BACKGROUND)
-        # self.idLabel.place(x=self.place[0] + 10, y=self.place[1] - 30)
         self.nameLabel = Label(self.specFrame, textvariable=str(self.name), font=nameFont, background=CONT_NAME_BG)
         self.nameLabel.place(x=70 - 10*len(self.name.get())/2, y=83)
         self.coolValLabel = Label(self.specFrame, textvariable=str(self.senseDictParams['cool']), background=ATTRS_BG, font=labelFont)
@@ -287,7 +254,6 @@ class Container:
         self.hoursFromStart.set('0')
 
     def fillContainer(self):
-        #self.updateParams()
         self.isFull = True
         self.image = FULL_CONT_IMAGE
         self.buttonFunction = self.showDetails
@@ -323,19 +289,12 @@ class Container:
             # Add the handler to logger
             self.setup_logger(str(self.logger_name), 'logs/longLogs/' + str(self.logger_name) + '.log')
             self.logger = logging.getLogger(self.logger_name)
-            # self.logger = logging.getLogger(self.logger_name)
-            # logging.basicConfig(filename='logs/longLogs/' + self.logger_name + '.log',
-            #                     level=logging.INFO,
-            #                     format='%(asctime)s - %(levelname)s - %(message)s')
             self.logger.info('-> container added')
             self.Email = MailHandler(mail)
 
             # Add the handler to logger
             self.setup_logger(str(self.shortLogger_name), 'logs/shortLogs/' + str(self.shortLogger_name) + '.log')
             self.shortLogger = logging.getLogger(self.shortLogger_name)            # self.shortLogger = logging.getLogger(self.shortLogger_name)
-            # logging.basicConfig(filename='logs/shortLogs/' + self.shortLogger_name + '.log',
-            #                     level=logging.INFO,
-            #                     format='%(asctime)s - %(levelname)s - %(message)s')
             self.shortLogger.info('-> container added')
             self.fillContainer()
             self.buttonFunction = self.showDetails
@@ -397,13 +356,12 @@ class Container:
         self.color.set(NO_DETAILS)
         self.temperature.set(NO_DETAILS)
         self.initDictVars()
-        # self.sendMail("is finished")
+        self.sendMail("is finished")
         self.generator.stay_alive = False
 
     def clearAllVariables(self, rootCont):
         new_container = Container(self.id, self.place, self.frame, self.interval, self.exDB, self.note)
         # TODO: add this new container to allContainers from main and remove previous container from there.
-        # swapNewForOldContainer(self.id, new_container)
         self.shortLogger.info('fermantation has finished')
         self.cool.set(None)
         self.tannins.set(None)
@@ -435,15 +393,12 @@ class Container:
 
     def settingsProcess(self, rootCont):
         rootCont = Tk()
-        # self.rootCont = Toplevel()
-        # self.rootCont.wm_title("Settings")
         settingsFrame = Frame(rootCont, width=270, height=300)
         settingsFrame.pack()
         Label(settingsFrame, text='Set sensors reading interval [sec]:').place(x=40, y=20)
         intervalSensorsEntry = Entry(settingsFrame)
         intervalSensorsEntry.place(x=40, y=50)
         intervalSensorsEntry.insert(0, str(self.sensorsInterval))
-    # TODO: we need to see the name of the chosen log
         Label(settingsFrame, text='Log Type: ').place(x=40, y=80)
         logTypeEntry = OptionMenu(settingsFrame, self.logTypes, *LOGTYPES.keys())
         logTypeEntry.place(x=40, y=100)
@@ -459,7 +414,6 @@ class Container:
         logType = self.logTypes.get()
         if logType == 'Short log':
             os.startfile('logs/shortLogs/' + str(self.shortLogger_name) + '.log', 'open')
-        #TODO
 
     def changeDetails(self, rootCont, intervalSensorsEntry):
         intervalSensors = intervalSensorsEntry.get()
@@ -620,32 +574,19 @@ class Container:
         self.color_top_label = Label(contFrameMain, textvariable=str(self.senseDictParams['color']['top']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
         self.color_top_label.place(x=left, y=top_under)
 
-        self.color_mid_label = Label(contFrameMain, textvariable=str(self.senseDictParams['color']['mid']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.color_mid_label.place(x=left, y=mid_under)
-        self.color_bot_label = Label(contFrameMain, textvariable=str(self.senseDictParams['color']['bot']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.color_bot_label.place(x=left, y=bot_under)
-        self.density_top_label = Label(contFrameMain, textvariable=str(self.senseDictParams['density']['top']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.density_top_label.place(x=left, y=top_up)
-        self.density_mid_label = Label(contFrameMain, textvariable=str(self.senseDictParams['density']['mid']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.density_mid_label.place(x=left, y=mid_up)
-        self.density_bot_label = Label(contFrameMain, textvariable=str(self.senseDictParams['density']['bot']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.density_bot_label.place(x=left, y=bot_up)
-        self.temperature_top_label = Label(contFrameMain, textvariable=str(self.senseDictParams['temperature']['top']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.temperature_top_label.place(x=right, y=top_up)
-        self.temperature_mid_label = Label(contFrameMain, textvariable=str(self.senseDictParams['temperature']['mid']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.temperature_mid_label.place(x=right, y=mid_up)
-        self.temperature_bot_label = Label(contFrameMain, textvariable=str(self.senseDictParams['temperature']['bot']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.temperature_bot_label.place(x=right, y=bot_up)
-        self.tannins_top_label = Label(contFrameMain, textvariable=str(self.senseDictParams['tannins']['top']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.tannins_top_label.place(x=right, y=top_under)
-        self.tannins_mid_label = Label(contFrameMain, textvariable=str(self.senseDictParams['tannins']['mid']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.tannins_mid_label.place(x=right, y=mid_under)
-        self.tannins_bot_label = Label(contFrameMain, textvariable=str(self.senseDictParams['tannins']['bot']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.tannins_bot_label.place(x=right, y=bot_under)
-        self.cool_label = Label(contFrameMain, textvariable=str(self.senseDictParams['cool']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.cool_label.place(x=right, y=under_line)
-        self.pump_label = Label(contFrameMain, textvariable=str(self.senseDictParams['pump']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND)
-        self.pump_label.place(x=left, y=under_line)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['color']['mid']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=left, y=mid_under)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['color']['bot']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=left, y=bot_under)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['density']['top']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=left, y=top_up)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['density']['mid']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=left, y=mid_up)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['density']['bot']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=left, y=bot_up)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['temperature']['top']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=right, y=top_up)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['temperature']['mid']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=right, y=mid_up)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['temperature']['bot']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=right, y=bot_up)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['tannins']['top']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=right, y=top_under)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['tannins']['mid']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=right, y=mid_under)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['tannins']['bot']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=right, y=bot_under)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['cool']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=right, y=under_line)
+        Label(contFrameMain, textvariable=str(self.senseDictParams['pump']), font=bigLabelsFont, fg='black',background=SENSORS_BACKGROUND).place(x=left, y=under_line)
 
         # Graphs frame
         contFrameGraphs = Frame(contFrameMain, width=700, height=535)
@@ -774,12 +715,11 @@ class Container:
                   "middle density sensor": float(self.get_SenseAttr('density', 'mid')),"bottom density sensor": float(self.get_SenseAttr('density', 'bot')),
                   "cool acts": float(self.get_CounterAttr('cool')),"pump acts": float(self.get_CounterAttr('pump')),
                   "date": dateTime.split(' ')[0], "time": dateTime.split(' ')[1]}
-
-        # print(vector)
         self.containerDB.append(vector)
 
     # SETTERS:
     def setInterval(self, interval):
+        self.shortLogger.info("change interval sensor to " + interval)
         self.interval = interval
 
     # old functions:
@@ -956,9 +896,6 @@ class Container:
 
     def mistake(self):
         self.mistakes += 1
-# TODO: how to use the static class? we may need to make it dynamic
-    # def changeNote(self, message):
-    #     self.frame.
 
     def setup_logger(self, logger_name, log_file, level=logging.INFO):
         l = logging.getLogger(logger_name)

@@ -1,26 +1,18 @@
-from tkinter import *
-from tkinter.filedialog import *
 import csv
-import tkinter.messagebox
-import os.path
 import sqlite3
-import time
-from taskPlan import *
 from container import *
-from exampleTasks import *
 
 #INIT:
 
-tasks = {}
 allContainers = []
 matrixDB = {'general': [], 'containers': []}
-labelsContainers = {}
 num_of_containers = 10
 NO_NOTES = 'There are no notes'
 BACKGROUND = '#37474f'
 FONTITLE_COLOR = '#FFD966'
 
 ANIMATION_INTERVAL = 1
+names_of_tables = []
 
 # GUI
 
@@ -84,7 +76,9 @@ notesLabel.place(x=450, y=550)
 def saveSQL():
     DBfile = sqlite3.connect('DB/smart winery.db')
     c = DBfile.cursor()
+    names_of_tables = []
     general_name = 'generalFermentations'# + str(datetime.datetime.now().strftime("%d%m%y%H%M%S"))
+    names_of_tables.append(general_name)
     c.execute('drop table if exists ' + general_name)
     c.execute('CREATE TABLE ' + general_name + '''
                 (Container_id, Fermentation, Wine_name, Mistakes, Score, Start, End,
@@ -101,6 +95,7 @@ def saveSQL():
 
     for container in matrixDB['containers']:
         general_name = 'container_' + container['name'] + '_' + str(container['id'])
+        names_of_tables.append(general_name)
         c.execute('drop table if exists ' + general_name)
         c.execute('CREATE TABLE ' + general_name + '''
                         (hours_from_start, expected_tannins, expected_color, expected_temperature, expected_density,
@@ -145,31 +140,56 @@ def saveCSV():
 
 def about():
     x=5
-    #TODO
-
-# TODO: these both functions better be in a new root:
 
 def printTABLE():
     rootSQL = Tk()
     rootSQL.wm_title("Ask SQLite")
     ansFrame = Frame(rootSQL, width=300, height=500)
-    ansFrame.place(x=5, y=75)
+    ansFrame.pack()
     DBfile = sqlite3.connect('DB/smart winery.db')
     c = DBfile.cursor()
-    str = 'SELECT * FROM generalFermentations'
-    c.execute(str)
-    answer = c.fetchall()
-    print(answer)
+    res = c.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    names_of_tables = []
+    for name in res:
+        names_of_tables.append(name[0])
     DBfile.commit()
     DBfile.close()
+    st = ScrolledText.ScrolledText(ansFrame, wrap=tk.WORD, width=115, height=20)
+    st.configure(font='TkFixedFont')
+    st.grid(column=0, row=1, sticky='w', columnspan=10)
+    for table in names_of_tables:
+        DBfile = sqlite3.connect('DB/smart winery.db')
+        c = DBfile.cursor()
+        str = 'SELECT * FROM ' + table
+        c.execute(str)
+        answer = c.fetchall()
+        st.insert(INSERT, table + ":\n\n")
+        st.insert(INSERT, answer)
+        st.insert(INSERT, "\n\n________________________________________________________________\n\n\n")
+        DBfile.commit()
+        DBfile.close()
 
 #creats line to enter questions to the SQLite
 def askTABLE():
     rootSQL = Tk()
     rootSQL.wm_title("Ask SQLite")
-
+    DBfile = sqlite3.connect('DB/smart winery.db')
+    c = DBfile.cursor()
+    res = c.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    names_of_tables = []
+    for name in res:
+        names_of_tables.append(name[0])
+    DBfile.commit()
+    DBfile.close()
+    askFrame = Frame(rootSQL, width=600, height=70)
+    askFrame.pack(side=TOP)
     ansFrame = Frame(rootSQL, width=300, height=500)
-    ansFrame.place(x=5, y=75)
+    ansFrame.pack(side=BOTTOM)
+    nameFont = Font(family="Times New Roman", size=13, weight='bold')
+    Label(ansFrame, text="Current tables are: " + str(names_of_tables), font=nameFont).grid(column=0, row=0, sticky='w', columnspan=10)
+    st2 = ScrolledText.ScrolledText(ansFrame, wrap=tk.WORD, width=115, height=20)
+    st2.configure(font='TkFixedFont')
+    st2.grid(column=0, row=1, sticky='w', columnspan=10)
 
     def enterAsk():
         str = askEntry.get()
@@ -177,14 +197,15 @@ def askTABLE():
         c = DBfile.cursor()
         c.execute(str)
         answer = c.fetchall()
-        print(answer)
+        st2.insert(INSERT, str + ":\n\n")
+        st2.insert(INSERT, answer)
+        st2.insert(INSERT, "\n\n________________________________________________________________\n\n\n")
         DBfile.commit()
         DBfile.close()
 
-    askFrame = Frame(rootSQL, width=600, height=70)
-    askFrame.place(x=5, y=5)
     Label(askFrame, text='Ask:').place(x=50, y=20)
-    askEntry = Entry(askFrame, text='SELECT * FROM generalFermentations')
+    askEntry = Entry(askFrame, width=150)
+    askEntry.insert(INSERT,'SELECT * FROM generalFermentations')
     askEntry.place(x=100, y=20)
     Button(askFrame, text='Enter', command=enterAsk).place(x=5,y=20)
 
